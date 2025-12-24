@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:kobool/consts/routes.dart';
 
-class Search extends StatelessWidget {
-  const Search({super.key});
+class Forum extends StatelessWidget {
+  const Forum({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Search'), centerTitle: false),
+      appBar: AppBar(title: const Text('Forum'), centerTitle: false),
 
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Search", style: TextStyle(fontSize: 24)),
+            Text("Forum", style: TextStyle(fontSize: 24)),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, Routes.results);
+                Navigator.pushNamed(context, '/');
               },
-              child: Text("Go to Results"),
+              child: Text("Go to Home"),
             ),
           ],
         ),
