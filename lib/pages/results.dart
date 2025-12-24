@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:http/http.dart' as http;
 import 'package:kobool/hooks/use_fetch.dart';
+import 'package:kobool/widgets/user_result_view.dart';
 
 class Results extends HookWidget {
   const Results({super.key});
@@ -31,13 +32,7 @@ class Results extends HookWidget {
           itemCount: childList.length,
           itemBuilder: (context, i) {
             final item = childList[i] as Map<String, dynamic>;
-            final login = item['login_id'] ?? '';
-            final age = item['age'] ?? item['ag'] ?? '';
-            final title = item['ad_title'] ?? '';
-            return ListTile(
-              title: Text(login.toString()),
-              subtitle: Text('Age: \\${age.toString()}  \\${title.toString()}'),
-            );
+            return UserResultView(index: i, props: item);
           },
         );
       } catch (e) {
