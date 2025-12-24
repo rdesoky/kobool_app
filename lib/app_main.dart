@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/app_route_observer.dart';
 import 'package:kobool/consts/routes.dart';
-import 'package:kobool/providers/router_provider.dart';
 import 'package:kobool/route_generator.dart';
 import 'package:kobool/widgets/app_drawer.dart';
 import 'package:kobool/widgets/kapp_bar.dart';

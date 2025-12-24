@@ -20,7 +20,7 @@ class AppDrawer extends ConsumerWidget {
     return Drawer(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
       backgroundColor: colorScheme.surfaceContainer,
-      width: 240,
+      width: 220,
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
@@ -33,6 +33,7 @@ class AppDrawer extends ConsumerWidget {
               ),
             ),
           ListTile(
+            leading: Icon(Icons.home),
             selected: routerState.name == Routes.home,
             selectedTileColor: colorScheme.surfaceContainerHighest,
             title: Text('Home'),
@@ -43,6 +44,7 @@ class AppDrawer extends ConsumerWidget {
             },
           ),
           ListTile(
+            leading: Icon(Icons.login),
             title: Text('Login'),
             selected: routerState.name == Routes.login,
             selectedTileColor: colorScheme.surfaceContainerHighest,
@@ -53,6 +55,7 @@ class AppDrawer extends ConsumerWidget {
             },
           ),
           ListTile(
+            leading: Icon(Icons.person),
             title: Text('Online members'),
             selected: routerState.name == Routes.results,
             selectedTileColor: colorScheme.surfaceContainerHighest,
