@@ -1,5 +1,5 @@
-# Sample workflow for building and deploying a Jekyll site to GitHub Pages
-name: Deploy Jekyll with GitHub Pages dependencies preinstalled
+# Sample workflow for building and deploying a Flutter web app to GitHub Pages
+name: Deploy Flutter web app to GitHub Pages using GitHub Actions
 
 on:
   # Runs on pushes targeting the default branch
@@ -29,7 +29,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: setup Flutter
-        uses: actions/flutter-action@v2
+        uses: subosito/flutter-action@v2
         with:
           channel: "stable"
       - name: Build Flutter web app
