@@ -9,17 +9,22 @@ class KAppBar extends ConsumerWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context, ref) {
     String routeName = ref.watch(routerProvider).name.replaceAll("/", "");
-    final themeMode = ref.watch(themeModeProvider);
+    final brightness = Theme.of(context).brightness;
     return AppBar(
       title: Text("Kobool - $routeName"),
       backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      actionsPadding: const EdgeInsets.symmetric(horizontal: 8),
       actions: [
         IconButton(
           icon: Icon(
-            themeMode == ThemeMode.light ? Icons.dark_mode : Icons.light_mode,
+            brightness == Brightness.light ? Icons.dark_mode : Icons.light_mode,
           ),
           onPressed: () {
-            ref.read(themeModeProvider.notifier).state = themeMode.next();
+            ref
+                .read(themeModeProvider.notifier)
+                .state = brightness == Brightness.light
+                ? ThemeMode.dark
+                : ThemeMode.light;
           },
         ),
       ],
@@ -28,16 +33,4 @@ class KAppBar extends ConsumerWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-}
-
-extension on ThemeMode {
-  ThemeMode next() {
-    if (this == ThemeMode.system) {
-      return ThemeMode.light;
-    } else if (this == ThemeMode.light) {
-      return ThemeMode.dark;
-    } else {
-      return ThemeMode.system;
-    }
-  }
 }
