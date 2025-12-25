@@ -3,15 +3,13 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:kobool/consts/routes.dart';
 import 'package:kobool/widgets/user_attr_button.dart';
 
-class UserView extends HookWidget {
+class UserListItem extends HookWidget {
   final int index;
   final Map<String, dynamic> props;
-  const UserView({super.key, required this.index, required this.props});
+  const UserListItem({super.key, required this.index, required this.props});
 
   @override
   Widget build(BuildContext context) {
-    // final userResult = useState<String>(''); // Initialize with an empty string
-
     final login = props['login_id'] ?? '';
     final title = props['ad_title'] ?? '';
     final selfDesc = props['self_desc'] ?? '';
@@ -69,6 +67,8 @@ class UserView extends HookWidget {
                     UserAttrButton(attr: UserAttr.gender, props: props),
                     UserAttrButton(attr: UserAttr.age, props: props),
                     UserAttrButton(attr: UserAttr.maritalStatus, props: props),
+                    UserAttrButton(attr: UserAttr.country, props: props),
+                    UserAttrButton(attr: UserAttr.origin, props: props),
                   ],
                 ),
                 Text(

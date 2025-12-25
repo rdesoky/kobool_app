@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:kobool/widgets/user_list_item.dart';
+import 'package:kobool/widgets/answer_list_item.dart';
 
-class UserList extends HookWidget {
+class AnswersList extends HookWidget {
   final int? page;
   final AsyncSnapshot<dynamic> asyncFetch;
   final Map<String, dynamic>? results;
-  const UserList({
+  const AnswersList({
     super.key,
     this.page,
     required this.asyncFetch,
@@ -32,7 +32,7 @@ class UserList extends HookWidget {
           itemCount: childList.length,
           itemBuilder: (context, i) {
             final item = childList[i] as Map<String, dynamic>;
-            return UserListItem(index: i, props: item);
+            return AnswerListItem(index: i, props: item);
           },
         ),
       );

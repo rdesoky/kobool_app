@@ -1,10 +1,9 @@
 import 'dart:convert';
-
+import 'package:http/http.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:kobool/hooks/use_fetch.dart';
 import 'package:kobool/widgets/user_list.dart';
-import 'package:http/http.dart' as http;
 
 class ResultsPage extends HookWidget {
   const ResultsPage({super.key});
@@ -13,12 +12,13 @@ class ResultsPage extends HookWidget {
   Widget build(BuildContext context) {
     var page = useState(0);
     final asyncFetch = useFetch(
-      "http://dev.kobool.com/cgi-bin/query.pl?p=${page.value}",
+      "http://dev.kobool.com/cgi-bin/query.pl",
+      params: {"p": page.value},
     );
     // parsed fetch results body
     final results = useMemoized(() {
       if (asyncFetch.hasData) {
-        final resp = asyncFetch.data as http.Response;
+        final resp = asyncFetch.data as Response;
         final body = json.decode(resp.body) as Map<String, dynamic>;
         return body;
       }
@@ -28,7 +28,11 @@ class ResultsPage extends HookWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          results == null ? 'Searching...' : 'Found ${results['total']}',
+          asyncFetch.connectionState == ConnectionState.waiting
+              ? 'Searching...'
+              : asyncFetch.hasError
+              ? 'Error: ${asyncFetch.error}'
+              : 'Found ${results?["total"]}',
         ),
         centerTitle: false,
       ),
@@ -49,17 +53,21 @@ class ResultsPage extends HookWidget {
                 spacing: 12,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (page.value > 0)
-                    ElevatedButton(
-                      onPressed: () {
-                        page.value = page.value - 1;
-                      },
-                      child: Text("Previous page"),
-                    ),
                   ElevatedButton(
-                    onPressed: () {
-                      page.value = page.value + 1;
-                    },
+                    onPressed: page.value > 0
+                        ? () {
+                            page.value = page.value - 1;
+                          }
+                        : null,
+                    child: Text("Previous page"),
+                  ),
+                  Text("Page ${page.value + 1}"),
+                  ElevatedButton(
+                    onPressed: page.value < 100
+                        ? () {
+                            page.value = page.value + 1;
+                          }
+                        : null,
                     child: Text("Next page"),
                   ),
                 ],

@@ -25,23 +25,19 @@ class RouteGenerator {
       case Routes.results:
         return _buildRoute(const ResultsPage(), settings);
       case Routes.forum:
-        return _buildRoute(const ForumPage(), settings);
+        return _buildRoute(
+          ForumPage(arguments: settings.arguments as Map<String, dynamic>?),
+          settings,
+        );
       case Routes.drill:
         return _buildRoute(DrillPage(), settings);
       case Routes.chat:
         return _buildRoute(const ChatPage(), settings);
       case Routes.user:
         return _buildRoute(
-          UserPage(id: settings.arguments as String),
+          UserPage(id: settings.arguments.toString()),
           settings,
         );
-      // case Routes.editTask:
-      //   return _buildRoute(EditTask(id: settings.arguments as int), settings);
-      // case Routes.liveAgent:
-      //   return _buildRoute(
-      //     LiveAgentPage(initialThreadId: settings.arguments as String?),
-      //     settings,
-      //   );
       default:
         return _buildRoute(
           UnknownPage(pageName: settings.name ?? 'unknown'),
