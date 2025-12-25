@@ -8,26 +8,33 @@ import 'package:kobool/pages/login.dart';
 import 'package:kobool/pages/register.dart';
 import 'package:kobool/pages/results.dart';
 import 'package:kobool/pages/search.dart';
+import 'package:kobool/pages/unknown.dart';
+import 'package:kobool/pages/user.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case Routes.home:
-        return _buildRoute(const Home(), settings);
+        return _buildRoute(const HomePage(), settings);
       case Routes.login:
-        return _buildRoute(const Login(), settings);
+        return _buildRoute(const LoginPage(), settings);
       case Routes.register:
-        return _buildRoute(const Register(), settings);
+        return _buildRoute(const RegisterPage(), settings);
       case Routes.search:
-        return _buildRoute(const Search(), settings);
+        return _buildRoute(const SearchPage(), settings);
       case Routes.results:
-        return _buildRoute(const Results(), settings);
+        return _buildRoute(const ResultsPage(), settings);
       case Routes.forum:
-        return _buildRoute(const Forum(), settings);
+        return _buildRoute(const ForumPage(), settings);
       case Routes.drill:
-        return _buildRoute(Drill(), settings);
+        return _buildRoute(DrillPage(), settings);
       case Routes.chat:
-        return _buildRoute(const Chat(), settings);
+        return _buildRoute(const ChatPage(), settings);
+      case Routes.user:
+        return _buildRoute(
+          UserPage(id: settings.arguments as String),
+          settings,
+        );
       // case Routes.editTask:
       //   return _buildRoute(EditTask(id: settings.arguments as int), settings);
       // case Routes.liveAgent:
@@ -37,7 +44,7 @@ class RouteGenerator {
       //   );
       default:
         return _buildRoute(
-          Center(child: Text('No route defined for ${settings.name}')),
+          UnknownPage(pageName: settings.name ?? 'unknown'),
           settings,
         );
     }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Forum extends StatelessWidget {
-  const Forum({super.key});
+class ForumPage extends StatelessWidget {
+  const ForumPage({super.key});
 
   @override
   Widget build(BuildContext context) {

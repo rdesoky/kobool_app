@@ -3,25 +3,32 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/app_route_observer.dart';
 import 'package:kobool/consts/routes.dart';
+import 'package:kobool/providers/settings_provider.dart';
 import 'package:kobool/route_generator.dart';
 import 'package:kobool/widgets/app_drawer.dart';
 import 'package:kobool/widgets/kapp_bar.dart';
 
-class AppMain extends StatelessWidget {
+class AppMain extends ConsumerWidget {
   const AppMain({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeModeProvider);
     return MaterialApp(
       title: 'Kobool - first step to marriage',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        useMaterial3: true,
       ),
-      darkTheme: ThemeData.dark().copyWith(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.blue,
+          brightness: Brightness.dark,
+        ),
+        useMaterial3: true,
       ),
-      themeMode: ThemeMode.light,
+      themeMode: themeMode,
       home: _AppScaffold(key: ValueKey("AppScaffold")),
     );
   }

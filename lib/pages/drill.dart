@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Drill extends StatelessWidget {
-  const Drill({super.key});
+class DrillPage extends StatelessWidget {
+  const DrillPage({super.key});
 
   @override
   Widget build(BuildContext context) {

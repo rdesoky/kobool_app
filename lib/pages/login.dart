@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-class Login extends HookWidget {
-  const Login({super.key});
+class LoginPage extends HookWidget {
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {

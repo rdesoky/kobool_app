@@ -14,4 +14,5 @@ class Routes {
   static const String chat = '/chat';
   static const String updateProfile = '/update_profile';
   static const String drill = '/drill';
+  static const String user = '/user';
 }
