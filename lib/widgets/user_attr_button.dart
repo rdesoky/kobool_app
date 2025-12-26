@@ -22,6 +22,9 @@ class UserAttrButton extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final pageArgs =
+        (ModalRoute.of(context)!.settings.arguments ?? {})
+            as Map<dynamic, dynamic>;
     final colorScheme = Theme.of(context).colorScheme;
     final isMale = props[UserAttr.gender] == "0";
     final genderColor = isMale ? Colors.blue : Colors.pink;
@@ -54,15 +57,60 @@ class UserAttrButton extends HookWidget {
       UserAttr.pic => () {
         Navigator.pushNamed(context, Routes.user, arguments: props['id']);
       },
-      UserAttr.gender => () {
-        Navigator.pushNamed(context, Routes.results);
-      },
-      UserAttr.age => () {
-        Navigator.pushNamed(context, Routes.results);
-      },
-      UserAttr.maritalStatus => () {
-        Navigator.pushNamed(context, Routes.results);
-      },
+      UserAttr.gender =>
+        pageArgs.containsKey('g')
+            ? null
+            : () {
+                Navigator.pushNamed(
+                  context,
+                  Routes.results,
+                  arguments: {...pageArgs, 'g': props[UserAttr.gender]},
+                );
+              },
+      UserAttr.age =>
+        pageArgs.containsKey('ag')
+            ? null
+            : () {
+                Navigator.pushNamed(
+                  context,
+                  Routes.results,
+                  arguments: {
+                    ...pageArgs,
+                    'ag':
+                        "${int.parse(props["birth_year"]) - 2}-${int.parse(props["birth_year"]) + 2}",
+                  },
+                );
+              },
+      UserAttr.maritalStatus =>
+        pageArgs.containsKey('ms')
+            ? null
+            : () {
+                Navigator.pushNamed(
+                  context,
+                  Routes.results,
+                  arguments: {...pageArgs, 'ms': props[UserAttr.maritalStatus]},
+                );
+              },
+      UserAttr.country =>
+        pageArgs.containsKey('c')
+            ? null
+            : () {
+                Navigator.pushNamed(
+                  context,
+                  Routes.results,
+                  arguments: {...pageArgs, 'c': props[UserAttr.country]},
+                );
+              },
+      UserAttr.origin =>
+        pageArgs.containsKey('o')
+            ? null
+            : () {
+                Navigator.pushNamed(
+                  context,
+                  Routes.results,
+                  arguments: {...pageArgs, 'o': props[UserAttr.origin]},
+                );
+              },
       _ => () {},
     };
 

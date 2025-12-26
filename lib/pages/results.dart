@@ -13,9 +13,12 @@ class ResultsPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var page = useState(0);
+    final pageArgs =
+        (ModalRoute.of(context)!.settings.arguments ?? {})
+            as Map<dynamic, dynamic>;
     final asyncFetch = useFetch(
       "http://dev.kobool.com/cgi-bin/query.pl",
-      params: {"p": page.value},
+      params: {...pageArgs, "p": page.value},
     );
     // parsed fetch results body
     final results = useMemoized(() {
