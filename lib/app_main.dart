@@ -7,7 +7,7 @@ import 'package:kobool/consts/routes.dart';
 import 'package:kobool/providers/settings_provider.dart';
 import 'package:kobool/route_generator.dart';
 import 'package:kobool/widgets/app_drawer.dart';
-import 'package:kobool/widgets/kapp_bar.dart';
+import 'package:kobool/widgets/kb_app_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppMain extends ConsumerWidget {
@@ -56,7 +56,7 @@ class _AppScaffold extends HookConsumerWidget {
     final isWideView = MediaQuery.of(context).size.width > 600;
 
     return Scaffold(
-      appBar: KAppBar(),
+      appBar: KbAppBar(),
       drawer: isWideView ? null : AppDrawer(navigatorKey: navigatorKey),
       body: AppNavigator(navigatorKey: navigatorKey),
     );

@@ -50,6 +50,8 @@ class AnswerListItem extends HookWidget {
             title: Padding(
               padding: const EdgeInsets.only(bottom: 12.0),
               child: Wrap(
+                spacing: 4,
+                runSpacing: 4,
                 children: [
                   SizedBox(
                     width: 100,

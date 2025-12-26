@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/consts/routes.dart';
 import 'package:kobool/providers/router_provider.dart';
 import 'package:kobool/providers/settings_provider.dart';
+import 'package:kobool/utils/dialogs.dart';
 
 class AppDrawer extends ConsumerWidget {
   final bool showHeader;
@@ -106,33 +107,7 @@ class AppDrawer extends ConsumerWidget {
             onTap: () {
               // Handle settings tap
               // confirm dialog
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: Text('language'.tr()),
-                  content: Text("${'change_language'.tr()} ?"),
-                  actions: [
-                    TextButton(
-                      child: Text('cancel'.tr()),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    TextButton(
-                      child: Text('ok'.tr()),
-                      onPressed: () {
-                        // change language
-                        final newLanguage = ref.read(languageProvider) == 'ar'
-                            ? 'en'
-                            : 'ar';
-
-                        //useInitApp effect will update the shared preferences
-                        ref.read(languageProvider.notifier).state = newLanguage;
-                        context.setLocale(Locale(newLanguage));
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
-                ),
-              );
+              showLanguageDialog(context, ref);
             },
           ),
           // Add more ListTile widgets for additional drawer items

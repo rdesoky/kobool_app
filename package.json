@@ -1,10 +1,11 @@
 {
 	"name": "kobool_app",
 	"scripts": {
-		"prepublish": "flutter build web --release",
+		"prepublish": "flutter build web --release & cpx CNAME build/web",
 		"publish": "gh-pages -d build/web"
 	},
 	"dependencies": {
+		"cpx": "^1.5.0",
 		"gh-pages": "6.3.0"
 	}
 }

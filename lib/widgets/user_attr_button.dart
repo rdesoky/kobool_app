@@ -124,24 +124,21 @@ class UserAttrButton extends HookWidget {
     };
 
     return child != null
-        ? Padding(
-            padding: const EdgeInsets.only(bottom: 4.0, right: 6.0),
-            child: ElevatedButton(
-              onPressed: onPressed,
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(24, 38),
-                backgroundColor: backgroundColor,
-                elevation: elevation,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(2.0),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 6.0,
-                  vertical: 4.0,
-                ),
+        ? ElevatedButton(
+            onPressed: onPressed,
+            style: ElevatedButton.styleFrom(
+              minimumSize: const Size(24, 38),
+              backgroundColor: backgroundColor,
+              elevation: elevation,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(2.0),
               ),
-              child: child,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 6.0,
+                vertical: 4.0,
+              ),
             ),
+            child: child,
           )
         : const SizedBox.shrink();
   }

@@ -62,6 +62,8 @@ class UserListItem extends HookWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Wrap(
+                  spacing: 4,
+                  runSpacing: 4,
                   children: [
                     UserAttrButton(attr: UserAttr.gender, props: props),
                     UserAttrButton(attr: UserAttr.age, props: props),
