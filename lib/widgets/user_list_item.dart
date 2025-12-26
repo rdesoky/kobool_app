@@ -19,8 +19,11 @@ class UserListItem extends HookWidget {
 
     return Center(
       child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        elevation: 1,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+          side: BorderSide(color: colorScheme.surfaceContainerHighest),
+        ),
+        elevation: 0,
         // borderOnForeground: false,
         // color: colorScheme.surfaceBright,
         child: SizedBox(

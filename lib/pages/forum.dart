@@ -19,7 +19,7 @@ class ForumPage extends HookWidget {
     var page = useState(0);
     final asyncFetch = useFetch(
       "http://dev.kobool.com/cgi-bin/qa/search_answers.pl",
-      params: {"p": page.value, ...arguments ?? {}},
+      params: {"p": page.value, "ps": 10, ...arguments ?? {}},
     );
     // parsed fetch results body
     final results = useMemoized(() {

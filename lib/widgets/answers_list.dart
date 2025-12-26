@@ -27,7 +27,7 @@ class AnswersList extends HookWidget {
       final childList = results?['child_list'] as List<dynamic>? ?? [];
       return Center(
         child: ListView.separated(
-          separatorBuilder: (context, index) => const SizedBox(height: 8.0),
+          separatorBuilder: (context, index) => const SizedBox(height: 4.0),
           padding: const EdgeInsets.all(8.0),
           itemCount: childList.length,
           itemBuilder: (context, i) {

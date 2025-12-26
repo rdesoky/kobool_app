@@ -24,8 +24,8 @@ class AnswerListItem extends HookWidget {
 
     return Center(
       child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        elevation: 1,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+        elevation: 2,
         // borderOnForeground: false,
         // color: colorScheme.surfaceBright,
         child: SizedBox(
@@ -46,19 +46,19 @@ class AnswerListItem extends HookWidget {
             },
             isThreeLine: true,
             minTileHeight: 120,
-            leading: UserAttrButton(attr: UserAttr.pic, props: props),
+            // leading: UserAttrButton(attr: UserAttr.pic, props: props),
             title: Padding(
               padding: const EdgeInsets.only(bottom: 12.0),
               child: Wrap(
                 spacing: 4,
                 runSpacing: 4,
                 children: [
+                  UserAttrButton(attr: UserAttr.pic, props: props, picSize: 16),
                   SizedBox(
-                    width: 100,
-                    child: Text(
-                      login.toString(),
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    width: 120,
+                    child: UserAttrButton(
+                      attr: UserAttr.login_name,
+                      props: props,
                     ),
                   ),
                   UserAttrButton(attr: UserAttr.gender, props: props),

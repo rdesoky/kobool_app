@@ -50,7 +50,7 @@ class HomePage extends ConsumerWidget {
                         label: "members".tr(),
                         icon: Icons.people,
                         onPressed: () {
-                          Navigator.pushNamed(context, '/members');
+                          Navigator.pushNamed(context, '/results');
                         },
                       ),
                       HomeButton(

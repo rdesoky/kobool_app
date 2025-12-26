@@ -5,6 +5,7 @@ import 'package:kobool/consts/routes.dart';
 import 'package:kobool/utils/user_attr.dart';
 
 class UserAttr {
+  static const login_name = "login_id";
   static const pic = "main_pic";
   static const gender = "gender";
   static const age = "age";
@@ -18,7 +19,13 @@ class UserAttr {
 class UserAttrButton extends HookWidget {
   final String attr;
   final Map<String, dynamic> props;
-  const UserAttrButton({super.key, required this.attr, required this.props});
+  final double picSize;
+  const UserAttrButton({
+    super.key,
+    required this.attr,
+    required this.props,
+    this.picSize = 48,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +33,15 @@ class UserAttrButton extends HookWidget {
         (ModalRoute.of(context)!.settings.arguments ?? {})
             as Map<dynamic, dynamic>;
     final colorScheme = Theme.of(context).colorScheme;
-    final isMale = props[UserAttr.gender] == "0";
+    final isMale = int.parse(props[UserAttr.gender].toString()) == 0;
     final genderColor = isMale ? Colors.blue : Colors.pink;
     final genderIcon = isMale ? Icons.male : Icons.female;
     final child = switch (attr) {
-      UserAttr.pic => Icon(Icons.person, color: genderColor, size: 48),
+      UserAttr.login_name => Text(
+        props[UserAttr.login_name].toString(),
+        overflow: TextOverflow.ellipsis,
+      ),
+      UserAttr.pic => Icon(Icons.person, color: genderColor, size: picSize),
       UserAttr.gender => Icon(genderIcon, color: genderColor),
       UserAttr.age =>
         props[UserAttr.age] != null
@@ -55,6 +66,9 @@ class UserAttrButton extends HookWidget {
     };
     final onPressed = switch (attr) {
       UserAttr.pic => () {
+        Navigator.pushNamed(context, Routes.user, arguments: props['id']);
+      },
+      UserAttr.login_name => () {
         Navigator.pushNamed(context, Routes.user, arguments: props['id']);
       },
       UserAttr.gender =>
@@ -116,10 +130,12 @@ class UserAttrButton extends HookWidget {
 
     final double elevation = switch (attr) {
       UserAttr.pic => 0,
+      UserAttr.login_name => 0,
       _ => 1,
     };
     final backgroundColor = switch (attr) {
       UserAttr.pic => colorScheme.surfaceContainerLow,
+      UserAttr.login_name => colorScheme.surfaceContainerLow,
       _ => colorScheme.surface,
     };
 
@@ -137,6 +153,7 @@ class UserAttrButton extends HookWidget {
                 horizontal: 6.0,
                 vertical: 4.0,
               ),
+              alignment: AlignmentDirectional.centerStart,
             ),
             child: child,
           )
