@@ -77,7 +77,7 @@ class UserAttrButton extends HookWidget {
                   arguments: {
                     ...pageArgs,
                     'ag':
-                        "${int.parse(props["birth_year"]) - 2}-${int.parse(props["birth_year"]) + 2}",
+                        "${int.parse(props["birth_year"].toString()) - 2}-${int.parse(props["birth_year"].toString()) + 2}",
                   },
                 );
               },

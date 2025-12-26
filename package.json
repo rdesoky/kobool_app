@@ -1,8 +1,8 @@
 {
 	"name": "kobool_app",
 	"scripts": {
-		"predeploy": "flutter build web --release",
-		"deploy": "gh-pages -d build/web"
+		"prepublish": "flutter build web --release",
+		"publish": "gh-pages -d build/web"
 	},
 	"dependencies": {
 		"gh-pages": "6.3.0"
