@@ -27,7 +27,7 @@ class UserAttrButton extends HookWidget {
     final genderColor = isMale ? Colors.blue : Colors.pink;
     final genderIcon = isMale ? Icons.male : Icons.female;
     final child = switch (attr) {
-      UserAttr.pic => Icon(Icons.person, color: genderColor),
+      UserAttr.pic => Icon(Icons.person, color: genderColor, size: 48),
       UserAttr.gender => Icon(genderIcon, color: genderColor),
       UserAttr.age =>
         props[UserAttr.age] != null
@@ -76,21 +76,25 @@ class UserAttrButton extends HookWidget {
     };
 
     return child != null
-        ? ElevatedButton(
-            onPressed: onPressed,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: backgroundColor,
-              elevation: elevation,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(2.0),
+        ? Padding(
+            padding: const EdgeInsets.only(bottom: 4.0, right: 6.0),
+            child: ElevatedButton(
+              onPressed: onPressed,
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(24, 38),
+                backgroundColor: backgroundColor,
+                elevation: elevation,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(2.0),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 6.0,
+                  vertical: 4.0,
+                ),
               ),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 4.0,
-                vertical: 4.0,
-              ),
+              child: child,
             ),
-            child: child,
           )
-        : Container();
+        : const SizedBox.shrink();
   }
 }

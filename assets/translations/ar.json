@@ -27,6 +27,11 @@
 	"origin": "النشأة",
 	"nationality": "الجنسية",
 	"children": "الابناء",
+	"previous": "السابق",
+	"next": "التالي",
+	"page_number": "صفحة {}",
+	"found_total": "يوجد {}",
+	"searching": "جاري البحث...",
 	"countries": {
 		"0": "",
 		"1": "أفغانستان",

@@ -49,8 +49,7 @@ class AnswerListItem extends HookWidget {
             leading: UserAttrButton(attr: UserAttr.pic, props: props),
             title: Padding(
               padding: const EdgeInsets.only(bottom: 12.0),
-              child: Row(
-                spacing: 12,
+              child: Wrap(
                 children: [
                   SizedBox(
                     width: 100,
@@ -60,20 +59,10 @@ class AnswerListItem extends HookWidget {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  Expanded(
-                    child: Row(
-                      spacing: 6,
-                      children: [
-                        UserAttrButton(attr: UserAttr.gender, props: props),
-                        UserAttrButton(attr: UserAttr.age, props: props),
-                        UserAttrButton(
-                          attr: UserAttr.maritalStatus,
-                          props: props,
-                        ),
-                        UserAttrButton(attr: UserAttr.country, props: props),
-                      ],
-                    ),
-                  ),
+                  UserAttrButton(attr: UserAttr.gender, props: props),
+                  UserAttrButton(attr: UserAttr.age, props: props),
+                  UserAttrButton(attr: UserAttr.maritalStatus, props: props),
+                  UserAttrButton(attr: UserAttr.country, props: props),
                 ],
               ),
             ),

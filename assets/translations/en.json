@@ -27,6 +27,11 @@
 	"origin": "Origin",
 	"nationality": "Nationality",
 	"children": "Children",
+	"previous": "Previous",
+	"next": "Next",
+	"page_number": "Page {}",
+	"found_total": "Found {}",
+	"searching": "Searching...",
 	"countries": {
 		"0": "",
 		"1": "Afghanistan",

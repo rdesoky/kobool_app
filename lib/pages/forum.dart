@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:http/http.dart';
 
 import 'package:kobool/hooks/use_fetch.dart';
 import 'package:kobool/widgets/answers_list.dart';
+import 'package:kobool/widgets/page_navigator.dart';
 
 class ForumPage extends HookWidget {
   final Map<String, dynamic>? arguments;
@@ -36,9 +38,9 @@ class ForumPage extends HookWidget {
               ? 'Error: ${asyncFetch.error}'
               : asyncFetch.hasData
               ? (arguments?['qtext'] != null
-                    ? 'Answers for: ${arguments?['qtext']}'
-                    : 'QA Forum')
-              : 'Searching...',
+                    ? '${arguments?['qtext']}'
+                    : "qa_forum".tr())
+              : 'searching'.tr(),
         ),
         centerTitle: false,
       ),
@@ -53,31 +55,14 @@ class ForumPage extends HookWidget {
                 results: results,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                spacing: 12,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: page.value > 0
-                        ? () {
-                            page.value = page.value - 1;
-                          }
-                        : null,
-                    child: Text("Previous page"),
-                  ),
-                  Text("Page ${page.value + 1}"),
-                  ElevatedButton(
-                    onPressed: page.value < 100
-                        ? () {
-                            page.value = page.value + 1;
-                          }
-                        : null,
-                    child: Text("Next page"),
-                  ),
-                ],
-              ),
+            PageNavigator(
+              page: page.value,
+              onPrevious: () {
+                page.value = page.value - 1;
+              },
+              onNext: () {
+                page.value = page.value + 1;
+              },
             ),
           ],
         ),
