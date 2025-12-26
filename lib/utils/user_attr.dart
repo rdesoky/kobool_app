@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 Widget? maritalStatus(BuildContext context, dynamic status) {
   switch (status.toString()) {
     case "1":
-      return const Text("Single");
+      return Text("single".tr());
     case "2":
-      return const Text("Divorced");
+      return Text("divorced".tr());
     case "3":
-      return const Text("Widow");
+      return Text("widow".tr());
     case "4":
-      return const Text("Separated");
+      return Text("separated".tr());
     case "5":
-      return const Text("Married");
+      return Text("married".tr());
     case "6":
-      return const Text("Engaged");
+      return Text("engaged".tr());
     default:
       return null;
   }

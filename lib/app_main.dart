@@ -1,6 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/app_route_observer.dart';
 import 'package:kobool/consts/routes.dart';
@@ -17,8 +17,12 @@ class AppMain extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
+    final locale = ref.watch(languageProvider);
+    if (locale != null) {
+      context.setLocale(Locale(locale));
+    }
     return MaterialApp(
-      title: 'Kobool - first step to marriage',
+      title: 'KOBOOL - first step to marriage',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
@@ -31,6 +35,9 @@ class AppMain extends ConsumerWidget {
         useMaterial3: true,
       ),
       themeMode: themeMode,
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: locale != null ? Locale(locale) : null,
       home: _AppScaffold(key: ValueKey("AppScaffold")),
     );
   }
@@ -85,7 +92,9 @@ class AppNavigator extends ConsumerWidget {
   }
 }
 
-useInitApp(WidgetRef ref) {
+void useInitApp(WidgetRef ref) {
+  final themeMode = ref.watch(themeModeProvider);
+
   useEffect(() {
     // providers initialization
     // read themMode from shared preferences
@@ -94,14 +103,21 @@ useInitApp(WidgetRef ref) {
       if (themeMode == null) {
         return; //initial value
       }
+      //dispatch/setState initial themeMode from shared preferences
       ref.read(themeModeProvider.notifier).state = themeMode == 'dark'
           ? ThemeMode.dark
           : ThemeMode.light;
+
+      // dispatch/setState initial language from shared preferences
+      final locale = prefs.getString('locale');
+      if (locale != null) {
+        //dispatch/setState
+        ref.read(languageProvider.notifier).state = locale;
+      }
     });
+
     return null;
   }, []);
-
-  final themeMode = ref.watch(themeModeProvider);
 
   useEffect(() {
     if (themeMode == ThemeMode.system) {

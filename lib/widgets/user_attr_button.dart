@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:kobool/consts/routes.dart';
@@ -30,7 +31,7 @@ class UserAttrButton extends HookWidget {
       UserAttr.gender => Icon(genderIcon, color: genderColor),
       UserAttr.age =>
         props[UserAttr.age] != null
-            ? Text("Age: ${props[UserAttr.age]}")
+            ? Text("age_value".tr(args: [props[UserAttr.age].toString()]))
             : null,
       UserAttr.maritalStatus => maritalStatus(
         context,
@@ -38,12 +39,14 @@ class UserAttrButton extends HookWidget {
       ),
       UserAttr.country =>
         props[UserAttr.country] != null
-            ? Text("Country: ${props[UserAttr.country]}")
+            ? Text("countries.${props[UserAttr.country]}".tr())
             : null,
       UserAttr.origin =>
         props[UserAttr.origin] != null &&
                 props[UserAttr.origin] != props[UserAttr.country]
-            ? Text("Origin: ${props[UserAttr.origin]}")
+            ? Text(
+                "${"nationality".tr()}: ${"countries.${props[UserAttr.origin]}".tr()}",
+              )
             : null,
       _ => null,
     };
