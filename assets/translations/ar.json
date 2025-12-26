@@ -22,7 +22,7 @@
 	"single": "أعزب",
 	"divorced": "مطلق",
 	"widow": "أرمل",
-	"separated": "مفصول",
+	"separated": "منفصل",
 	"married": "متزوج",
 	"engaged": "خاطب",
 	"country": "البلد",
@@ -34,6 +34,8 @@
 	"page_number": "صفحة {}",
 	"found_total": "يوجد {}",
 	"searching": "جاري البحث...",
+	"any": "أي",
+	"select": "اختر",
 	"countries": {
 		"0": "",
 		"1": "أفغانستان",

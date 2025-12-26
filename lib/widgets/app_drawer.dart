@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/consts/routes.dart';
 import 'package:kobool/providers/router_provider.dart';
-import 'package:kobool/providers/settings_provider.dart';
 import 'package:kobool/utils/dialogs.dart';
 
 class AppDrawer extends ConsumerWidget {

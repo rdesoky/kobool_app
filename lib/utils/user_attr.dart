@@ -19,3 +19,7 @@ Widget? maritalStatus(BuildContext context, dynamic status) {
       return null;
   }
 }
+
+Widget renderMaritalStatus(BuildContext context, dynamic status) {
+  return maritalStatus(context, status) ?? Text("unknown".tr());
+}

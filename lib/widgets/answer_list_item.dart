@@ -14,7 +14,6 @@ class AnswerListItem extends HookWidget {
         (ModalRoute.of(context)!.settings.arguments ?? {})
             as Map<dynamic, dynamic>;
 
-    final login = props['login_id'];
     final userId = props['member_id'] ?? props['id'];
     final questionId = props['question_text_id'];
     final questionText = props['question_text'];
@@ -57,7 +56,7 @@ class AnswerListItem extends HookWidget {
                   SizedBox(
                     width: 120,
                     child: UserAttrButton(
-                      attr: UserAttr.login_name,
+                      attr: UserAttr.loginName,
                       props: props,
                     ),
                   ),

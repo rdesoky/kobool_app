@@ -5,7 +5,7 @@ import 'package:kobool/consts/routes.dart';
 import 'package:kobool/utils/user_attr.dart';
 
 class UserAttr {
-  static const login_name = "login_id";
+  static const loginName = "login_id";
   static const pic = "main_pic";
   static const gender = "gender";
   static const age = "age";
@@ -37,8 +37,8 @@ class UserAttrButton extends HookWidget {
     final genderColor = isMale ? Colors.blue : Colors.pink;
     final genderIcon = isMale ? Icons.male : Icons.female;
     final child = switch (attr) {
-      UserAttr.login_name => Text(
-        props[UserAttr.login_name].toString(),
+      UserAttr.loginName => Text(
+        props[UserAttr.loginName].toString(),
         overflow: TextOverflow.ellipsis,
       ),
       UserAttr.pic => Icon(Icons.person, color: genderColor, size: picSize),
@@ -68,7 +68,7 @@ class UserAttrButton extends HookWidget {
       UserAttr.pic => () {
         Navigator.pushNamed(context, Routes.user, arguments: props['id']);
       },
-      UserAttr.login_name => () {
+      UserAttr.loginName => () {
         Navigator.pushNamed(context, Routes.user, arguments: props['id']);
       },
       UserAttr.gender =>
@@ -130,12 +130,12 @@ class UserAttrButton extends HookWidget {
 
     final double elevation = switch (attr) {
       UserAttr.pic => 0,
-      UserAttr.login_name => 0,
+      UserAttr.loginName => 0,
       _ => 1,
     };
     final backgroundColor = switch (attr) {
       UserAttr.pic => colorScheme.surfaceContainerLow,
-      UserAttr.login_name => colorScheme.surfaceContainerLow,
+      UserAttr.loginName => colorScheme.surfaceContainerLow,
       _ => colorScheme.surface,
     };
 
