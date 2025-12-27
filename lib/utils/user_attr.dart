@@ -23,3 +23,13 @@ Widget? maritalStatus(BuildContext context, dynamic status) {
 Widget renderMaritalStatus(BuildContext context, dynamic status) {
   return maritalStatus(context, status) ?? Text("unknown".tr());
 }
+
+String ageRangeToQueryParam(String ageRange) {
+  final parts = ageRange.split('-');
+  final fromAge = int.parse(parts[0]);
+  final fromBirthYear = DateTime.now().year - fromAge;
+  final toAge = int.parse(parts[1]);
+  final toBirthYear = DateTime.now().year - toAge;
+
+  return '$toBirthYear-$fromBirthYear';
+}

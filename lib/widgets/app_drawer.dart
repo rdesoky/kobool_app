@@ -22,7 +22,7 @@ class AppDrawer extends ConsumerWidget {
     return Drawer(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
       backgroundColor: colorScheme.surfaceContainer,
-      width: 220,
+      width: 200,
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[

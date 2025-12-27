@@ -28,9 +28,9 @@ class HomeButton extends StatelessWidget {
         ),
         onPressed: onPressed,
         child: Column(
-          spacing: 8,
+          spacing: 12,
           mainAxisSize: MainAxisSize.min,
-          children: [Text(label), Icon(icon)],
+          children: [Icon(icon, size: 32), Text(label)],
         ),
       ),
     );

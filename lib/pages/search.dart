@@ -21,6 +21,29 @@ class SearchPage extends HookConsumerWidget {
     final language = ref.watch(languageProvider) ?? "en";
 
     final countriesMap = useState<Map<String, String>>({});
+    final middleEast = [
+      56,
+      110,
+      12,
+      3,
+      93,
+      49,
+      59,
+      87,
+      98,
+      69,
+      117,
+      106,
+      149,
+      77,
+      102,
+      79,
+      83,
+      62,
+      63,
+      32,
+      66,
+    ];
 
     useEffect(() {
       Future<void> loadCountries() async {
@@ -45,12 +68,33 @@ class SearchPage extends HookConsumerWidget {
     }, []);
 
     // Sorted list of country names for the dropdown
-    final countryItems = useMemoized(() {
-      final entries = countriesMap.value.entries.toList();
-      entries.sort((a, b) => a.value.compareTo(b.value));
-      return entries
-          .map((e) => DropdownMenuItem(value: e.value, child: Text(e.value)))
+    final middleEastCountryItems = useMemoized(() {
+      final middleEastEntries = countriesMap.value.entries
+          .where((e) => middleEast.contains(int.parse(e.key)))
           .toList();
+      middleEastEntries.sort((a, b) => a.value.compareTo(b.value));
+      return middleEastEntries
+          .map((e) => DropdownMenuItem(value: e.key, child: Text(e.value)))
+          .toList();
+    }, [countriesMap.value]);
+
+    final nonMiddleEastCountryItems = useMemoized(() {
+      final nonMiddleEastEntries = countriesMap.value.entries
+          .where((e) => !middleEast.contains(int.parse(e.key)))
+          .toList();
+      nonMiddleEastEntries.sort((a, b) => a.value.compareTo(b.value));
+      return nonMiddleEastEntries.map((e) {
+        return DropdownMenuItem(
+          value: e.key,
+          child: e == nonMiddleEastEntries.first
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [Divider(), Text(e.value)],
+                )
+              : Text(e.value),
+        );
+      }).toList();
     }, [countriesMap.value]);
 
     final ageRanges = [
@@ -71,151 +115,136 @@ class SearchPage extends HookConsumerWidget {
       '90-95',
     ];
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Search'), centerTitle: false),
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                'Find Your Match',
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).primaryColor,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 32),
-              DropdownButtonFormField<String>(
-                initialValue: gender.value,
-                decoration: const InputDecoration(
-                  labelText: 'Gender',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
-                ),
-                items: [
-                  DropdownMenuItem(value: null, child: Text('select'.tr())),
-                  DropdownMenuItem(value: '0', child: Text('Male')),
-                  DropdownMenuItem(value: '1', child: Text('Female')),
-                ],
-                onChanged: (val) => gender.value = val,
-              ),
-              const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                initialValue: age.value,
-                decoration: const InputDecoration(
-                  labelText: 'Age',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.cake),
-                ),
-                items: [
-                  DropdownMenuItem(value: null, child: Text('select'.tr())),
-                  ...ageRanges.map(
-                    (range) =>
-                        DropdownMenuItem(value: range, child: Text(range)),
-                  ),
-                ],
-                onChanged: (val) => age.value = val,
-              ),
-              const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                initialValue: country.value,
-                decoration: const InputDecoration(
-                  labelText: 'Country',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.location_on),
-                ),
-                items: [
-                  DropdownMenuItem(value: null, child: Text('select'.tr())),
-                  ...countryItems,
-                ],
-                onChanged: (val) => country.value = val,
-              ),
-              const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                initialValue: maritalStatus.value,
-                decoration: const InputDecoration(
-                  labelText: 'Marital Status',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.favorite),
-                ),
-                items: [
-                  DropdownMenuItem(value: null, child: Text('select'.tr())),
-                  DropdownMenuItem(
-                    value: '1',
-                    child: renderMaritalStatus(context, '1'),
-                  ),
-                  DropdownMenuItem(
-                    value: '2',
-                    child: renderMaritalStatus(context, '2'),
-                  ),
-                  DropdownMenuItem(
-                    value: '3',
-                    child: renderMaritalStatus(context, '3'),
-                  ),
-                  DropdownMenuItem(
-                    value: '4',
-                    child: renderMaritalStatus(context, '4'),
-                  ),
-                  DropdownMenuItem(
-                    value: '5',
-                    child: renderMaritalStatus(context, '5'),
-                  ),
-                  DropdownMenuItem(
-                    value: '6',
-                    child: renderMaritalStatus(context, '6'),
-                  ),
-                ],
-                onChanged: (val) => maritalStatus.value = val,
-              ),
-              const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                initialValue: origin.value,
-                decoration: const InputDecoration(
-                  labelText: 'Origin Country',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.flag),
-                ),
-                items: [
-                  DropdownMenuItem(value: null, child: Text('select'.tr())),
-                  ...countryItems,
-                ],
-                onChanged: (val) => origin.value = val,
-              ),
-              const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: () {
-                  final params = <String, dynamic>{};
-                  if (gender.value != null) params['g'] = gender.value;
-                  if (country.value != null) {
-                    params['c'] = country.value;
-                  }
-                  if (maritalStatus.value != null) {
-                    params['ms'] = maritalStatus.value;
-                  }
-                  if (origin.value != null) {
-                    params['o'] = origin.value;
-                  }
-                  if (age.value != null) {
-                    params['age'] = age.value;
-                  }
+    void onSearch() {
+      final params = <String, dynamic>{};
+      if (gender.value != null) {
+        params['g'] = gender.value;
+      }
+      if (country.value != null) {
+        params['c'] = country.value;
+      }
+      if (maritalStatus.value != null) {
+        params['ms'] = maritalStatus.value;
+      }
+      if (origin.value != null) {
+        params['o'] = origin.value;
+      }
+      if (age.value != null) {
+        params['ag'] = age.value;
+      }
 
-                  Navigator.pushNamed(
-                    context,
-                    Routes.results,
-                    arguments: params,
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  textStyle: const TextStyle(fontSize: 18),
+      Navigator.pushNamed(context, Routes.results, arguments: params);
+    }
+
+    return Scaffold(
+      appBar: AppBar(title: Text('search'.tr()), centerTitle: false),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24.0),
+        child: Center(
+          child: SizedBox(
+            width: 360,
+            child: Column(
+              spacing: 16,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'find_your_match'.tr(),
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                child: const Text('Search'),
-              ),
-            ],
+                DropdownButtonFormField<String>(
+                  initialValue: gender.value,
+                  decoration: InputDecoration(
+                    labelText: 'gender'.tr(),
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.person),
+                  ),
+                  items: [
+                    DropdownMenuItem(value: null, child: Text('select'.tr())),
+                    DropdownMenuItem(value: '0', child: Text('male'.tr())),
+                    DropdownMenuItem(value: '1', child: Text('female'.tr())),
+                  ],
+                  onChanged: (val) => gender.value = val,
+                ),
+                DropdownButtonFormField<String>(
+                  initialValue: age.value,
+                  decoration: InputDecoration(
+                    labelText: 'age'.tr(),
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.cake),
+                  ),
+                  items: [
+                    DropdownMenuItem(value: null, child: Text('select'.tr())),
+                    ...ageRanges.map(
+                      (range) => DropdownMenuItem(
+                        value: ageRangeToQueryParam(range),
+                        child: Text(range),
+                      ),
+                    ),
+                  ],
+                  onChanged: (val) => age.value = val,
+                ),
+                DropdownButtonFormField<String>(
+                  initialValue: country.value,
+                  decoration: InputDecoration(
+                    labelText: 'country'.tr(),
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.location_on),
+                  ),
+                  items: [
+                    DropdownMenuItem(value: null, child: Text('select'.tr())),
+                    ...middleEastCountryItems,
+                    // DropdownMenuItem(child: Divider()),
+                    ...nonMiddleEastCountryItems,
+                  ],
+                  onChanged: (val) => country.value = val,
+                ),
+                DropdownButtonFormField<String>(
+                  initialValue: maritalStatus.value,
+                  decoration: InputDecoration(
+                    labelText: 'marital_status'.tr(),
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.favorite),
+                  ),
+                  items: [
+                    DropdownMenuItem(value: null, child: Text('select'.tr())),
+                    ...List.generate(6, (i) => (i + 1).toString()).map(
+                      (val) => DropdownMenuItem(
+                        value: val,
+                        child: renderMaritalStatus(context, val),
+                      ),
+                    ),
+                  ],
+                  onChanged: (val) => maritalStatus.value = val,
+                ),
+                DropdownButtonFormField<String>(
+                  initialValue: origin.value,
+                  decoration: InputDecoration(
+                    labelText: 'origin_country'.tr(),
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.flag),
+                  ),
+                  items: [
+                    DropdownMenuItem(value: null, child: Text('select'.tr())),
+                    ...middleEastCountryItems,
+                    // DropdownMenuItem(child: Divider()),
+                    ...nonMiddleEastCountryItems,
+                  ],
+                  onChanged: (val) => origin.value = val,
+                ),
+                ElevatedButton(
+                  onPressed: onSearch,
+                  style: ElevatedButton.styleFrom(
+                    // padding: const EdgeInsets.symmetric(vertical: 16),
+                    textStyle: const TextStyle(fontSize: 18),
+                  ),
+                  child: Text('search'.tr()),
+                ),
+              ],
+            ),
           ),
         ),
       ),
