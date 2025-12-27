@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kobool/app_main.dart';
+import 'package:kobool/providers/locale_provider.dart';
 import 'package:kobool/providers/router_provider.dart';
-import 'package:kobool/providers/settings_provider.dart';
+import 'package:kobool/providers/theme_mode_provider.dart';
 import 'package:kobool/utils/misc.dart';
 
 class KbAppBar extends ConsumerWidget implements PreferredSizeWidget {
@@ -12,7 +13,7 @@ class KbAppBar extends ConsumerWidget implements PreferredSizeWidget {
   Widget build(BuildContext context, ref) {
     String routeName = ref.watch(routerProvider).name;
     final brightness = Theme.of(context).brightness;
-    final language = ref.watch(languageProvider);
+    final language = ref.watch(localeProvider);
     final isWideView = MediaQuery.of(context).size.width > 600;
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -45,9 +46,11 @@ class KbAppBar extends ConsumerWidget implements PreferredSizeWidget {
           onPressed: () {
             ref
                 .read(themeModeProvider.notifier)
-                .state = brightness == Brightness.light
-                ? ThemeMode.dark
-                : ThemeMode.light;
+                .setThemeMode(
+                  brightness == Brightness.light
+                      ? ThemeMode.dark
+                      : ThemeMode.light,
+                );
           },
         ),
       ],

@@ -4,7 +4,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/app_route_observer.dart';
 import 'package:kobool/consts/routes.dart';
-import 'package:kobool/providers/settings_provider.dart';
+import 'package:kobool/providers/locale_provider.dart';
+import 'package:kobool/providers/theme_mode_provider.dart';
 import 'package:kobool/route_generator.dart';
 import 'package:kobool/widgets/app_drawer.dart';
 import 'package:kobool/widgets/kb_app_bar.dart';
@@ -19,7 +20,7 @@ class AppMain extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
-    final locale = ref.watch(languageProvider);
+    final locale = ref.watch(localeProvider);
     if (locale != null) {
       context.setLocale(Locale(locale));
     }
@@ -96,40 +97,40 @@ class AppNavigator extends ConsumerWidget {
 }
 
 void useInitApp(WidgetRef ref) {
-  final themeMode = ref.watch(themeModeProvider);
+  // final themeMode = ref.watch(themeModeProvider);
 
   useEffect(() {
     // providers initialization
     // read themMode from shared preferences
     SharedPreferences.getInstance().then((prefs) {
-      final themeMode = prefs.getString('themeMode');
-      if (themeMode == null) {
-        return; //initial value
-      }
-      //dispatch/setState initial themeMode from shared preferences
-      ref.read(themeModeProvider.notifier).state = themeMode == 'dark'
-          ? ThemeMode.dark
-          : ThemeMode.light;
+      // final themeMode = prefs.getString('themeMode');
+      // if (themeMode == null) {
+      //   return; //initial value
+      // }
+      // //dispatch/setState initial themeMode from shared preferences
+      // ref
+      //     .read(themeModeProvider.notifier)
+      //     .setThemeMode(themeMode == 'dark' ? ThemeMode.dark : ThemeMode.light);
 
       // dispatch/setState initial language from shared preferences
       final locale = prefs.getString('locale');
       if (locale != null) {
         //dispatch/setState
-        ref.read(languageProvider.notifier).state = locale;
+        ref.read(localeProvider.notifier).state = locale;
       }
     });
 
     return null;
   }, []);
 
-  useEffect(() {
-    if (themeMode == ThemeMode.system) {
-      return; //initial value
-    }
-    //updated value
-    SharedPreferences.getInstance().then((prefs) {
-      prefs.setString('themeMode', themeMode.name);
-    });
-    return null;
-  }, [themeMode]);
+  // useEffect(() {
+  //   if (themeMode == ThemeMode.system) {
+  //     return; //initial value
+  //   }
+  //   //updated value
+  //   SharedPreferences.getInstance().then((prefs) {
+  //     prefs.setString('themeMode', themeMode.name);
+  //   });
+  //   return null;
+  // }, [themeMode]);
 }

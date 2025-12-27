@@ -1,11 +1,12 @@
 import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:kobool/consts/routes.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kobool/providers/settings_provider.dart';
+import 'package:kobool/consts/routes.dart';
+import 'package:kobool/providers/locale_provider.dart';
 import 'package:kobool/utils/user_attr.dart';
 
 class SearchPage extends HookConsumerWidget {
@@ -18,7 +19,7 @@ class SearchPage extends HookConsumerWidget {
     final maritalStatus = useState<String?>(null);
     final origin = useState<String?>(null);
     final age = useState<String?>(null);
-    final language = ref.watch(languageProvider) ?? "en";
+    final language = ref.watch(localeProvider) ?? "en";
 
     final countriesMap = useState<Map<String, String>>({});
     final middleEast = [

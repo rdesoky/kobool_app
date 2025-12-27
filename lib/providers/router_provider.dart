@@ -12,12 +12,13 @@ class RouterState {
     return RouterState(name: name ?? this.name, params: params ?? this.params);
   }
 
-  static const initial = RouterState(name: Routes.home);
+  static const initial = RouterState(
+    name: Routes.home,
+  ); //TODO: initialize from deep links
 }
 
-// StateNotifier for router
+// action/dispatcher/reducer for RouterState
 class RouterNotifier extends Notifier<RouterState> {
-  // RouterNotifier() : super(RouterState.initial);
   @override
   RouterState build() {
     return RouterState.initial;

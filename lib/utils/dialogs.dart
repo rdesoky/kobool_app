@@ -1,15 +1,17 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kobool/providers/settings_provider.dart';
+import 'package:kobool/providers/locale_provider.dart';
 
 void showLanguageDialog(BuildContext context, WidgetRef ref) {
   void onChangeLanguage() {
-    final newLanguage = ref.read(languageProvider) == 'ar' ? 'en' : 'ar';
+    //toggle between ar and en
+    final updatedLocale = ref.read(localeProvider) == 'ar' ? 'en' : 'ar';
 
-    //useInitApp effect will update the shared preferences
-    ref.read(languageProvider.notifier).state = newLanguage;
-    context.setLocale(Locale(newLanguage));
+    ref.read(localeProvider.notifier).state = updatedLocale;
+    context.setLocale(
+      Locale(updatedLocale),
+    ); // update context locale ( presists in shared preferences "locale" string)
   }
 
   // showDialog(
