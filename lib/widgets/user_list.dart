@@ -42,7 +42,7 @@ class UserList extends HookWidget {
             );
           }
           final item = childList[i] as Map<String, dynamic>;
-          return UserListItem(index: i, props: item);
+          return UserListItem(props: item);
         },
       );
     } catch (e) {

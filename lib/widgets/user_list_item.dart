@@ -4,9 +4,8 @@ import 'package:kobool/consts/routes.dart';
 import 'package:kobool/widgets/user_attr_button.dart';
 
 class UserListItem extends HookWidget {
-  final int index;
   final Map<String, dynamic> props;
-  const UserListItem({super.key, required this.index, required this.props});
+  const UserListItem({super.key, required this.props});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,7 @@ class UserListItem extends HookWidget {
     return Center(
       child: Column(
         children: [
-          Text("${index + 1}"),
+          if (props['index'] != null) Text("${props['index'] + 1}"),
           Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),

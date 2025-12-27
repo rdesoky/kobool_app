@@ -14,7 +14,11 @@ class ResultsPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var page = useState(0);
+    const pageSize = 5;
     var pages = useState<Map<int, List<dynamic>>>({});
+    var total = useState(0);
+    var startPage = useState(0);
+    var loadedPages = pages.value.values.length;
 
     final pageArgs =
         (ModalRoute.of(context)!.settings.arguments ?? {})
@@ -22,7 +26,7 @@ class ResultsPage extends HookWidget {
 
     final asyncFetch = useFetch(
       API.query,
-      params: {...pageArgs, "p": page.value},
+      params: {...pageArgs, "p": page.value, "ps": pageSize},
     );
     var results = useState<Map<String, dynamic>>({
       "total": 0,
@@ -34,14 +38,27 @@ class ResultsPage extends HookWidget {
       if (asyncFetch.hasData) {
         final resp = asyncFetch.data as Response;
         final body = json.decode(resp.body) as Map<String, dynamic>;
-        final total = results.value["total"] + int.parse(body["total"]);
-        pages.value = pages.value
-          ..[int.parse(body["page"].toString())] = body["child_list"];
-        final childList = pages.value.values.expand((x) => x).toList();
-        results.value = {"total": total, "child_list": childList};
+        final bodyPage = int.parse(body["page"].toString());
+        for (var i = 0; i < (body["child_list"] as List).length; i++) {
+          body["child_list"][i]["index"] = bodyPage * pageSize + i;
+        }
+        total.value = int.parse(body["total"].toString());
+
+        pages.value = pages.value..[bodyPage] = body["child_list"];
       }
       return null;
     }, [asyncFetch]);
+
+    useEffect(() {
+      //childList to expand up to 5 pages from startPage.value
+      final childList = pages.value.values
+          // .skip(startPage.value)
+          // .take(5)
+          .expand((x) => x)
+          .toList();
+      results.value = {"total": total.value, "child_list": childList};
+      return null;
+    }, [pages.value.length, startPage.value]);
 
     return Scaffold(
       appBar: AppBar(
@@ -57,9 +74,17 @@ class ResultsPage extends HookWidget {
       body: Center(
         child: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
+            // if (startPage.value > 0 && scrollInfo.metrics.pixels == 0) {
+            //   //TODO: avoid multiple decrementing
+            //   startPage.value = startPage.value - 1;
+            // }
             if (scrollInfo.metrics.pixels ==
                 scrollInfo.metrics.maxScrollExtent) {
               page.value = pages.value.keys.last + 1; //fetch next page
+              // if (loadedPages >= 4) {
+              //   //trim pages from above
+              //   startPage.value = page.value - 3;
+              // }
             }
             return true;
           },
