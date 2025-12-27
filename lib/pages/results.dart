@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:http/http.dart';
+import 'package:kobool/consts/api.dart';
 import 'package:kobool/hooks/use_fetch.dart';
 import 'package:kobool/widgets/user_list.dart';
 
@@ -20,7 +21,7 @@ class ResultsPage extends HookWidget {
             as Map<dynamic, dynamic>;
 
     final asyncFetch = useFetch(
-      "http://dev.kobool.com/cgi-bin/query.pl",
+      API.query,
       params: {...pageArgs, "p": page.value},
     );
     var results = useState<Map<String, dynamic>>({
@@ -72,15 +73,6 @@ class ResultsPage extends HookWidget {
                   results: results.value,
                 ),
               ),
-              // PageNavigator(
-              //   page: page.value,
-              //   onPrevious: () {
-              //     page.value = page.value - 1;
-              //   },
-              //   onNext: () {
-              //     page.value = page.value + 1;
-              //   },
-              // ),
             ],
           ),
         ),

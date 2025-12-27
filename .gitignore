@@ -46,3 +46,4 @@ app.*.map.json
 
 /sample_api_responses
 /node_modules
+.env
