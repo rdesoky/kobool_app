@@ -3,16 +3,19 @@ import 'dart:convert';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter/rendering.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart';
 import 'package:kobool/consts/api.dart';
 import 'package:kobool/hooks/use_fetch.dart';
+import 'package:kobool/providers/main_app_bar_provider.dart';
 import 'package:kobool/widgets/user_list.dart';
 
-class ResultsPage extends HookWidget {
+class ResultsPage extends HookConsumerWidget {
   const ResultsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var page = useState(0);
     const pageSize = 5;
     var pages = useState<Map<int, List<dynamic>>>({});
@@ -61,19 +64,34 @@ class ResultsPage extends HookWidget {
     }, [pages.value.length, startPage.value]);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          asyncFetch.connectionState == ConnectionState.waiting
-              ? 'searching'.tr()
-              : asyncFetch.hasError
-              ? 'Error: ${asyncFetch.error}'
-              : 'found_total'.tr(args: [results.value["total"].toString()]),
-        ),
-        centerTitle: false,
-      ),
+      appBar: ref.watch(mainAppBarProvider)
+          ? AppBar(
+              title: Text(
+                asyncFetch.connectionState == ConnectionState.waiting
+                    ? 'searching'.tr()
+                    : asyncFetch.hasError
+                    ? 'Error: ${asyncFetch.error}'
+                    : 'found_total'.tr(
+                        args: [results.value["total"].toString()],
+                      ),
+              ),
+              centerTitle: false,
+            )
+          : null,
       body: Center(
         child: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
+            if (scrollInfo is UserScrollNotification) {
+              if (scrollInfo.direction == ScrollDirection.reverse) {
+                ref.read(mainAppBarProvider.notifier).state = false;
+              } else if (scrollInfo.direction == ScrollDirection.forward) {
+                ref.read(mainAppBarProvider.notifier).state = true;
+              }
+            }
+            // if (scrollInfo.metrics.axisDirection == AxisDirection.down &&
+            //     scrollInfo.metrics.pixels > 10) {
+            //   ref.read(mainAppBarProvider.notifier).state = false;
+            // }
             // if (startPage.value > 0 && scrollInfo.metrics.pixels == 0) {
             //   //TODO: avoid multiple decrementing
             //   startPage.value = startPage.value - 1;

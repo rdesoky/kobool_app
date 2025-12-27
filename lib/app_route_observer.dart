@@ -1,6 +1,7 @@
 // filepath: lib/app_route_observer.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kobool/providers/main_app_bar_provider.dart';
 import 'package:kobool/providers/router_provider.dart';
 
 class AppRouteObserver extends RouteObserver<ModalRoute<void>> {
@@ -18,6 +19,7 @@ class AppRouteObserver extends RouteObserver<ModalRoute<void>> {
             .updateRoute(route.settings.name, route.settings.arguments);
       });
     }
+    ref.read(mainAppBarProvider.notifier).state = true;
   }
 
   @override
@@ -33,6 +35,7 @@ class AppRouteObserver extends RouteObserver<ModalRoute<void>> {
             );
       });
     }
+    ref.read(mainAppBarProvider.notifier).state = true;
   }
 
   @override
@@ -45,5 +48,6 @@ class AppRouteObserver extends RouteObserver<ModalRoute<void>> {
             .updateRoute(newRoute!.settings.name, newRoute.settings.arguments);
       });
     }
+    ref.read(mainAppBarProvider.notifier).state = true;
   }
 }

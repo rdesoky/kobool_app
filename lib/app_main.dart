@@ -5,11 +5,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/app_route_observer.dart';
 import 'package:kobool/consts/routes.dart';
 import 'package:kobool/providers/locale_provider.dart';
+import 'package:kobool/providers/main_app_bar_provider.dart';
 import 'package:kobool/providers/theme_mode_provider.dart';
 import 'package:kobool/route_generator.dart';
 import 'package:kobool/widgets/app_drawer.dart';
 import 'package:kobool/widgets/kb_app_bar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AppMain extends ConsumerWidget {
   const AppMain({super.key});
@@ -60,7 +60,7 @@ class _AppScaffold extends HookConsumerWidget {
     final isWideView = MediaQuery.of(context).size.width > 600;
 
     return Scaffold(
-      appBar: KbAppBar(),
+      appBar: ref.watch(mainAppBarProvider) ? KbAppBar() : null,
       drawer: isWideView ? null : AppDrawer(navigatorKey: navigatorKey),
       body: AppNavigator(navigatorKey: navigatorKey),
     );
