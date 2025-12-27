@@ -1,12 +1,9 @@
-import 'dart:convert';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/consts/routes.dart';
-import 'package:kobool/providers/locale_provider.dart';
+import 'package:kobool/providers/countries_provider.dart';
 import 'package:kobool/utils/user_attr.dart';
 
 class SearchPage extends HookConsumerWidget {
@@ -19,9 +16,9 @@ class SearchPage extends HookConsumerWidget {
     final maritalStatus = useState<String?>(null);
     final origin = useState<String?>(null);
     final age = useState<String?>(null);
-    final language = ref.watch(localeProvider) ?? "en";
+    // final locale = ref.watch(localeProvider);
 
-    final countriesMap = useState<Map<String, String>>({});
+    final countriesMap = ref.watch(countriesProvider);
     final middleEast = [
       56,
       110,
@@ -46,41 +43,41 @@ class SearchPage extends HookConsumerWidget {
       66,
     ];
 
-    useEffect(() {
-      Future<void> loadCountries() async {
-        try {
-          final jsonString = await rootBundle.loadString(
-            'assets/translations/$language.json',
-          );
-          final jsonMap = json.decode(jsonString) as Map<String, dynamic>;
-          if (jsonMap.containsKey('countries')) {
-            final countries = Map<String, String>.from(jsonMap['countries']);
-            // Remove empty entries if any
-            countries.removeWhere((key, value) => value.isEmpty);
-            countriesMap.value = countries;
-          }
-        } catch (e) {
-          debugPrint('Error loading countries: $e');
-        }
-      }
+    // useEffect(() {
+    //   Future<void> loadCountries() async {
+    //     try {
+    //       final jsonString = await rootBundle.loadString(
+    //         'assets/translations/$locale.json',
+    //       );
+    //       final jsonMap = json.decode(jsonString) as Map<String, dynamic>;
+    //       if (jsonMap.containsKey('countries')) {
+    //         final countries = Map<String, String>.from(jsonMap['countries']);
+    //         // Remove empty entries if any
+    //         countries.removeWhere((key, value) => value.isEmpty);
+    //         countriesMap.value = countries;
+    //       }
+    //     } catch (e) {
+    //       debugPrint('Error loading countries: $e');
+    //     }
+    //   }
 
-      loadCountries();
-      return null;
-    }, []);
+    //   loadCountries();
+    //   return null;
+    // }, []);
 
     // Sorted list of country names for the dropdown
     final middleEastCountryItems = useMemoized(() {
-      final middleEastEntries = countriesMap.value.entries
+      final middleEastEntries = countriesMap.entries
           .where((e) => middleEast.contains(int.parse(e.key)))
           .toList();
       middleEastEntries.sort((a, b) => a.value.compareTo(b.value));
       return middleEastEntries
           .map((e) => DropdownMenuItem(value: e.key, child: Text(e.value)))
           .toList();
-    }, [countriesMap.value]);
+    }, [countriesMap]);
 
     final nonMiddleEastCountryItems = useMemoized(() {
-      final nonMiddleEastEntries = countriesMap.value.entries
+      final nonMiddleEastEntries = countriesMap.entries
           .where((e) => !middleEast.contains(int.parse(e.key)))
           .toList();
       nonMiddleEastEntries.sort((a, b) => a.value.compareTo(b.value));
@@ -96,7 +93,7 @@ class SearchPage extends HookConsumerWidget {
               : Text(e.value),
         );
       }).toList();
-    }, [countriesMap.value]);
+    }, [countriesMap]);
 
     final ageRanges = [
       '16-24',
