@@ -64,20 +64,16 @@ class ResultsPage extends HookConsumerWidget {
     }, [pages.value.length, startPage.value]);
 
     return Scaffold(
-      appBar: ref.watch(mainAppBarProvider)
-          ? AppBar(
-              title: Text(
-                asyncFetch.connectionState == ConnectionState.waiting
-                    ? 'searching'.tr()
-                    : asyncFetch.hasError
-                    ? 'Error: ${asyncFetch.error}'
-                    : 'found_total'.tr(
-                        args: [results.value["total"].toString()],
-                      ),
-              ),
-              centerTitle: false,
-            )
-          : null,
+      appBar: AppBar(
+        title: Text(
+          asyncFetch.connectionState == ConnectionState.waiting
+              ? 'searching'.tr()
+              : asyncFetch.hasError
+              ? 'Error: ${asyncFetch.error}'
+              : 'found_total'.tr(args: [results.value["total"].toString()]),
+        ),
+        centerTitle: false,
+      ),
       body: Center(
         child: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
