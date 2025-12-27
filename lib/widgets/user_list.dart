@@ -14,7 +14,8 @@ class UserList extends HookWidget {
   });
   @override
   Widget build(BuildContext context) {
-    if (asyncFetch.connectionState == ConnectionState.waiting) {
+    if (asyncFetch.connectionState == ConnectionState.waiting &&
+        !asyncFetch.hasData) {
       return const Center(child: CircularProgressIndicator());
     }
     if (asyncFetch.hasError) {
@@ -25,16 +26,24 @@ class UserList extends HookWidget {
     }
     try {
       final childList = results?['child_list'] as List<dynamic>? ?? [];
-      return Center(
-        child: ListView.separated(
-          separatorBuilder: (context, index) => const SizedBox(height: 8.0),
-          padding: const EdgeInsets.all(8.0),
-          itemCount: childList.length,
-          itemBuilder: (context, i) {
-            final item = childList[i] as Map<String, dynamic>;
-            return UserListItem(index: i, props: item);
-          },
-        ),
+      return ListView.separated(
+        separatorBuilder: (context, index) => const SizedBox(height: 0.0),
+        padding: const EdgeInsets.all(8.0),
+        itemCount:
+            childList.length +
+            (asyncFetch.connectionState == ConnectionState.waiting ? 1 : 0),
+        itemBuilder: (context, i) {
+          if (i == childList.length &&
+              asyncFetch.connectionState == ConnectionState.waiting) {
+            // render loading indicator
+            return SizedBox(
+              height: 100,
+              child: const Center(child: CircularProgressIndicator()),
+            );
+          }
+          final item = childList[i] as Map<String, dynamic>;
+          return UserListItem(index: i, props: item);
+        },
       );
     } catch (e) {
       return Center(child: Text('Parse error: \\$e'));

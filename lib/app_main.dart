@@ -102,23 +102,23 @@ void useInitApp(WidgetRef ref) {
   useEffect(() {
     // providers initialization
     // read themMode from shared preferences
-    SharedPreferences.getInstance().then((prefs) {
-      // final themeMode = prefs.getString('themeMode');
-      // if (themeMode == null) {
-      //   return; //initial value
-      // }
-      // //dispatch/setState initial themeMode from shared preferences
-      // ref
-      //     .read(themeModeProvider.notifier)
-      //     .setThemeMode(themeMode == 'dark' ? ThemeMode.dark : ThemeMode.light);
+    // SharedPreferences.getInstance().then((prefs) {
+    // final themeMode = prefs.getString('themeMode');
+    // if (themeMode == null) {
+    //   return; //initial value
+    // }
+    // //dispatch/setState initial themeMode from shared preferences
+    // ref
+    //     .read(themeModeProvider.notifier)
+    //     .setThemeMode(themeMode == 'dark' ? ThemeMode.dark : ThemeMode.light);
 
-      // dispatch/setState initial language from shared preferences
-      final locale = prefs.getString('locale');
-      if (locale != null) {
-        //dispatch/setState
-        ref.read(localeProvider.notifier).state = locale;
-      }
-    });
+    // dispatch/setState initial language from shared preferences
+    // final locale = prefs.getString('locale');
+    // if (locale != null) {
+    //   //dispatch/setState
+    //   ref.read(localeProvider.notifier).state = locale;
+    // }
+    // });
 
     return null;
   }, []);

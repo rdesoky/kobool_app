@@ -28,86 +28,32 @@ class AppDrawer extends ConsumerWidget {
         children: <Widget>[
           if (showHeader)
             SizedBox(
-              height: 120,
+              height: 64,
               child: DrawerHeader(
                 decoration: BoxDecoration(color: colorScheme.surfaceDim),
                 child: Text('Kobool'),
               ),
             ),
-          ListTile(
-            leading: Icon(Icons.home),
-            selected: routerState.name == Routes.home,
-            selectedTileColor: colorScheme.surfaceContainerHighest,
-            title: Text('home'.tr()),
-            onTap: routerState.name == Routes.home
-                ? null
-                : () {
-                    // Handle home tap
-                    navigatorKey.currentState?.popUntil(
-                      (route) => route.isFirst,
-                    );
-                    Scaffold.of(context).closeDrawer();
-                  },
-          ),
-          ListTile(
-            leading: Icon(Icons.login),
-            title: Text('login'.tr()),
-            selected: routerState.name == Routes.login,
-            selectedTileColor: colorScheme.surfaceContainerHighest,
-            onTap: routerState.name == Routes.login
-                ? null
-                : () {
-                    navigatorKey.currentState?.pushNamed(Routes.login);
-                    Scaffold.of(context).closeDrawer();
-                  },
-          ),
-          ListTile(
-            leading: Icon(Icons.search),
-            title: Text('search'.tr()),
-            selected: routerState.name == Routes.search,
-            selectedTileColor: colorScheme.surfaceContainerHighest,
-            onTap: routerState.name == Routes.search
-                ? null
-                : () {
-                    navigatorKey.currentState?.pushNamed(Routes.search);
-                    Scaffold.of(context).closeDrawer();
-                  },
-          ),
-          ListTile(
-            leading: Icon(Icons.people),
-            title: Text('members'.tr()),
-            selected: routerState.name == Routes.results,
-            selectedTileColor: colorScheme.surfaceContainerHighest,
-            onTap: routerState.name == Routes.results
-                ? null
-                : () {
-                    navigatorKey.currentState?.pushNamed(Routes.results);
-                    Scaffold.of(context).closeDrawer();
-                  },
-          ),
-          ListTile(
-            leading: Icon(Icons.forum),
-            title: Text('forum'.tr()),
-            selected: routerState.name == Routes.forum,
-            selectedTileColor: colorScheme.surfaceContainerHighest,
-            onTap: routerState.name == Routes.forum
-                ? null
-                : () {
-                    navigatorKey.currentState?.pushNamed(Routes.forum);
-                    Scaffold.of(context).closeDrawer();
-                  },
-          ),
-          ListTile(
-            leading: Icon(Icons.contact_mail),
-            title: Text('contact'.tr()),
-            selected: routerState.name == Routes.contact,
-            selectedTileColor: colorScheme.surfaceContainerHighest,
-            onTap: routerState.name == Routes.contact
-                ? null
-                : () {
-                    navigatorKey.currentState?.pushNamed(Routes.contact);
-                    Scaffold.of(context).closeDrawer();
-                  },
+          ...[
+            (Icons.home, Routes.home, 'home'),
+            (Icons.login, Routes.login, 'login'),
+            (Icons.search, Routes.search, 'search'),
+            (Icons.people, Routes.results, 'members'),
+            (Icons.forum, Routes.forum, 'forum'),
+            (Icons.contact_mail, Routes.contact, 'contact'),
+          ].map(
+            (item) => ListTile(
+              leading: Icon(item.$1),
+              title: Text(item.$3.tr()),
+              selected: routerState.name == item.$2,
+              selectedTileColor: colorScheme.surfaceContainerHighest,
+              onTap: routerState.name == item.$2
+                  ? null
+                  : () {
+                      navigatorKey.currentState?.pushNamed(item.$2);
+                      Scaffold.of(context).closeDrawer();
+                    },
+            ),
           ),
           ListTile(
             leading: Icon(Icons.language),

@@ -1,20 +1,22 @@
-import 'dart:convert';
+// Legacy riverpod provider to support watching localeProvider (to avoid using proxy providers)
 
+import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
-// Legacy provider to support watching localeProvider
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:kobool/providers/locale_provider.dart';
 
 // action/dispatcher/reducer for List<String>
 class CountriesNotifier extends StateNotifier<Map<String, String>> {
-  final dynamic ref;
+  final dynamic ref; //riverpod ref
 
   CountriesNotifier(this.ref) : super({}) {
     _init();
   }
 
   Future<void> _init() async {
-    final locale = ref.watch(localeProvider);
+    final locale = ref.watch(
+      localeProvider,
+    ); // will rebuild when locale changes
     final jsonString = await rootBundle.loadString(
       'assets/translations/$locale.json',
     );
@@ -27,6 +29,8 @@ class CountriesNotifier extends StateNotifier<Map<String, String>> {
     }
   }
 }
+
+//StateNotifierProvider<StateNotifier<T>, T> is a provider that supports custom StateNotifier<T>
 
 final countriesProvider =
     StateNotifierProvider<CountriesNotifier, Map<String, String>>((ref) {

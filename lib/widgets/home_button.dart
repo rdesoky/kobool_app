@@ -12,7 +12,7 @@ class HomeButton extends StatelessWidget {
     required this.icon,
     this.onPressed,
     this.height = 100,
-    this.width = 200,
+    this.width = 160,
   });
 
   @override

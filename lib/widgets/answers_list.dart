@@ -25,16 +25,14 @@ class AnswersList extends HookWidget {
     }
     try {
       final childList = results?['child_list'] as List<dynamic>? ?? [];
-      return Center(
-        child: ListView.separated(
-          separatorBuilder: (context, index) => const SizedBox(height: 4.0),
-          padding: const EdgeInsets.all(8.0),
-          itemCount: childList.length,
-          itemBuilder: (context, i) {
-            final item = childList[i] as Map<String, dynamic>;
-            return AnswerListItem(index: i, props: item);
-          },
-        ),
+      return ListView.separated(
+        separatorBuilder: (context, index) => const SizedBox(height: 4.0),
+        padding: const EdgeInsets.all(8.0),
+        itemCount: childList.length,
+        itemBuilder: (context, i) {
+          final item = childList[i] as Map<String, dynamic>;
+          return AnswerListItem(index: i, props: item);
+        },
       );
     } catch (e) {
       return Center(child: Text('Parse error: \\$e'));

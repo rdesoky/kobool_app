@@ -18,72 +18,84 @@ class UserListItem extends HookWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Center(
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-          side: BorderSide(color: colorScheme.surfaceContainerHighest),
-        ),
-        elevation: 0,
-        // borderOnForeground: false,
-        // color: colorScheme.surfaceBright,
-        child: SizedBox(
-          width: 600,
-          // height: double.infinity,
-          // constraints: BoxConstraints(minHeight: 120),
-          child: ListTile(
-            onTap: () {
-              Navigator.pushNamed(context, Routes.user, arguments: props['id']);
-            },
-            isThreeLine: true,
-            minTileHeight: 120,
-            leading: UserAttrButton(attr: UserAttr.pic, props: props),
-            title: Padding(
-              padding: const EdgeInsets.only(bottom: 12.0),
-              child: Row(
-                spacing: 12,
-                children: [
-                  SizedBox(
-                    width: 100,
-                    child: Text(
-                      login.toString(),
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+      child: Column(
+        children: [
+          Text("${index + 1}"),
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+              side: BorderSide(color: colorScheme.surfaceContainerHighest),
+            ),
+            elevation: 0,
+            // borderOnForeground: false,
+            // color: colorScheme.surfaceBright,
+            child: SizedBox(
+              width: 600,
+              // height: double.infinity,
+              // constraints: BoxConstraints(minHeight: 120),
+              child: ListTile(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    Routes.user,
+                    arguments: props['id'],
+                  );
+                },
+                isThreeLine: true,
+                minTileHeight: 120,
+                leading: UserAttrButton(attr: UserAttr.pic, props: props),
+                title: Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: Row(
+                    spacing: 12,
+                    children: [
+                      SizedBox(
+                        width: 100,
+                        child: Text(
+                          login.toString(),
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          title.toString().replaceAll("|u|", ""),
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(color: colorScheme.tertiary),
+                        ),
+                      ),
+                    ],
                   ),
-                  Expanded(
-                    child: Text(
-                      title.toString().replaceAll("|u|", ""),
-                      overflow: TextOverflow.ellipsis,
+                ),
+                subtitle: Column(
+                  spacing: 12,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Wrap(
+                      spacing: 4,
+                      runSpacing: 4,
+                      children: [
+                        UserAttrButton(attr: UserAttr.gender, props: props),
+                        UserAttrButton(attr: UserAttr.age, props: props),
+                        UserAttrButton(
+                          attr: UserAttr.maritalStatus,
+                          props: props,
+                        ),
+                        UserAttrButton(attr: UserAttr.country, props: props),
+                        UserAttrButton(attr: UserAttr.origin, props: props),
+                      ],
+                    ),
+                    Text(
+                      selfDesc.toString().replaceAll("|u|", ""),
                       style: TextStyle(color: colorScheme.tertiary),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            subtitle: Column(
-              spacing: 12,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Wrap(
-                  spacing: 4,
-                  runSpacing: 4,
-                  children: [
-                    UserAttrButton(attr: UserAttr.gender, props: props),
-                    UserAttrButton(attr: UserAttr.age, props: props),
-                    UserAttrButton(attr: UserAttr.maritalStatus, props: props),
-                    UserAttrButton(attr: UserAttr.country, props: props),
-                    UserAttrButton(attr: UserAttr.origin, props: props),
+                    Text(mateDesc.toString().replaceAll("|u|", "")),
                   ],
                 ),
-                Text(
-                  selfDesc.toString().replaceAll("|u|", ""),
-                  style: TextStyle(color: colorScheme.tertiary),
-                ),
-                Text(mateDesc.toString().replaceAll("|u|", "")),
-              ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
