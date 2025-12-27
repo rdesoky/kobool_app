@@ -12,6 +12,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AppMain extends ConsumerWidget {
   const AppMain({super.key});
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
 
   // This widget is the root of your application.
   @override
@@ -24,12 +26,12 @@ class AppMain extends ConsumerWidget {
     return MaterialApp(
       title: 'KOBOOL - first step to marriage',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         useMaterial3: true,
       ),
       darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
+          seedColor: Colors.indigo,
           brightness: Brightness.dark,
         ),
         useMaterial3: true,
@@ -38,16 +40,17 @@ class AppMain extends ConsumerWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: locale != null ? Locale(locale) : null,
-      home: _AppScaffold(key: ValueKey("AppScaffold")),
+      home: _AppScaffold(
+        key: ValueKey("AppScaffold"),
+        navigatorKey: navigatorKey,
+      ),
     );
   }
 }
 
 class _AppScaffold extends HookConsumerWidget {
-  static final GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey<NavigatorState>();
-
-  const _AppScaffold({super.key});
+  final GlobalKey<NavigatorState> navigatorKey;
+  const _AppScaffold({super.key, required this.navigatorKey});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

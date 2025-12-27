@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kobool/app_main.dart';
 import 'package:kobool/providers/router_provider.dart';
 import 'package:kobool/providers/settings_provider.dart';
 import 'package:kobool/utils/misc.dart';
@@ -12,16 +13,29 @@ class KbAppBar extends ConsumerWidget implements PreferredSizeWidget {
     String routeName = ref.watch(routerProvider).name;
     final brightness = Theme.of(context).brightness;
     final language = ref.watch(languageProvider);
+    final isWideView = MediaQuery.of(context).size.width > 600;
+    final colorScheme = Theme.of(context).colorScheme;
+
     return AppBar(
       title: Row(
         spacing: 12,
         children: [
           if (language != null)
-            Image.asset("assets/images/$language/kobool.png", height: 40),
-          routeIcon(routeName),
+            IconButton(
+              onPressed: () {
+                AppMain.navigatorKey.currentState?.popUntil(
+                  (route) => route.isFirst,
+                );
+              },
+              icon: Image.asset(
+                "assets/images/$language/kobool.png",
+                height: 40,
+              ),
+            ),
+          if (!isWideView) routeIcon(routeName),
         ],
       ),
-      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      backgroundColor: colorScheme.primaryContainer,
       actionsPadding: const EdgeInsets.symmetric(horizontal: 8),
       actions: [
         IconButton(
