@@ -6,8 +6,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xml/xml.dart';
 
 class UserSession {
+  //TODO: set expiry time for each value
   final String? id;
-  final String? sessionId;
+  // final String? mate_id; //mid
+
+  final String? sessionId; //sid
   final String? loginId;
   final int? gender;
   final DateTime? lastLogin;
@@ -120,6 +123,22 @@ class UserSession {
     'since_last_login': sinceLastLogin,
     'inactive_by_hk': inactiveByHk,
   });
+
+  String toCookie() {
+    final myInfo = [
+      'gender=$gender',
+      'active=${activated! ? "1" : "0"}',
+      'mate=undefined', // matched user id
+      'mtid=undefined', // matched chat thread id
+    ].join('&');
+
+    return [
+      'id=$id',
+      'sid=$sessionId',
+      'myinfo=${Uri.encodeComponent(myInfo)}',
+      // 'sa=' + DateTime.now(),//set last activity timestamp
+    ].join('; ');
+  }
 }
 
 class UserSessionNotifier extends Notifier<UserSession> {

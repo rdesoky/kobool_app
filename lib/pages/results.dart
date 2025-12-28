@@ -28,6 +28,7 @@ class ResultsPage extends HookConsumerWidget {
             as Map<dynamic, dynamic>;
 
     final asyncFetch = useFetch(
+      ref,
       API.query,
       params: {...pageArgs, "p": page.value, "ps": pageSize},
     );

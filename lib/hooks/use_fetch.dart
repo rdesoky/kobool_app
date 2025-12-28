@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart';
+import 'package:kobool/providers/user_session_provider.dart';
 
 // A custom hook that mimics useFetch
 AsyncSnapshot<dynamic> useFetch(
+  WidgetRef ref,
   String url, {
   Map<String, dynamic>? params,
   Map<String, dynamic>? payload,
@@ -26,7 +29,10 @@ AsyncSnapshot<dynamic> useFetch(
     if (payload != null) {
       return post(Uri.parse(url), body: memoizedPayload);
     }
-    return get(Uri.parse("$url?$memoizedParams"));
+    return get(
+      Uri.parse("$url?$memoizedParams"),
+      headers: {'Cookie': ref.read(userSessionProvider).toCookie()},
+    );
   }, [url, memoizedParams, memoizedPayload]);
 
   // useFuture subscribes to the future and triggers a rebuild on change
