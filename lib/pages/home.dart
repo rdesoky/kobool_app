@@ -37,9 +37,7 @@ class HomePage extends ConsumerWidget {
                         icon: isLoggedIn ? Icons.logout : Icons.login,
                         onPressed: () {
                           if (isLoggedIn) {
-                            ref
-                                .read(userSessionProvider.notifier)
-                                .setUserSession(UserSession());
+                            confirmLogoutDialog(context, ref);
                           } else {
                             Navigator.pushNamed(context, Routes.login);
                           }
