@@ -42,12 +42,16 @@ class ResultsPage extends HookConsumerWidget {
         final resp = asyncFetch.data as Response;
         final body = json.decode(resp.body) as Map<String, dynamic>;
         final bodyPage = int.parse(body["page"].toString());
-        for (var i = 0; i < (body["child_list"] as List).length; i++) {
-          body["child_list"][i]["index"] = bodyPage * pageSize + i;
+        if (body["child_list"] == null) {
+          return null;
+        }
+        final childList = body["child_list"] as List;
+        for (var i = 0; i < childList.length; i++) {
+          childList[i]["index"] = bodyPage * pageSize + i;
         }
         total.value = int.parse(body["total"].toString());
 
-        pages.value = pages.value..[bodyPage] = body["child_list"];
+        pages.value = pages.value..[bodyPage] = childList;
       }
       return null;
     }, [asyncFetch]);
