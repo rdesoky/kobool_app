@@ -1,17 +1,64 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:http/http.dart';
+import 'package:kobool/consts/api.dart';
+import 'package:kobool/consts/routes.dart';
+import 'package:kobool/providers/user_session_provider.dart';
 import 'package:kobool/utils/validators.dart';
+import 'package:xml/xml.dart';
 
-class LoginPage extends HookWidget {
+class LoginPage extends HookConsumerWidget {
   const LoginPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isLogin = useState(true);
     final usernameController = useTextEditingController();
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
     final obscurePassword = useState(true);
+    final isLoading = useState(false);
+    final errorMessage = useState<String?>(null);
+
+    void onSubmitted() {
+      isLoading.value = true;
+      errorMessage.value = null;
+      if (isLogin.value) {
+        post(
+          Uri.parse(API.login),
+          body: {
+            'lname': usernameController.text,
+            'pw': passwordController.text,
+          },
+        ).then((value) {
+          isLoading.value = false;
+          if (value.statusCode == 200) {
+            final document = XmlDocument.parse(value.body);
+            final infoNode = document.lastElementChild;
+            final error = infoNode?.getAttribute('error') ?? "";
+            final sessionId = infoNode?.getAttribute('sid') ?? "";
+            if (error.isEmpty && sessionId.isNotEmpty) {
+              final userSession = UserSession.fromXml(infoNode!);
+              ref
+                  .read(userSessionProvider.notifier)
+                  .setUserSession(userSession);
+
+              if (context.mounted) {
+                Navigator.pushNamed(context, Routes.home);
+              }
+            } else {
+              errorMessage.value = error.isEmpty ? "invalid_login" : error;
+            }
+          } else {
+            errorMessage.value = "invalid_login";
+          }
+        });
+      } else {
+        // Trigger reset password logic
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -23,70 +70,84 @@ class LoginPage extends HookWidget {
           constraints: const BoxConstraints(maxWidth: 400),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              spacing: 16,
-              children: [
-                isLogin.value
-                    ? TextFormField(
-                        autofocus: true,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        controller: usernameController,
-                        decoration: const InputDecoration(
-                          labelText: 'Username',
-                          border: OutlineInputBorder(),
+            child: isLoading.value
+                ? const CircularProgressIndicator()
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 16,
+                    children: [
+                      if (errorMessage.value != null)
+                        Text(
+                          errorMessage.value!.tr(),
+                          style: const TextStyle(color: Colors.red),
                         ),
-                      )
-                    : TextFormField(
-                        autofocus: true,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        keyboardType: TextInputType.emailAddress,
-                        controller: emailController,
-                        decoration: const InputDecoration(
-                          labelText: 'Email',
-                          border: OutlineInputBorder(),
+
+                      if (isLogin.value)
+                        TextFormField(
+                          autofocus: true,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          controller: usernameController,
+                          decoration: const InputDecoration(
+                            labelText: 'Username',
+                            border: OutlineInputBorder(),
+                          ),
+                          onFieldSubmitted: (_) => onSubmitted(),
+                        )
+                      else
+                        TextFormField(
+                          autofocus: true,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          keyboardType: TextInputType.emailAddress,
+                          controller: emailController,
+                          decoration: const InputDecoration(
+                            labelText: 'Email',
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: emailValidator,
+                          onFieldSubmitted: (_) => onSubmitted(),
                         ),
-                        validator: emailValidator,
+                      if (isLogin.value)
+                        TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          controller: passwordController,
+                          obscureText: obscurePassword.value,
+                          decoration: InputDecoration(
+                            labelText: 'Password',
+                            border: const OutlineInputBorder(),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                obscurePassword.value
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
+                              onPressed: () => obscurePassword.value =
+                                  !obscurePassword.value,
+                            ),
+                          ),
+                          validator: passwordValidator,
+                          onFieldSubmitted: (_) => onSubmitted(),
+                        ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: FilledButton(
+                          onPressed: () {
+                            onSubmitted();
+                          },
+                          child: Text(
+                            isLogin.value ? 'Submit' : 'Reset Password',
+                          ),
+                        ),
                       ),
-                if (isLogin.value)
-                  TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    controller: passwordController,
-                    obscureText: obscurePassword.value,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: const OutlineInputBorder(),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          obscurePassword.value
-                              ? Icons.visibility
-                              : Icons.visibility_off,
+                      TextButton(
+                        onPressed: () {
+                          isLogin.value = !isLogin.value;
+                        },
+                        child: Text(
+                          isLogin.value ? 'Reset Password' : 'Back to Login',
                         ),
-                        onPressed: () =>
-                            obscurePassword.value = !obscurePassword.value,
                       ),
-                    ),
-                    validator: passwordValidator,
+                    ],
                   ),
-                SizedBox(
-                  width: double.infinity,
-                  child: FilledButton(
-                    onPressed: () {
-                      // TODO: Implement submission logic
-                    },
-                    child: Text(isLogin.value ? 'Submit' : 'Reset Password'),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    isLogin.value = !isLogin.value;
-                  },
-                  child: Text(
-                    isLogin.value ? 'Reset Password' : 'Back to Login',
-                  ),
-                ),
-              ],
-            ),
           ),
         ),
       ),

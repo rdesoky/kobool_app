@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/consts/routes.dart';
 import 'package:kobool/providers/router_provider.dart';
+import 'package:kobool/providers/user_session_provider.dart';
 import 'package:kobool/utils/dialogs.dart';
 
 class AppDrawer extends ConsumerWidget {
@@ -15,9 +16,10 @@ class AppDrawer extends ConsumerWidget {
     required this.navigatorKey,
   });
   @override
-  Widget build(BuildContext context, ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final routerState = ref.watch(routerProvider);
+    final isLoggedIn = ref.watch(userSessionProvider).isLoggedIn();
 
     return Drawer(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
@@ -36,7 +38,7 @@ class AppDrawer extends ConsumerWidget {
             ),
           ...[
             (Icons.home, Routes.home, 'home'),
-            (Icons.login, Routes.login, 'login'),
+            if (!isLoggedIn) (Icons.login, Routes.login, 'login'),
             (Icons.search, Routes.search, 'search'),
             (Icons.people, Routes.results, 'members'),
             (Icons.forum, Routes.forum, 'forum'),
