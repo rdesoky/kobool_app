@@ -15,26 +15,6 @@ void showLanguageDialog(BuildContext context, WidgetRef ref) {
     ); // update context locale ( presists in shared preferences "locale" string)
   }
 
-  // showDialog(
-  //   context: context,
-  //   builder: (context) => AlertDialog(
-  //     title: Text('language'.tr()),
-  //     content: Text("${'change_language'.tr()} ?"),
-  //     actions: [
-  //       TextButton(
-  //         child: Text('cancel'.tr()),
-  //         onPressed: () => Navigator.pop(context),
-  //       ),
-  //       TextButton(
-  //         child: Text('ok'.tr()),
-  //         onPressed: () {
-  //           onChangeLanguage();
-  //           Navigator.pop(context);
-  //         },
-  //       ),
-  //     ],
-  //   ),
-  // );
   onChangeLanguage();
 }
 
@@ -52,9 +32,7 @@ void confirmLogoutDialog(BuildContext context, WidgetRef ref) {
         TextButton(
           child: Text('ok'.tr()),
           onPressed: () {
-            ref
-                .read(userSessionProvider.notifier)
-                .setUserSession(UserSession());
+            ref.read(userSessionProvider.notifier).clearUserSession();
             Navigator.pop(context);
           },
         ),

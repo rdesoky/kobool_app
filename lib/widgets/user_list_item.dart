@@ -48,13 +48,10 @@ class UserListItem extends HookWidget {
                   child: Row(
                     spacing: 12,
                     children: [
-                      SizedBox(
-                        width: 100,
-                        child: Text(
-                          login.toString(),
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
+                      Text(
+                        login.toString(),
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Expanded(
                         child: Text(

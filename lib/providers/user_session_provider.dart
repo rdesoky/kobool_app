@@ -127,21 +127,31 @@ class UserSessionNotifier extends Notifier<UserSession> {
 
   @override
   UserSession build() {
-    _prefs = ref.read(sharedPreferencesProvider);
-    return _init(_prefs);
-  }
+    _prefs = ref.read(
+      sharedPreferencesProvider,
+    ); // using watch will rebuild the provider state when the shared preferences change
 
-  static UserSession _init(SharedPreferences prefs) {
-    final json = prefs.getString('user_session');
+    final json = _prefs.getString('user_session');
+
     if (json != null) {
       return UserSession.fromJson(json);
     }
-    return UserSession();
+
+    // ref.onDispose(() {
+    //   _prefs.setString('user_session', state.toJson());
+    // });
+
+    return UserSession(); // initial empty user session
   }
 
   void setUserSession(UserSession session) {
     state = session;
     _prefs.setString('user_session', session.toJson());
+  }
+
+  void clearUserSession() {
+    state = UserSession();
+    _prefs.remove('user_session');
   }
 }
 
