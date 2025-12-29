@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kobool/providers/shared_preferences_provider.dart';
@@ -124,10 +125,10 @@ class UserSession {
     'inactive_by_hk': inactiveByHk,
   });
 
-  String toCookie() {
+  List<Cookie> toCookieList() {
     final myInfo = [
       'gender=$gender',
-      'active=${activated! ? "1" : "0"}',
+      if (activated != null) 'active=${activated! ? "1" : "0"}',
       'mate=undefined', // matched user id
       'mtid=undefined', // matched chat thread id
     ].join('&');
@@ -137,7 +138,11 @@ class UserSession {
       'sid=$sessionId',
       'myinfo=${Uri.encodeComponent(myInfo)}',
       // 'sa=' + DateTime.now(),//set last activity timestamp
-    ].join('; ');
+    ].map((e) => Cookie.fromSetCookieValue(e)).toList();
+  }
+
+  String toCookieString() {
+    return toCookieList().map((e) => e.toString()).join('; ');
   }
 }
 
@@ -168,9 +173,10 @@ class UserSessionNotifier extends Notifier<UserSession> {
     _prefs.setString('user_session', session.toJson());
   }
 
-  void clearUserSession() {
+  UserSession clearUserSession() {
     state = UserSession();
     _prefs.remove('user_session');
+    return state;
   }
 }
 

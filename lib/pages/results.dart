@@ -1,11 +1,9 @@
-import 'dart:convert';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:http/http.dart';
+import 'package:dio/dio.dart';
 import 'package:kobool/consts/api.dart';
 import 'package:kobool/hooks/use_fetch.dart';
 import 'package:kobool/providers/main_app_bar_provider.dart';
@@ -41,7 +39,7 @@ class ResultsPage extends HookConsumerWidget {
     useEffect(() {
       if (asyncFetch.hasData) {
         final resp = asyncFetch.data as Response;
-        final body = json.decode(resp.body) as Map<String, dynamic>;
+        final body = resp.data as Map<String, dynamic>;
         final bodyPage = int.parse(body["page"].toString());
         if (body["child_list"] == null) {
           return null;

@@ -32,59 +32,127 @@ class HomePage extends ConsumerWidget {
                     spacing: 16,
                     runSpacing: 16,
                     children: [
-                      HomeButton(
-                        label: isLoggedIn ? "logout".tr() : "login".tr(),
-                        icon: isLoggedIn ? Icons.logout : Icons.login,
-                        onPressed: () {
-                          if (isLoggedIn) {
-                            confirmLogoutDialog(context, ref);
-                          } else {
-                            Navigator.pushNamed(context, Routes.login);
-                          }
-                        },
-                      ),
-                      if (!isLoggedIn)
-                        HomeButton(
-                          label: "register".tr(),
-                          icon: Icons.person_add,
-                          onPressed: () {
-                            Navigator.pushNamed(context, Routes.register);
-                          },
+                      if (isLoggedIn)
+                        ...[
+                          (
+                            "visitors".tr(),
+                            Icons.people,
+                            () {
+                              Navigator.pushNamed(
+                                context,
+                                Routes.results,
+                                arguments: {"ls": "vtr"},
+                              );
+                            },
+                          ),
+                          (
+                            "visited".tr(),
+                            Icons.history,
+                            () {
+                              Navigator.pushNamed(
+                                context,
+                                Routes.results,
+                                arguments: {"ls": "vtd"},
+                              );
+                            },
+                          ),
+
+                          (
+                            "wishlist".tr(),
+                            Icons.favorite,
+                            () {
+                              Navigator.pushNamed(
+                                context,
+                                Routes.results,
+                                arguments: {"ls": "wls"},
+                              );
+                            },
+                          ),
+                          (
+                            "wishers".tr(),
+                            Icons.favorite_border,
+                            () {
+                              Navigator.pushNamed(
+                                context,
+                                Routes.results,
+                                arguments: {"ls": "wsr"},
+                              );
+                            },
+                          ),
+                          (
+                            "bookmarks".tr(),
+                            Icons.bookmark,
+                            () {
+                              Navigator.pushNamed(
+                                context,
+                                Routes.results,
+                                arguments: {"ls": "bkm"},
+                              );
+                            },
+                          ),
+                          (
+                            "blocked".tr(),
+                            Icons.not_interested,
+                            () {
+                              Navigator.pushNamed(
+                                context,
+                                Routes.results,
+                                arguments: {"ls": "blk"},
+                              );
+                            },
+                          ),
+                          (
+                            "logout".tr(),
+                            Icons.logout,
+                            () {
+                              confirmLogoutDialog(context, ref);
+                            },
+                          ),
+                        ].map(
+                          (item) => HomeButton(
+                            label: item.$1,
+                            icon: item.$2,
+                            onPressed: item.$3,
+                          ),
                         ),
-                      HomeButton(
-                        label: "search".tr(),
-                        icon: Icons.search,
-                        onPressed: () {
-                          Navigator.pushNamed(context, Routes.search);
-                        },
-                      ),
-                      HomeButton(
-                        label: "members".tr(),
-                        icon: Icons.people,
-                        onPressed: () {
-                          Navigator.pushNamed(context, Routes.results);
-                        },
-                      ),
-                      HomeButton(
-                        label: "forum".tr(),
-                        icon: Icons.forum,
-                        onPressed: () {
-                          Navigator.pushNamed(context, Routes.forum);
-                        },
-                      ),
-                      HomeButton(
-                        label: "contact".tr(),
-                        icon: Icons.contact_mail,
-                        onPressed: () {
-                          Navigator.pushNamed(context, Routes.contact);
-                        },
-                      ),
-                      HomeButton(
-                        label: "language".tr(),
-                        icon: Icons.language,
-                        onPressed: () {
-                          showLanguageDialog(context, ref);
-                        },
+                      if (!isLoggedIn)
+                        ...[
+                          ("login".tr(), Icons.login, Routes.login),
+                          ("register".tr(), Icons.person_add, Routes.register),
+                          ("members".tr(), Icons.people, Routes.results),
+                        ].map(
+                          (item) => HomeButton(
+                            label: item.$1,
+                            icon: item.$2,
+                            onPressed: () =>
+                                Navigator.pushNamed(context, item.$3),
+                          ),
+                        ),
+                      ...[
+                        ("search".tr(), Icons.search, Routes.search, null),
+                        ("forum".tr(), Icons.forum, Routes.forum, null),
+                        (
+                          "contact".tr(),
+                          Icons.contact_mail,
+                          Routes.contact,
+                          null,
+                        ),
+                        (
+                          "language".tr(),
+                          Icons.language,
+                          null,
+                          () => showLanguageDialog(context, ref),
+                        ),
+                      ].map(
+                        (item) => HomeButton(
+                          label: item.$1,
+                          icon: item.$2,
+                          onPressed: item.$4 != null
+                              ? item.$4!
+                              : item.$3 != null
+                              ? () => Navigator.pushNamed(context, item.$3!)
+                              : null,
+                        ),
                       ),
                     ],
                   ),

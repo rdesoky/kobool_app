@@ -1,10 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:http/http.dart';
 import 'package:kobool/consts/api.dart';
 import 'package:kobool/consts/routes.dart';
+import 'package:kobool/providers/dio_provider.dart';
 import 'package:kobool/providers/user_session_provider.dart';
 import 'package:kobool/utils/validators.dart';
 import 'package:xml/xml.dart';
@@ -26,35 +27,55 @@ class LoginPage extends HookConsumerWidget {
       isLoading.value = true;
       errorMessage.value = null;
       if (isLogin.value) {
-        post(
-          Uri.parse(API.login),
-          body: {
-            'lname': usernameController.text,
-            'pw': passwordController.text,
-          },
-        ).then((value) {
-          isLoading.value = false;
-          if (value.statusCode == 200) {
-            final document = XmlDocument.parse(value.body);
-            final infoNode = document.lastElementChild;
-            final error = infoNode?.getAttribute('error') ?? "";
-            final sessionId = infoNode?.getAttribute('sid') ?? "";
-            if (error.isEmpty && sessionId.isNotEmpty) {
-              final userSession = UserSession.fromXml(infoNode!);
-              ref
-                  .read(userSessionProvider.notifier)
-                  .setUserSession(userSession);
+        ref
+            .read(dioProvider)
+            .post(
+              API.login,
+              data: {
+                'lname': usernameController.text,
+                'pw': passwordController.text,
+              },
+              options: Options(contentType: Headers.formUrlEncodedContentType),
+            )
+            .then((value) {
+              isLoading.value = false;
+              if (value.statusCode == 200) {
+                final document = XmlDocument.parse(value.data);
+                final infoNode = document.lastElementChild;
+                final error = infoNode?.getAttribute('error') ?? "";
+                final sessionId = infoNode?.getAttribute('sid') ?? "";
+                if (error.isEmpty && sessionId.isNotEmpty) {
+                  final userSession = UserSession.fromXml(infoNode!);
+                  ref
+                      .read(userSessionProvider.notifier)
+                      .setUserSession(userSession);
 
-              if (context.mounted) {
-                Navigator.pushNamed(context, Routes.home);
+                  ref
+                      .read(cookieJarProvider)
+                      .saveFromResponse(
+                        Uri.parse(API.login),
+                        userSession.toCookieList(),
+                      );
+
+                  // if (kIsWeb) {
+                  //   web.document.cookie = userSession.toCookieString();
+                  // }
+
+                  if (context.mounted) {
+                    Navigator.pushNamed(context, Routes.home);
+                  }
+                } else {
+                  errorMessage.value = error.isEmpty ? "invalid_login" : error;
+                }
+              } else {
+                errorMessage.value = "invalid_login";
               }
-            } else {
-              errorMessage.value = error.isEmpty ? "invalid_login" : error;
-            }
-          } else {
-            errorMessage.value = "invalid_login";
-          }
-        });
+            })
+            .catchError((error) {
+              isLoading.value = false;
+              debugPrint(error.toString());
+              errorMessage.value = "unknown_error";
+            });
       } else {
         // Trigger reset password logic
       }

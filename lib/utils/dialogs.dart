@@ -9,7 +9,7 @@ void showLanguageDialog(BuildContext context, WidgetRef ref) {
     //toggle between ar and en
     final updatedLocale = ref.read(localeProvider) == 'ar' ? 'en' : 'ar';
 
-    ref.read(localeProvider.notifier).state = updatedLocale;
+    ref.read(localeProvider.notifier).setLocale(updatedLocale);
     context.setLocale(
       Locale(updatedLocale),
     ); // update context locale ( presists in shared preferences "locale" string)
@@ -26,15 +26,16 @@ void confirmLogoutDialog(BuildContext context, WidgetRef ref) {
       content: Text("${'are_you_sure'.tr()} ?"),
       actions: [
         TextButton(
-          child: Text('cancel'.tr()),
-          onPressed: () => Navigator.pop(context),
-        ),
-        TextButton(
           child: Text('ok'.tr()),
           onPressed: () {
             ref.read(userSessionProvider.notifier).clearUserSession();
             Navigator.pop(context);
           },
+        ),
+        TextButton(
+          autofocus: true,
+          child: Text('cancel'.tr()),
+          onPressed: () => Navigator.pop(context),
         ),
       ],
     ),

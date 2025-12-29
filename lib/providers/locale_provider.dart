@@ -1,7 +1,21 @@
 //legacy providers, initialized in main.dart overrides
-import 'package:flutter_riverpod/legacy.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kobool/providers/shared_preferences_provider.dart';
 
-//StateProvider<T> bundles notifier and state into a single provider
-final localeProvider = StateProvider<String?>(
-  (ref) => null,
-); //null is initialized from shared_preferences in main.dart overrides
+class LocaleNotifier extends Notifier<String?> {
+  @override
+  String? build() {
+    final prefs = ref.read(sharedPreferencesProvider);
+    final locale = prefs.getString('locale') ?? 'ar'; // TODO: get system locale
+    return locale;
+  }
+
+  void setLocale(String locale) {
+    state = locale;
+    ref.read(sharedPreferencesProvider).setString('locale', locale);
+  }
+}
+
+final localeProvider = NotifierProvider<LocaleNotifier, String?>(
+  LocaleNotifier.new,
+);
