@@ -18,18 +18,18 @@ class ForumPage extends HookConsumerWidget {
     // final colorScheme = Theme.of(context).colorScheme;
     var page = useState(0);
 
-    Map<String, dynamic> fetchParams = useMemoized(() {
+    Map<String, dynamic>? fetchParams = useMemoized(() {
       final filtered = arguments != null
           ? Map<String, dynamic>.from(arguments!)
-          : {} as Map<String, dynamic>;
-      filtered.removeWhere((key, _) => ["qtext"].contains(key));
+          : null;
+      filtered?.removeWhere((key, _) => ["qtext"].contains(key));
       return filtered;
     }, [arguments]);
 
     final asyncFetch = useFetch(
       ref,
       API.searchAnswers,
-      params: {"p": page.value, "ps": 10, ...fetchParams},
+      params: {"p": page.value, "ps": 10, ...?fetchParams},
     );
     // parsed fetch results body
     final results = useMemoized(() {

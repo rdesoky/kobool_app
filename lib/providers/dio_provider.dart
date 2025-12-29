@@ -1,8 +1,10 @@
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+// import 'package:dio/browser.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kobool/providers/user_session_provider.dart';
 
 final cookieJarProvider = Provider<CookieJar>((ref) {
   return CookieJar();
@@ -12,9 +14,24 @@ final dioProvider = Provider<Dio>((ref) {
   final dio = Dio();
   final cookieJar = ref.watch(cookieJarProvider);
 
-  if (!kIsWeb) {
+  if (kIsWeb) {
+    // final adapter = dio.httpClientAdapter as BrowserHttpClientAdapter;
+    // adapter.withCredentials = true;
+  } else {
     dio.interceptors.add(CookieManager(cookieJar));
   }
+
+  dio.interceptors.add(
+    InterceptorsWrapper(
+      onRequest: (options, handler) {
+        final userSession = ref.read(userSessionProvider);
+        if (userSession.sessionId != null) {
+          options.headers.addEntries([MapEntry('sid', userSession.sessionId!)]);
+        }
+        handler.next(options);
+      },
+    ),
+  );
 
   // Custom interceptor to inject UserSession cookies for legacy auth support
   // This ensures that even if cookies aren't managed by CookieJar (e.g. manually constructed),

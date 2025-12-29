@@ -37,10 +37,10 @@ class LoginPage extends HookConsumerWidget {
               },
               options: Options(contentType: Headers.formUrlEncodedContentType),
             )
-            .then((value) {
+            .then((response) {
               isLoading.value = false;
-              if (value.statusCode == 200) {
-                final document = XmlDocument.parse(value.data);
+              if (response.statusCode == 200) {
+                final document = XmlDocument.parse(response.data);
                 final infoNode = document.lastElementChild;
                 final error = infoNode?.getAttribute('error') ?? "";
                 final sessionId = infoNode?.getAttribute('sid') ?? "";
@@ -50,6 +50,8 @@ class LoginPage extends HookConsumerWidget {
                       .read(userSessionProvider.notifier)
                       .setUserSession(userSession);
 
+                  //This won't work for web build
+                  //Read API received cookies into cookieJar
                   ref
                       .read(cookieJarProvider)
                       .saveFromResponse(
