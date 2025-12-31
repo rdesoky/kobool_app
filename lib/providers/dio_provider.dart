@@ -31,8 +31,9 @@ final dioProvider = Provider<Dio>((ref) {
         handler.next(options);
       },
       onResponse: (response, handler) {
-        if (response.headers.value("sid")!.isEmpty) {
-          if (ref.read(userSessionProvider).id!.isNotEmpty) {
+        final sid = response.headers.value("sid");
+        if (sid == null || sid.isEmpty) {
+          if (ref.read(userSessionProvider).isLoggedIn()) {
             debugPrint("Session has ended");
             //show a UI
             ref.read(userSessionProvider.notifier).clearUserSession();

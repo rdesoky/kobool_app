@@ -10,6 +10,7 @@ import 'package:kobool/providers/theme_mode_provider.dart';
 import 'package:kobool/route_generator.dart';
 import 'package:kobool/widgets/app_drawer.dart';
 import 'package:kobool/widgets/kb_app_bar.dart';
+import 'package:kobool/providers/user_session_provider.dart';
 
 class AppMain extends ConsumerWidget {
   const AppMain({super.key});
@@ -24,6 +25,7 @@ class AppMain extends ConsumerWidget {
     if (locale != null) {
       context.setLocale(Locale(locale));
     }
+
     return MaterialApp(
       title: 'KOBOOL - first step to marriage',
       theme: ThemeData(
@@ -83,6 +85,33 @@ class AppNavigator extends ConsumerWidget {
       onGenerateRoute: RouteGenerator.generateRoute,
       observers: [_appRouteObserver!],
     );
+
+    ref.listen(userSessionProvider, (previous, next) {
+      if (previous?.id != null && next.id == null) {
+        // await Future.delayed(const Duration(milliseconds: 200));
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('session_expired_title'.tr()),
+            content: Text('session_expired_content'.tr()),
+            actions: [
+              TextButton(
+                child: Text('login'.tr()),
+                onPressed: () {
+                  navigatorKey.currentState?.pushNamed(Routes.login);
+                  Navigator.pop(context);
+                },
+              ),
+              TextButton(
+                autofocus: true,
+                child: Text('cancel'.tr()),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          ),
+        );
+      }
+    });
 
     // Your implementation for the Pager widget
     return isWideView

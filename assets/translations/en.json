@@ -32,6 +32,8 @@
 	"page_number": "Page {}",
 	"found_total": "Found {}",
 	"searching": "Searching...",
+	"session_expired_title": "Session has Expired",
+	"session_expired_content": "Your session has ended. Please log in again.",
 	"countries": {
 		"0": "",
 		"1": "Afghanistan",
