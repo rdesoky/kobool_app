@@ -1,10 +1,8 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kobool/providers/dio_provider.dart';
 import 'package:kobool/providers/last_fetch_provider.dart';
-import 'package:kobool/providers/user_session_provider.dart';
 
 // A custom hook that mimics useFetch
 AsyncSnapshot<dynamic> useFetch(

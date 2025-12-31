@@ -140,22 +140,27 @@ class UserAttrButton extends HookWidget {
     };
 
     return child != null
-        ? ElevatedButton(
-            onPressed: onPressed,
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(24, 38),
-              backgroundColor: backgroundColor,
-              elevation: elevation,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(2.0),
+        ? Tooltip(
+            message: "More information",
+            waitDuration: Duration(milliseconds: 500), // Delay before showing
+            child: ElevatedButton(
+              onPressed: onPressed,
+
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(24, 38),
+                backgroundColor: backgroundColor,
+                elevation: elevation,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(2.0),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 6.0,
+                  vertical: 4.0,
+                ),
+                alignment: AlignmentDirectional.centerStart,
               ),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 6.0,
-                vertical: 4.0,
-              ),
-              alignment: AlignmentDirectional.centerStart,
+              child: child,
             ),
-            child: child,
           )
         : const SizedBox.shrink();
   }

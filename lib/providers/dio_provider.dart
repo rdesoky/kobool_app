@@ -30,6 +30,29 @@ final dioProvider = Provider<Dio>((ref) {
         }
         handler.next(options);
       },
+      onResponse: (response, handler) {
+        if (response.headers.value("sid")!.isEmpty) {
+          if (ref.read(userSessionProvider).id!.isNotEmpty) {
+            debugPrint("Session has ended");
+            //show a UI
+            ref.read(userSessionProvider.notifier).clearUserSession();
+          }
+        }
+        // check if no sid and
+        //store cookies into cookieJar
+        // if(kIsWeb){
+        //  ref
+        //     .read(cookieJarProvider)
+        //     .saveFromResponse(
+        //       response.realUri,
+        //       (response.headers['set-cookie'] ?? [])
+        //           .map((v) => Cookie.fromSetCookieValue(v))
+        //           .toList(),
+        //     );
+        // }
+
+        handler.next(response);
+      },
     ),
   );
 

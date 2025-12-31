@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/consts/routes.dart';
 import 'package:kobool/providers/countries_provider.dart';
+import 'package:kobool/providers/user_session_provider.dart';
 import 'package:kobool/utils/user_attr.dart';
 
 class SearchPage extends HookConsumerWidget {
@@ -11,12 +12,15 @@ class SearchPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final gender = useState<String?>(null);
+    final userGender = ref.watch(userSessionProvider).gender;
+    final gender = useState<String?>(
+      userGender != null ? (userGender == 0 ? 1 : 0).toString() : null,
+    );
     final country = useState<String?>(null);
     final maritalStatus = useState<String?>(null);
     final origin = useState<String?>(null);
     final age = useState<String?>(null);
-    // final locale = ref.watch(localeProvider);
+    // final locale = ref.watch(localeProvider)
 
     final countriesMap = ref.watch(countriesProvider);
     final middleEast = [

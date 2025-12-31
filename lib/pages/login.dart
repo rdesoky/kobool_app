@@ -50,19 +50,6 @@ class LoginPage extends HookConsumerWidget {
                       .read(userSessionProvider.notifier)
                       .setUserSession(userSession);
 
-                  //This won't work for web build
-                  //Read API received cookies into cookieJar
-                  ref
-                      .read(cookieJarProvider)
-                      .saveFromResponse(
-                        Uri.parse(API.login),
-                        userSession.toCookieList(),
-                      );
-
-                  // if (kIsWeb) {
-                  //   web.document.cookie = userSession.toCookieString();
-                  // }
-
                   if (context.mounted) {
                     Navigator.pushNamed(context, Routes.home);
                   }
