@@ -30,7 +30,9 @@ class UserList extends HookWidget {
       return ListView.separated(
         separatorBuilder: (context, index) => const SizedBox(height: 0.0),
         padding: const EdgeInsets.all(8.0),
-        itemCount: childList.length + 1, // add
+        itemCount: childList.isEmpty
+            ? 0
+            : childList.length + 1, // add a loadMore widget
         itemBuilder: (context, i) {
           if (i == childList.length) {
             // render loading indicator

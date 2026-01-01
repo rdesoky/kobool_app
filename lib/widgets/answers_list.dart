@@ -30,7 +30,7 @@ class AnswersList extends HookWidget {
       return ListView.separated(
         separatorBuilder: (context, index) => const SizedBox(height: 4.0),
         padding: const EdgeInsets.all(8.0),
-        itemCount: childList.length + 1,
+        itemCount: childList.isEmpty ? 0 : childList.length + 1,
         itemBuilder: (context, i) {
           if (i == childList.length) {
             // render loading indicator
