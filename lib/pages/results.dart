@@ -36,29 +36,17 @@ class ResultsPage extends HookConsumerWidget {
         centerTitle: false,
       ),
       body: Center(
-        child: NotificationListener<ScrollNotification>(
-          onNotification: (ScrollNotification scrollInfo) {
-            if (scrollInfo is UserScrollNotification) {
-              if (scrollInfo.direction == ScrollDirection.reverse) {
-                ref.read(mainAppBarProvider.notifier).state = false;
-              } else if (scrollInfo.direction == ScrollDirection.forward) {
-                ref.read(mainAppBarProvider.notifier).state = true;
-              }
-            }
-            return true;
-          },
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: UserList(
-                  asyncFetch: asyncFetch,
-                  results: results,
-                  onLoadMore: onLoadMore,
-                ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: UserList(
+                asyncFetch: asyncFetch,
+                results: results,
+                onLoadMore: onLoadMore,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

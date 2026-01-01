@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/app_route_observer.dart';
@@ -64,12 +65,24 @@ class _AppScaffold extends HookConsumerWidget {
     return Scaffold(
       appBar: ref.watch(mainAppBarProvider) ? KbAppBar() : null,
       drawer: isWideView ? null : AppDrawer(navigatorKey: navigatorKey),
-      body: AppNavigator(navigatorKey: navigatorKey),
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (ScrollNotification scrollInfo) {
+          if (scrollInfo is UserScrollNotification) {
+            if (scrollInfo.direction == ScrollDirection.reverse) {
+              ref.read(mainAppBarProvider.notifier).state = false;
+            } else if (scrollInfo.direction == ScrollDirection.forward) {
+              ref.read(mainAppBarProvider.notifier).state = true;
+            }
+          }
+          return true;
+        },
+        child: AppNavigator(navigatorKey: navigatorKey),
+      ),
     );
   }
 }
 
-class AppNavigator extends ConsumerWidget {
+class AppNavigator extends HookConsumerWidget {
   static AppRouteObserver? _appRouteObserver;
   final GlobalKey<NavigatorState> navigatorKey;
 
@@ -86,32 +99,43 @@ class AppNavigator extends ConsumerWidget {
       observers: [_appRouteObserver!],
     );
 
-    ref.listen(userSessionProvider, (previous, next) {
-      if (previous?.id != null && next.id == null) {
-        // await Future.delayed(const Duration(milliseconds: 200));
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('session_expired_title'.tr()),
-            content: Text('session_expired_content'.tr()),
-            actions: [
-              TextButton(
-                child: Text('login'.tr()),
-                onPressed: () {
-                  navigatorKey.currentState?.pushNamed(Routes.login);
-                  Navigator.pop(context);
-                },
-              ),
-              TextButton(
-                autofocus: true,
-                child: Text('cancel'.tr()),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ],
-          ),
-        );
+    final isLoggedIn = ref.watch(userSessionProvider).isLoggedIn();
+
+    useEffect(() {
+      if (!isLoggedIn) {
+        // if current route requries authentication, auto redirect to login
+        navigatorKey.currentState?.pushNamed(Routes.login);
       }
-    });
+      return null;
+    }, [isLoggedIn]);
+
+    // We can replace ref.listen with useEffect(()=>{}[isLoggedIn])
+    // ref.listen(userSessionProvider, (previous, next) {
+    //   if (previous?.id != null && next.id == null) {
+    //     // await Future.delayed(const Duration(milliseconds: 200));
+    //     showDialog(
+    //       context: context,
+    //       builder: (context) => AlertDialog(
+    //         title: Text('session_expired_title'.tr()),
+    //         content: Text('session_expired_content'.tr()),
+    //         actions: [
+    //           TextButton(
+    //             child: Text('login'.tr()),
+    //             onPressed: () {
+    //               navigatorKey.currentState?.pushNamed(Routes.login);
+    //               Navigator.pop(context);
+    //             },
+    //           ),
+    //           TextButton(
+    //             autofocus: true,
+    //             child: Text('cancel'.tr()),
+    //             onPressed: () => Navigator.pop(context),
+    //           ),
+    //         ],
+    //       ),
+    //     );
+    //   }
+    // });
 
     // Your implementation for the Pager widget
     return isWideView

@@ -15,8 +15,6 @@ class ForumPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // final colorScheme = Theme.of(context).colorScheme;
-    var page = useState(0);
-
     Map<String, dynamic>? fetchParams = useMemoized(() {
       final filtered = arguments != null
           ? Map<String, dynamic>.from(arguments!)
@@ -45,29 +43,17 @@ class ForumPage extends HookConsumerWidget {
         centerTitle: false,
       ),
       body: Center(
-        child: NotificationListener<ScrollNotification>(
-          onNotification: (ScrollNotification scrollInfo) {
-            if (scrollInfo is UserScrollNotification) {
-              if (scrollInfo.direction == ScrollDirection.reverse) {
-                ref.read(mainAppBarProvider.notifier).state = false;
-              } else if (scrollInfo.direction == ScrollDirection.forward) {
-                ref.read(mainAppBarProvider.notifier).state = true;
-              }
-            }
-            return true;
-          },
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: AnswersList(
-                  asyncFetch: asyncFetch,
-                  results: results,
-                  onLoadMore: onLoadMore,
-                ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: AnswersList(
+                asyncFetch: asyncFetch,
+                results: results,
+                onLoadMore: onLoadMore,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
