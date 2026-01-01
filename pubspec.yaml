@@ -44,6 +44,7 @@ dependencies:
   dio: ^5.9.0
   dio_cookie_manager: ^3.3.0
   cookie_jar: ^4.0.8
+  visibility_detector: ^0.4.0+2
   
 dev_dependencies:
   flutter_test:

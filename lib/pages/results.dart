@@ -18,7 +18,7 @@ class ResultsPage extends HookConsumerWidget {
     final pageArgs =
         (ModalRoute.of(context)!.settings.arguments ?? {})
             as Map<dynamic, dynamic>;
-    final (asyncFetch, results, onAddPage) = useFetchPages(
+    final (asyncFetch, results, onLoadMore) = useFetchPages(
       ref,
       url: API.query,
       params: pageArgs,
@@ -36,29 +36,17 @@ class ResultsPage extends HookConsumerWidget {
         centerTitle: false,
       ),
       body: Center(
-        child: NotificationListener<ScrollNotification>(
-          onNotification: (ScrollNotification scrollInfo) {
-            if (scrollInfo is UserScrollNotification) {
-              if (scrollInfo.direction == ScrollDirection.reverse) {
-                ref.read(mainAppBarProvider.notifier).state = false;
-              } else if (scrollInfo.direction == ScrollDirection.forward) {
-                ref.read(mainAppBarProvider.notifier).state = true;
-              }
-            }
-            if (scrollInfo.metrics.pixels ==
-                scrollInfo.metrics.maxScrollExtent) {
-              onAddPage();
-            }
-            return true;
-          },
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: UserList(asyncFetch: asyncFetch, results: results),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: UserList(
+                asyncFetch: asyncFetch,
+                results: results,
+                onLoadMore: onLoadMore,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

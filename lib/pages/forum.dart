@@ -2,12 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:dio/dio.dart';
 import 'package:kobool/consts/api.dart';
-
 import 'package:kobool/hooks/use_fetch_pages.dart';
 import 'package:kobool/widgets/answers_list.dart';
-import 'package:kobool/widgets/page_navigator.dart';
 
 class ForumPage extends HookConsumerWidget {
   final Map<String, dynamic>? arguments;
@@ -26,7 +23,7 @@ class ForumPage extends HookConsumerWidget {
       return filtered;
     }, [arguments]);
 
-    final (asyncFetch, results, onAddPage) = useFetchPages(
+    final (asyncFetch, results, onLoadMore) = useFetchPages(
       ref,
       url: API.searchAnswers,
       params: {"p": page.value, "ps": 10, ...?fetchParams},
@@ -50,7 +47,7 @@ class ForumPage extends HookConsumerWidget {
           onNotification: (ScrollNotification scrollInfo) {
             if (scrollInfo.metrics.pixels ==
                 scrollInfo.metrics.maxScrollExtent) {
-              onAddPage();
+              onLoadMore();
             }
             return true;
           },
@@ -58,7 +55,11 @@ class ForumPage extends HookConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
-                child: AnswersList(asyncFetch: asyncFetch, results: results),
+                child: AnswersList(
+                  asyncFetch: asyncFetch,
+                  results: results,
+                  onLoadMore: onLoadMore,
+                ),
               ),
             ],
           ),

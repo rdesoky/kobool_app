@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:kobool/widgets/answer_list_item.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class AnswersList extends HookWidget {
   final AsyncSnapshot<dynamic> asyncFetch;
   final Map<dynamic, dynamic>? results;
-  const AnswersList({super.key, required this.asyncFetch, this.results});
+  final VoidCallback onLoadMore;
+  const AnswersList({
+    super.key,
+    required this.asyncFetch,
+    this.results,
+    required this.onLoadMore,
+  });
   @override
   Widget build(BuildContext context) {
     if (asyncFetch.connectionState == ConnectionState.waiting &&
@@ -23,16 +30,25 @@ class AnswersList extends HookWidget {
       return ListView.separated(
         separatorBuilder: (context, index) => const SizedBox(height: 4.0),
         padding: const EdgeInsets.all(8.0),
-        itemCount:
-            childList.length +
-            (asyncFetch.connectionState == ConnectionState.waiting ? 1 : 0),
+        itemCount: childList.length + 1,
         itemBuilder: (context, i) {
-          if (i == childList.length &&
-              asyncFetch.connectionState == ConnectionState.waiting) {
+          if (i == childList.length) {
             // render loading indicator
-            return const SizedBox(
-              height: 100,
-              child: Center(child: CircularProgressIndicator()),
+            return VisibilityDetector(
+              key: const Key("loading_indicator"),
+              onVisibilityChanged: (info) {
+                if (info.visibleFraction > 0.1) {
+                  onLoadMore();
+                }
+              },
+              child: SizedBox(
+                height: 60,
+                child: Center(
+                  child: asyncFetch.connectionState == ConnectionState.waiting
+                      ? const CircularProgressIndicator()
+                      : null,
+                ),
+              ),
             );
           }
           final item = childList[i] as Map<String, dynamic>;

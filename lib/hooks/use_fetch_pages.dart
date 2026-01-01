@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/hooks/use_fetch.dart';
 
-(AsyncSnapshot<dynamic>, Map<dynamic, dynamic>, Function) useFetchPages(
+(AsyncSnapshot<dynamic>, Map<dynamic, dynamic>, VoidCallback) useFetchPages(
   WidgetRef ref, {
   required String url,
   Map<dynamic, dynamic> params = const {},
@@ -14,7 +14,7 @@ import 'package:kobool/hooks/use_fetch.dart';
   final asyncFetch = useFetch(
     ref,
     url,
-    params: {"p": page.value, "ps": pageSize},
+    params: {...params, "p": page.value, "ps": pageSize},
   );
   final pages = useState<Map<int, List<dynamic>>>({});
   final total = useState(0);
@@ -56,7 +56,7 @@ import 'package:kobool/hooks/use_fetch.dart';
     return null;
   }, [pages.value.length, startPage.value]);
 
-  final onAddPage = useCallback(() {
+  final onLoadMore = useCallback(() {
     page.value = pages.value.keys.last + 1; //fetch next page
     // if (loadedPages >= 4) {
     //   //trim pages from above
@@ -64,5 +64,5 @@ import 'package:kobool/hooks/use_fetch.dart';
     // }
   }, []);
 
-  return (asyncFetch, results.value, onAddPage);
+  return (asyncFetch, results.value, onLoadMore);
 }
