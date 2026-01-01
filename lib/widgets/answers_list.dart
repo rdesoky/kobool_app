@@ -3,18 +3,13 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:kobool/widgets/answer_list_item.dart';
 
 class AnswersList extends HookWidget {
-  final int? page;
   final AsyncSnapshot<dynamic> asyncFetch;
-  final Map<String, dynamic>? results;
-  const AnswersList({
-    super.key,
-    this.page,
-    required this.asyncFetch,
-    this.results,
-  });
+  final Map<dynamic, dynamic>? results;
+  const AnswersList({super.key, required this.asyncFetch, this.results});
   @override
   Widget build(BuildContext context) {
-    if (asyncFetch.connectionState == ConnectionState.waiting) {
+    if (asyncFetch.connectionState == ConnectionState.waiting &&
+        !asyncFetch.hasData) {
       return const Center(child: CircularProgressIndicator());
     }
     if (asyncFetch.hasError) {
@@ -28,8 +23,18 @@ class AnswersList extends HookWidget {
       return ListView.separated(
         separatorBuilder: (context, index) => const SizedBox(height: 4.0),
         padding: const EdgeInsets.all(8.0),
-        itemCount: childList.length,
+        itemCount:
+            childList.length +
+            (asyncFetch.connectionState == ConnectionState.waiting ? 1 : 0),
         itemBuilder: (context, i) {
+          if (i == childList.length &&
+              asyncFetch.connectionState == ConnectionState.waiting) {
+            // render loading indicator
+            return const SizedBox(
+              height: 100,
+              child: Center(child: CircularProgressIndicator()),
+            );
+          }
           final item = childList[i] as Map<String, dynamic>;
           return AnswerListItem(index: i, props: item);
         },

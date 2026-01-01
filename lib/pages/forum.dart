@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:dio/dio.dart';
 import 'package:kobool/consts/api.dart';
 
-import 'package:kobool/hooks/use_fetch.dart';
+import 'package:kobool/hooks/use_fetch_pages.dart';
 import 'package:kobool/widgets/answers_list.dart';
 import 'package:kobool/widgets/page_navigator.dart';
 
@@ -26,21 +26,12 @@ class ForumPage extends HookConsumerWidget {
       return filtered;
     }, [arguments]);
 
-    final asyncFetch = useFetch(
+    final (asyncFetch, results, onAddPage) = useFetchPages(
       ref,
-      API.searchAnswers,
+      url: API.searchAnswers,
       params: {"p": page.value, "ps": 10, ...?fetchParams},
     );
     // parsed fetch results body
-    final results = useMemoized(() {
-      if (asyncFetch.hasData) {
-        final resp = asyncFetch.data as Response;
-        final body = resp.data as Map<String, dynamic>;
-        return body;
-      }
-      return null;
-    }, [asyncFetch]);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -55,26 +46,22 @@ class ForumPage extends HookConsumerWidget {
         centerTitle: false,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: AnswersList(
-                page: page.value,
-                asyncFetch: asyncFetch,
-                results: results,
+        child: NotificationListener<ScrollNotification>(
+          onNotification: (ScrollNotification scrollInfo) {
+            if (scrollInfo.metrics.pixels ==
+                scrollInfo.metrics.maxScrollExtent) {
+              onAddPage();
+            }
+            return true;
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: AnswersList(asyncFetch: asyncFetch, results: results),
               ),
-            ),
-            PageNavigator(
-              page: page.value,
-              onPrevious: () {
-                page.value = page.value - 1;
-              },
-              onNext: () {
-                page.value = page.value + 1;
-              },
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
