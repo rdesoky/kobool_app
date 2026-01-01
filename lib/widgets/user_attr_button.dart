@@ -1,10 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:kobool/consts/api.dart';
 import 'package:kobool/consts/routes.dart';
 import 'package:kobool/utils/user_attr.dart';
 
 class UserAttr {
+  static const id = "id";
   static const loginName = "login_id";
   static const pic = "main_pic";
   static const gender = "gender";
@@ -33,15 +35,26 @@ class UserAttrButton extends HookWidget {
         (ModalRoute.of(context)!.settings.arguments ?? {})
             as Map<dynamic, dynamic>;
     final colorScheme = Theme.of(context).colorScheme;
-    final isMale = int.parse(props[UserAttr.gender].toString()) == 0;
+    final gender = props[UserAttr.gender].toString();
+    final isMale = gender == "0";
     final genderColor = isMale ? Colors.blue : Colors.pink;
     final genderIcon = isMale ? Icons.male : Icons.female;
+    final id = props[UserAttr.id]!.toString();
+    final pic = props[UserAttr.pic]?.toString() ?? "0";
     final child = switch (attr) {
       UserAttr.loginName => Text(
         props[UserAttr.loginName].toString(),
         overflow: TextOverflow.ellipsis,
       ),
-      UserAttr.pic => Icon(Icons.person, color: genderColor, size: picSize),
+      UserAttr.pic => Image.network(
+        Uri.parse(API.pic)
+            .replace(queryParameters: {"g": gender, "id": pic, "tn": "1"})
+            .toString(),
+        width: picSize,
+      ),
+      // Icon(
+      //   Icons.person, color: genderColor, size: picSize
+      //   ),
       UserAttr.gender => Icon(genderIcon, color: genderColor),
       UserAttr.age =>
         props[UserAttr.age] != null
@@ -66,10 +79,10 @@ class UserAttrButton extends HookWidget {
     };
     final onPressed = switch (attr) {
       UserAttr.pic => () {
-        Navigator.pushNamed(context, Routes.user, arguments: props['id']);
+        Navigator.pushNamed(context, Routes.user, arguments: id);
       },
       UserAttr.loginName => () {
-        Navigator.pushNamed(context, Routes.user, arguments: props['id']);
+        Navigator.pushNamed(context, Routes.user, arguments: id);
       },
       UserAttr.gender =>
         pageArgs.containsKey('g')
