@@ -8,6 +8,7 @@ import 'package:kobool/pages/login.dart';
 import 'package:kobool/pages/register.dart';
 import 'package:kobool/pages/results.dart';
 import 'package:kobool/pages/search.dart';
+import 'package:kobool/pages/settings.dart';
 import 'package:kobool/pages/unknown.dart';
 import 'package:kobool/pages/user.dart';
 
@@ -33,6 +34,8 @@ class RouteGenerator {
         return _buildRoute(DrillPage(), settings);
       case Routes.chat:
         return _buildRoute(const ChatPage(), settings);
+      case Routes.settings:
+        return _buildRoute(const SettingsPage(), settings);
       case Routes.user:
         return _buildRoute(
           UserPage(id: settings.arguments.toString()),

@@ -38,22 +38,7 @@ class KbAppBar extends ConsumerWidget implements PreferredSizeWidget {
       ),
       backgroundColor: colorScheme.primaryContainer,
       actionsPadding: const EdgeInsets.symmetric(horizontal: 8),
-      actions: [
-        IconButton(
-          icon: Icon(
-            brightness == Brightness.light ? Icons.dark_mode : Icons.light_mode,
-          ),
-          onPressed: () {
-            ref
-                .read(themeModeProvider.notifier)
-                .setThemeMode(
-                  brightness == Brightness.light
-                      ? ThemeMode.dark
-                      : ThemeMode.light,
-                );
-          },
-        ),
-      ],
+      actions: [],
     );
   }
 

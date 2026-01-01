@@ -129,29 +129,16 @@ class HomePage extends ConsumerWidget {
                           ),
                         ),
                       ...[
-                        ("search".tr(), Icons.search, Routes.search, null),
-                        ("forum".tr(), Icons.forum, Routes.forum, null),
-                        (
-                          "contact".tr(),
-                          Icons.contact_mail,
-                          Routes.contact,
-                          null,
-                        ),
-                        (
-                          "language".tr(),
-                          Icons.language,
-                          null,
-                          () => showLanguageDialog(context, ref),
-                        ),
+                        ("search".tr(), Icons.search, Routes.search),
+                        ("forum".tr(), Icons.forum, Routes.forum),
+                        ("contact".tr(), Icons.contact_mail, Routes.contact),
+                        ("settings".tr(), Icons.settings, Routes.settings),
                       ].map(
                         (item) => HomeButton(
                           label: item.$1,
                           icon: item.$2,
-                          onPressed: item.$4 != null
-                              ? item.$4!
-                              : item.$3 != null
-                              ? () => Navigator.pushNamed(context, item.$3!)
-                              : null,
+                          onPressed: () =>
+                              Navigator.pushNamed(context, item.$3),
                         ),
                       ),
                     ],

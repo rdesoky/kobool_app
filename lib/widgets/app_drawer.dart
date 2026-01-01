@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/consts/routes.dart';
 import 'package:kobool/providers/router_provider.dart';
 import 'package:kobool/providers/user_session_provider.dart';
-import 'package:kobool/utils/dialogs.dart';
 
 class AppDrawer extends ConsumerWidget {
   final bool showHeader;
@@ -58,12 +57,16 @@ class AppDrawer extends ConsumerWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.language),
-            title: Text('language'.tr()),
-            onTap: () {
-              showLanguageDialog(context, ref);
-              Scaffold.of(context).closeDrawer();
-            },
+            leading: Icon(Icons.settings),
+            title: Text('settings'.tr()),
+            selected: routerState.name == Routes.settings,
+            selectedTileColor: colorScheme.surfaceContainerHighest,
+            onTap: routerState.name == Routes.settings
+                ? null
+                : () {
+                    navigatorKey.currentState?.pushNamed(Routes.settings);
+                    Scaffold.of(context).closeDrawer();
+                  },
           ),
         ],
       ),
