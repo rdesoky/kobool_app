@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:dio/dio.dart';
 import 'package:kobool/consts/api.dart';
 import 'package:kobool/hooks/use_fetch.dart';
+import 'package:kobool/hooks/use_fetch_pages.dart';
 import 'package:kobool/providers/main_app_bar_provider.dart';
 import 'package:kobool/widgets/user_list.dart';
 
@@ -14,57 +15,14 @@ class ResultsPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var page = useState(0);
-    const pageSize = 5;
-    var pages = useState<Map<int, List<dynamic>>>({});
-    var total = useState(0);
-    var startPage = useState(0);
-    var loadedPages = pages.value.values.length;
-
     final pageArgs =
         (ModalRoute.of(context)!.settings.arguments ?? {})
             as Map<dynamic, dynamic>;
-
-    final asyncFetch = useFetch(
+    final (asyncFetch, results, onAddPage) = useFetchPages(
       ref,
-      API.query,
-      params: {...pageArgs, "p": page.value, "ps": pageSize},
+      url: API.query,
+      params: pageArgs,
     );
-    var results = useState<Map<String, dynamic>>({
-      "total": 0,
-      "child_list": [],
-    });
-
-    // parsed fetch results body
-    useEffect(() {
-      if (asyncFetch.hasData) {
-        final resp = asyncFetch.data as Response;
-        final body = resp.data as Map<String, dynamic>;
-        final bodyPage = int.parse(body["page"].toString());
-        if (body["child_list"] == null) {
-          return null;
-        }
-        final childList = body["child_list"] as List;
-        for (var i = 0; i < childList.length; i++) {
-          childList[i]["index"] = bodyPage * pageSize + i;
-        }
-        total.value = int.parse(body["total"].toString());
-
-        pages.value = pages.value..[bodyPage] = childList;
-      }
-      return null;
-    }, [asyncFetch]);
-
-    useEffect(() {
-      //childList to expand up to 5 pages from startPage.value
-      final childList = pages.value.values
-          // .skip(startPage.value)
-          // .take(5)
-          .expand((x) => x)
-          .toList();
-      results.value = {"total": total.value, "child_list": childList};
-      return null;
-    }, [pages.value.length, startPage.value]);
 
     return Scaffold(
       appBar: AppBar(
@@ -73,7 +31,7 @@ class ResultsPage extends HookConsumerWidget {
               ? 'searching'.tr()
               : asyncFetch.hasError
               ? 'Error: ${asyncFetch.error}'
-              : 'found_total'.tr(args: [results.value["total"].toString()]),
+              : 'found_total'.tr(args: [results["total"].toString()]),
         ),
         centerTitle: false,
       ),
@@ -87,21 +45,9 @@ class ResultsPage extends HookConsumerWidget {
                 ref.read(mainAppBarProvider.notifier).state = true;
               }
             }
-            // if (scrollInfo.metrics.axisDirection == AxisDirection.down &&
-            //     scrollInfo.metrics.pixels > 10) {
-            //   ref.read(mainAppBarProvider.notifier).state = false;
-            // }
-            // if (startPage.value > 0 && scrollInfo.metrics.pixels == 0) {
-            //   //TODO: avoid multiple decrementing
-            //   startPage.value = startPage.value - 1;
-            // }
             if (scrollInfo.metrics.pixels ==
                 scrollInfo.metrics.maxScrollExtent) {
-              page.value = pages.value.keys.last + 1; //fetch next page
-              // if (loadedPages >= 4) {
-              //   //trim pages from above
-              //   startPage.value = page.value - 3;
-              // }
+              onAddPage();
             }
             return true;
           },
@@ -109,11 +55,7 @@ class ResultsPage extends HookConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
-                child: UserList(
-                  page: page.value,
-                  asyncFetch: asyncFetch,
-                  results: results.value,
-                ),
+                child: UserList(asyncFetch: asyncFetch, results: results),
               ),
             ],
           ),

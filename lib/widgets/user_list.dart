@@ -3,15 +3,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:kobool/widgets/user_list_item.dart';
 
 class UserList extends HookWidget {
-  final int? page;
   final AsyncSnapshot<dynamic> asyncFetch;
-  final Map<String, dynamic>? results;
-  const UserList({
-    super.key,
-    this.page,
-    required this.asyncFetch,
-    this.results,
-  });
+  final Map<dynamic, dynamic>? results;
+  const UserList({super.key, required this.asyncFetch, this.results});
   @override
   Widget build(BuildContext context) {
     if (asyncFetch.connectionState == ConnectionState.waiting &&
@@ -25,7 +19,7 @@ class UserList extends HookWidget {
       return const Center(child: Text('No data'));
     }
     try {
-      final childList = results?['child_list'] as List<dynamic>? ?? [];
+      final childList = results?["child_list"] as List<dynamic>? ?? [];
       return ListView.separated(
         separatorBuilder: (context, index) => const SizedBox(height: 0.0),
         padding: const EdgeInsets.all(8.0),
