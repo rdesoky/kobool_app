@@ -15,6 +15,10 @@ class LoginPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final pageArgs =
+        (ModalRoute.of(context)!.settings.arguments ?? {})
+            as Map<dynamic, dynamic>;
+    final autoLogout = useState(pageArgs['auto_logout'] ?? false);
     final isLogin = useState(true);
     final usernameController = useTextEditingController();
     final emailController = useTextEditingController();
@@ -51,7 +55,7 @@ class LoginPage extends HookConsumerWidget {
                       .setUserSession(userSession);
 
                   if (context.mounted) {
-                    Navigator.pushNamed(context, Routes.home);
+                    Navigator.pushReplacementNamed(context, Routes.home);
                   }
                 } else {
                   errorMessage.value = error.isEmpty ? "invalid_login" : error;
@@ -86,6 +90,11 @@ class LoginPage extends HookConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     spacing: 16,
                     children: [
+                      if (autoLogout.value)
+                        Text(
+                          'session_expired_title'.tr(),
+                          style: const TextStyle(color: Colors.red),
+                        ),
                       if (errorMessage.value != null)
                         Text(
                           errorMessage.value!.tr(),
