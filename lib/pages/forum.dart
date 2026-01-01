@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/consts/api.dart';
 import 'package:kobool/hooks/use_fetch_pages.dart';
+import 'package:kobool/providers/main_app_bar_provider.dart';
 import 'package:kobool/widgets/answers_list.dart';
 
 class ForumPage extends HookConsumerWidget {
@@ -26,7 +28,7 @@ class ForumPage extends HookConsumerWidget {
     final (asyncFetch, results, onLoadMore) = useFetchPages(
       ref,
       url: API.searchAnswers,
-      params: {"p": page.value, "ps": 10, ...?fetchParams},
+      params: {...?fetchParams},
     );
     // parsed fetch results body
     return Scaffold(
@@ -45,9 +47,12 @@ class ForumPage extends HookConsumerWidget {
       body: Center(
         child: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
-            if (scrollInfo.metrics.pixels ==
-                scrollInfo.metrics.maxScrollExtent) {
-              onLoadMore();
+            if (scrollInfo is UserScrollNotification) {
+              if (scrollInfo.direction == ScrollDirection.reverse) {
+                ref.read(mainAppBarProvider.notifier).state = false;
+              } else if (scrollInfo.direction == ScrollDirection.forward) {
+                ref.read(mainAppBarProvider.notifier).state = true;
+              }
             }
             return true;
           },
