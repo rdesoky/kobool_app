@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:kobool/consts/api.dart';
 import 'package:kobool/consts/routes.dart';
 import 'package:kobool/utils/user_attr.dart';
 
@@ -32,15 +31,15 @@ class UserAttrButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final pageArgs =
-        (ModalRoute.of(context)!.settings.arguments ?? {})
-            as Map<dynamic, dynamic>;
+        (ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?) ??
+        {};
     final colorScheme = Theme.of(context).colorScheme;
     final gender = props[UserAttr.gender].toString();
     final isMale = gender == "0";
     final genderColor = isMale ? Colors.blue : Colors.pink;
     final genderIcon = isMale ? Icons.male : Icons.female;
     final id = props[UserAttr.id]!.toString();
-    final pic = props[UserAttr.pic]?.toString() ?? "0";
+    // final pic = props[UserAttr.pic]?.toString() ?? "0";
     final child = switch (attr) {
       UserAttr.loginName => Text(
         props[UserAttr.loginName].toString(),

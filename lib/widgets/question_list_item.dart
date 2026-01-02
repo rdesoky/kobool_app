@@ -15,6 +15,10 @@ class QuestionListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final gender = int.parse(item['gender'].toString());
+    final isMale = gender == 0;
+    final genderColor = isMale ? Colors.blue : Colors.pink;
+
     return Material(
       color: index % 2 == 0
           ? colorScheme.surface
@@ -28,11 +32,9 @@ class QuestionListItem extends StatelessWidget {
             children: [
               // Avatar Icon
               Icon(
-                Icons.person,
+                isMale ? Icons.male : Icons.female,
                 size: 40,
-                color: item['gender'] == 2
-                    ? colorScheme.tertiary
-                    : colorScheme.secondary,
+                color: genderColor,
               ),
               const SizedBox(width: 8),
               Expanded(
@@ -54,8 +56,7 @@ class QuestionListItem extends StatelessWidget {
                                 'Unknown Question',
                           ),
                           TextSpan(
-                            text:
-                                '(${item['ask_count'] ?? item['answer_count'] ?? 0})',
+                            text: '(${item['answer_count'] ?? 0})',
                             style: TextStyle(
                               color: colorScheme.primary,
                               fontWeight: FontWeight.bold,

@@ -49,8 +49,13 @@ class ForumPage extends HookConsumerWidget {
             onPressed: () {
               showModalBottomSheet(
                 context: context,
-                // constraints: const BoxConstraints(minHeight: 600),
+                constraints: const BoxConstraints(
+                  maxWidth: 640,
+                  minHeight: 400,
+                  maxHeight: 600,
+                ),
                 builder: (context) => QuestionList(),
+                isScrollControlled: true,
               );
             },
           ),

@@ -40,7 +40,7 @@ class QuestionList extends HookConsumerWidget {
 
     return Container(
       color: colorScheme.surface,
-      // constraints: const BoxConstraints(minHeight: 500),
+      constraints: const BoxConstraints(minHeight: 500),
       child: Column(
         children: [
           // Header with close button
