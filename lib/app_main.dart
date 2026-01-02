@@ -68,11 +68,11 @@ class _AppScaffold extends HookConsumerWidget {
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
           if (scrollInfo is UserScrollNotification) {
-            if (scrollInfo.direction == ScrollDirection.reverse) {
-              ref.read(mainAppBarProvider.notifier).state = false;
-            } else if (scrollInfo.direction == ScrollDirection.forward) {
-              ref.read(mainAppBarProvider.notifier).state = true;
-            }
+            // if (scrollInfo.direction == ScrollDirection.reverse) {
+            //   ref.read(mainAppBarProvider.notifier).state = false;
+            // } else if (scrollInfo.direction == ScrollDirection.forward) {
+            //   ref.read(mainAppBarProvider.notifier).state = true;
+            // }
           }
           return true;
         },

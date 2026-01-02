@@ -52,7 +52,12 @@ import 'package:kobool/hooks/use_fetch.dart';
         // .take(5)
         .expand((x) => x)
         .toList();
-    results.value = {"total": total.value, "child_list": childList};
+
+    final body = asyncFetch.hasData
+        ? asyncFetch.data.data as Map<dynamic, dynamic>
+        : {"total": 0};
+
+    results.value = {...body, "child_list": childList};
     return null;
   }, [pages.value.length, startPage.value]);
 

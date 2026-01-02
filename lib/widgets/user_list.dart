@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:kobool/widgets/load_more_item.dart';
 import 'package:kobool/widgets/user_list_item.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -36,22 +37,7 @@ class UserList extends HookWidget {
         itemBuilder: (context, i) {
           if (i == childList.length) {
             // render loading indicator
-            return VisibilityDetector(
-              key: const Key('user-list-load-more'),
-              onVisibilityChanged: (visibilityInfo) {
-                // Trigger callback when the widget becomes visible
-                if (visibilityInfo.visibleFraction > 0.1 &&
-                    onLoadMore != null) {
-                  onLoadMore!();
-                }
-              },
-              child: SizedBox(
-                height: 60,
-                child: asyncFetch.connectionState == ConnectionState.waiting
-                    ? const Center(child: CircularProgressIndicator())
-                    : null,
-              ),
-            );
+            return LoadMoreItem(onLoadMore: onLoadMore, asyncFetch: asyncFetch);
           }
           final item = childList[i] as Map<String, dynamic>;
           return UserListItem(props: item);

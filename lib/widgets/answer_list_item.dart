@@ -37,7 +37,7 @@ class AnswerListItem extends HookWidget {
                 Navigator.pushNamed(
                   context,
                   Routes.forum,
-                  arguments: {"qid": questionId, "qtext": questionText},
+                  arguments: {"qid": questionId},
                 );
               } else {
                 Navigator.pushNamed(context, Routes.user, arguments: userId);

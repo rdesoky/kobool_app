@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:kobool/widgets/answer_list_item.dart';
-import 'package:visibility_detector/visibility_detector.dart';
+import 'package:kobool/widgets/load_more_item.dart';
 
 class AnswersList extends HookWidget {
   final AsyncSnapshot<dynamic> asyncFetch;
@@ -30,29 +30,15 @@ class AnswersList extends HookWidget {
       return ListView.separated(
         separatorBuilder: (context, index) => const SizedBox(height: 4.0),
         padding: const EdgeInsets.all(8.0),
-        itemCount: childList.isEmpty ? 0 : childList.length + 1,
+        itemCount: childList.isEmpty
+            ? 0
+            : childList.length + 1, // add load more item
         itemBuilder: (context, i) {
-          if (i == childList.length) {
-            // render loading indicator
-            return VisibilityDetector(
-              key: const Key("loading_indicator"),
-              onVisibilityChanged: (info) {
-                if (info.visibleFraction > 0.1) {
-                  onLoadMore();
-                }
-              },
-              child: SizedBox(
-                height: 60,
-                child: Center(
-                  child: asyncFetch.connectionState == ConnectionState.waiting
-                      ? const CircularProgressIndicator()
-                      : null,
-                ),
-              ),
-            );
+          if (i >= childList.length) {
+            // render load more list item
+            return LoadMoreItem(onLoadMore: onLoadMore, asyncFetch: asyncFetch);
           }
-          final item = childList[i] as Map<String, dynamic>;
-          return AnswerListItem(index: i, props: item);
+          return AnswerListItem(index: i, props: childList[i]);
         },
       );
     } catch (e) {

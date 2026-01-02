@@ -46,15 +46,13 @@ class UserAttrButton extends HookWidget {
         props[UserAttr.loginName].toString(),
         overflow: TextOverflow.ellipsis,
       ),
-      UserAttr.pic => Image.network(
-        Uri.parse(API.pic)
-            .replace(queryParameters: {"g": gender, "id": pic, "tn": "1"})
-            .toString(),
-        width: picSize,
-      ),
-      // Icon(
-      //   Icons.person, color: genderColor, size: picSize
-      //   ),
+      // UserAttr.pic => Image.network(
+      //   Uri.parse(API.pic)
+      //       .replace(queryParameters: {"g": gender, "id": pic, "tn": "1"})
+      //       .toString(),
+      //   width: picSize,
+      // ),
+      UserAttr.pic => Icon(Icons.person, color: genderColor, size: picSize),
       UserAttr.gender => Icon(genderIcon, color: genderColor),
       UserAttr.age =>
         props[UserAttr.age] != null
