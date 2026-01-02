@@ -1,4 +1,5 @@
 {
+	"filter": "ادخل عبارة البحث",
 	"app_name": "قبول",
 	"home": "الرئيسية",
 	"home_title": "مرحبا بك {}",
@@ -6,7 +7,7 @@
 	"register": "اشتراك",
 	"search": "بحث",
 	"results": "نتائج البحث",
-	"forum": "منتدى الأسئلة",
+	"forum": "منتدى التعارف",
 	"drill": "استكشاف",
 	"contact": "اتصل",
 	"language": "اللغة",
@@ -15,7 +16,7 @@
 	"light_theme": "الوضع الفاتح",
 	"online_members": "الاعضاء المتصلين",
 	"members": "الاعضاء",
-	"qa_forum": "منتدى الأسئلة",
+	"qa_forum": "منتدى التعارف",
 	"contact_us": "اتصل بنا",
 	"change_language": "تغيير اللغة",
 	"cancel": "إلغاء",

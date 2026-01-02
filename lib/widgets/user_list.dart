@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:kobool/widgets/load_more_item.dart';
 import 'package:kobool/widgets/user_list_item.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 class UserList extends HookWidget {
   final AsyncSnapshot<dynamic> asyncFetch;

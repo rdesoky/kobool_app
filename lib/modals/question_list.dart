@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/consts/api.dart';
 import 'package:kobool/consts/routes.dart';
 import 'package:kobool/hooks/use_fetch_pages.dart';
-import 'package:kobool/pages/forum.dart' show ForumPage;
 import 'package:kobool/widgets/load_more_item.dart';
 import 'package:kobool/widgets/question_list_item.dart';
 
@@ -17,18 +16,31 @@ class QuestionList extends HookConsumerWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final filterController = useTextEditingController();
     final filter = useState("");
+    final params = useState<Map<String, dynamic>>({});
+
+    useEffect(() {
+      params.value = filter.value.isNotEmpty
+          ? {"search": filter.value}
+          : const {};
+      return null;
+    }, [filter.value]);
 
     final (asyncFetch, results, onLoadMore) = useFetchPages(
       ref,
       url: API.questionList,
-      params: filter.value.isNotEmpty ? {"q": filter.value} : const {},
+      params: params.value,
       pageSize: 10,
     );
 
     final childList = results['child_list'] as List<dynamic>? ?? [];
 
+    void onSearchSubmit() {
+      filter.value = filterController.text;
+    }
+
     return Container(
       color: colorScheme.surface,
+      // constraints: const BoxConstraints(minHeight: 500),
       child: Column(
         children: [
           // Header with close button
@@ -58,11 +70,12 @@ class QuestionList extends HookConsumerWidget {
               children: [
                 Expanded(
                   child: SizedBox(
-                    height: 32,
-                    child: TextField(
+                    // height: 32,
+                    child: TextFormField(
                       autofocus: true,
                       controller: filterController,
                       decoration: InputDecoration(hintText: 'filter'.tr()),
+                      onFieldSubmitted: (_) => onSearchSubmit(),
                     ),
                   ),
                 ),
@@ -80,7 +93,7 @@ class QuestionList extends HookConsumerWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                     ),
                     onPressed: () {
-                      filter.value = filterController.text;
+                      onSearchSubmit();
                     },
                     child: Text('search'.tr()),
                   ),

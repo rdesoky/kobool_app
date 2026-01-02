@@ -25,7 +25,7 @@ class ForumPage extends HookConsumerWidget {
     final (asyncFetch, results, onLoadMore) = useFetchPages(
       ref,
       url: API.searchAnswers,
-      params: {...?fetchParams},
+      params: fetchParams,
     );
 
     // parsed fetch results body
@@ -45,7 +45,7 @@ class ForumPage extends HookConsumerWidget {
         actionsPadding: const EdgeInsets.symmetric(horizontal: 8),
         actions: [
           IconButton(
-            icon: const Icon(Icons.question_mark),
+            icon: const Icon(Icons.find_in_page_outlined),
             onPressed: () {
               showModalBottomSheet(
                 context: context,

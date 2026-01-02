@@ -7,24 +7,47 @@ import 'package:kobool/hooks/use_fetch.dart';
 (AsyncSnapshot<dynamic>, Map<dynamic, dynamic>, VoidCallback) useFetchPages(
   WidgetRef ref, {
   required String url,
-  Map<dynamic, dynamic> params = const {},
+  Map<String, dynamic>? params,
   int pageSize = 5,
 }) {
   final page = useState(0);
-  final asyncFetch = useFetch(
-    ref,
-    url,
-    params: {...params, "p": page.value, "ps": pageSize},
-  );
-  final pages = useState<Map<int, List<dynamic>>>({});
-  final total = useState(0);
-  final startPage = useState(0);
-  // final loadedPages = pages.value.values.length;
+  final loadedPagesCount = useState(0);
 
-  final results = useState<Map<dynamic, dynamic>>({
-    "total": 0,
-    "child_list": [],
-  });
+  final memoizedParams = useMemoized(
+    () => {...?params, "p": page.value, "ps": pageSize},
+    [params, page.value, pageSize],
+  );
+
+  final asyncFetch = useFetch(ref, url, params: memoizedParams);
+  final loadedPages = useState<Map<int, List<dynamic>>>({});
+  final total = useState(0);
+
+  final results = useState<Map<dynamic, dynamic>>({});
+
+  void updateResults() {
+    //childList to expand up to 5 pages from startPage.value
+    final childList = loadedPages.value.values
+        // .skip(startPage.value)
+        // .take(5)
+        .expand((x) => x)
+        .toList();
+
+    final body = asyncFetch.hasData
+        ? asyncFetch.data.data as Map<dynamic, dynamic>
+        : {"total": 0};
+
+    results.value = {...body, "child_list": childList};
+  }
+
+  // updated param value, reset the old results
+  useEffect(() {
+    loadedPages.value = {};
+    page.value = 0;
+    results.value = {"total": 0, "child_list": []};
+    loadedPagesCount.value = 0;
+    updateResults();
+    return null;
+  }, [params]);
 
   useEffect(() {
     if (asyncFetch.hasData) {
@@ -40,33 +63,15 @@ import 'package:kobool/hooks/use_fetch.dart';
             bodyPage * pageSize + i; //write absolute index in each item
       }
       total.value = int.parse(body["total"].toString());
-      pages.value = pages.value..[bodyPage] = childList;
+      loadedPages.value = loadedPages.value..[bodyPage] = childList;
+      loadedPagesCount.value = loadedPages.value.length;
+      updateResults();
     }
     return null;
   }, [asyncFetch]);
 
-  useEffect(() {
-    //childList to expand up to 5 pages from startPage.value
-    final childList = pages.value.values
-        // .skip(startPage.value)
-        // .take(5)
-        .expand((x) => x)
-        .toList();
-
-    final body = asyncFetch.hasData
-        ? asyncFetch.data.data as Map<dynamic, dynamic>
-        : {"total": 0};
-
-    results.value = {...body, "child_list": childList};
-    return null;
-  }, [pages.value.length, startPage.value]);
-
   final onLoadMore = useCallback(() {
-    page.value = pages.value.keys.last + 1; //fetch next page
-    // if (loadedPages >= 4) {
-    //   //trim pages from above
-    //   startPage.value = page.value - 3;
-    // }
+    page.value = loadedPages.value.keys.last + 1; //fetch next page
   }, []);
 
   return (asyncFetch, results.value, onLoadMore);

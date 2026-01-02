@@ -24,7 +24,10 @@ class RouteGenerator {
       case Routes.search:
         return _buildRoute(const SearchPage(), settings);
       case Routes.results:
-        return _buildRoute(const ResultsPage(), settings);
+        return _buildRoute(
+          ResultsPage(arguments: settings.arguments as Map<String, dynamic>?),
+          settings,
+        );
       case Routes.forum:
         return _buildRoute(
           ForumPage(arguments: settings.arguments as Map<String, dynamic>?),

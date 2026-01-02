@@ -11,17 +11,15 @@ import 'package:kobool/providers/main_app_bar_provider.dart';
 import 'package:kobool/widgets/user_list.dart';
 
 class ResultsPage extends HookConsumerWidget {
-  const ResultsPage({super.key});
+  const ResultsPage({super.key, this.arguments});
+  final Map<String, dynamic>? arguments;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pageArgs =
-        (ModalRoute.of(context)!.settings.arguments ?? {})
-            as Map<dynamic, dynamic>;
     final (asyncFetch, results, onLoadMore) = useFetchPages(
       ref,
       url: API.query,
-      params: pageArgs,
+      params: arguments,
     );
 
     return Scaffold(
