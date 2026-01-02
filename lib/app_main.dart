@@ -104,7 +104,7 @@ class AppNavigator extends HookConsumerWidget {
     useEffect(() {
       if (!isLoggedIn) {
         // if current route requries authentication, auto redirect to login
-        navigatorKey.currentState?.pushNamed(
+        navigatorKey.currentState?.pushReplacementNamed(
           Routes.login,
           arguments: {"auto_logout": true},
         );

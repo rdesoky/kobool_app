@@ -23,6 +23,8 @@ Widget routeIcon(String routeName) {
       return const Icon(Icons.person);
     case Routes.contact:
       return const Icon(Icons.contact_mail);
+    case Routes.settings:
+      return const Icon(Icons.settings);
     default:
       return const Icon(Icons.error);
   }
