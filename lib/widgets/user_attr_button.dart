@@ -38,6 +38,7 @@ class UserAttrButton extends HookWidget {
     final isMale = gender == "0";
     final genderColor = isMale ? Colors.blue : Colors.pink;
     final genderIcon = isMale ? Icons.male : Icons.female;
+    final genderPic = isMale ? Icons.person : Icons.person_2;
     final id = props[UserAttr.id]!.toString();
     // final pic = props[UserAttr.pic]?.toString() ?? "0";
     final child = switch (attr) {
@@ -51,7 +52,7 @@ class UserAttrButton extends HookWidget {
       //       .toString(),
       //   width: picSize,
       // ),
-      UserAttr.pic => Icon(Icons.person, color: genderColor, size: picSize),
+      UserAttr.pic => Icon(genderPic, color: genderColor, size: picSize),
       UserAttr.gender => Icon(genderIcon, color: genderColor),
       UserAttr.age =>
         props[UserAttr.age] != null

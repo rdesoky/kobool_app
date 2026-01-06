@@ -1,18 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:kobool/consts/api.dart';
+import 'package:kobool/hooks/use_fetch.dart';
+import 'package:kobool/widgets/user_list_item.dart';
 
-class UserPage extends StatelessWidget {
-  final String id;
-  const UserPage({super.key, required this.id});
+class UserPage extends HookConsumerWidget {
+  const UserPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final pageArgs =
+        (ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?) ??
+        {};
+    final asyncFetch = useFetch(ref, API.user, params: {"id": pageArgs['id']});
+
     return Scaffold(
       appBar: AppBar(title: const Text('User'), centerTitle: false),
 
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text("User: $id", style: TextStyle(fontSize: 24))],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (asyncFetch.connectionState == ConnectionState.waiting)
+                const CircularProgressIndicator(),
+              if (asyncFetch.hasError) Text('Error: ${asyncFetch.error}'),
+              if (asyncFetch.hasData)
+                UserListItem(
+                  props: asyncFetch.data.data as Map<String, dynamic>,
+                ),
+            ],
+          ),
         ),
       ),
     );

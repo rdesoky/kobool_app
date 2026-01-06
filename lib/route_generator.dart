@@ -40,10 +40,7 @@ class RouteGenerator {
       case Routes.settings:
         return _buildRoute(const SettingsPage(), settings);
       case Routes.user:
-        return _buildRoute(
-          UserPage(id: settings.arguments.toString()),
-          settings,
-        );
+        return _buildRoute(UserPage(), settings);
       default:
         return _buildRoute(
           UnknownPage(pageName: settings.name ?? 'unknown'),

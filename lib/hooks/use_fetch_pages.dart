@@ -33,7 +33,7 @@ import 'package:kobool/hooks/use_fetch.dart';
         .toList();
 
     final body = asyncFetch.hasData
-        ? asyncFetch.data.data as Map<dynamic, dynamic>
+        ? (asyncFetch.data as Response).data as Map<dynamic, dynamic>
         : {"total": 0};
 
     results.value = {...body, "child_list": childList};

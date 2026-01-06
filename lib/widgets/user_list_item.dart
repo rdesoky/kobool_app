@@ -9,6 +9,9 @@ class UserListItem extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final pageArgs =
+        (ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?) ??
+        {};
     final login = props['login_id'] ?? '';
     final title = props['ad_title'] ?? '';
     final selfDesc = props['self_desc'] ?? '';
@@ -37,7 +40,7 @@ class UserListItem extends HookWidget {
                   Navigator.pushNamed(
                     context,
                     Routes.user,
-                    arguments: props['id'],
+                    arguments: {...pageArgs, "id": props['id']},
                   );
                 },
                 isThreeLine: true,
