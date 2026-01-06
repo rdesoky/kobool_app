@@ -77,10 +77,18 @@ class UserAttrButton extends HookWidget {
     };
     final onPressed = switch (attr) {
       UserAttr.pic => () {
-        Navigator.pushNamed(context, Routes.user, arguments: id);
+        Navigator.pushNamed(
+          context,
+          Routes.user,
+          arguments: {...pageArgs, "id": id},
+        );
       },
       UserAttr.loginName => () {
-        Navigator.pushNamed(context, Routes.user, arguments: id);
+        Navigator.pushNamed(
+          context,
+          Routes.user,
+          arguments: {...pageArgs, "id": id},
+        );
       },
       UserAttr.gender =>
         pageArgs.containsKey('g')

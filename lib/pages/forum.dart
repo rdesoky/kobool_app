@@ -8,17 +8,15 @@ import 'package:kobool/modals/question_list.dart';
 import 'package:kobool/widgets/answers_list.dart';
 
 class ForumPage extends HookConsumerWidget {
-  final Map<String, dynamic>? arguments;
   const ForumPage({super.key, this.arguments});
+  final Map<String, dynamic>? arguments;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final colorScheme = Theme.of(context).colorScheme;
     Map<String, dynamic>? fetchParams = useMemoized(() {
       final filtered = arguments != null
           ? Map<String, dynamic>.from(arguments!)
           : null;
-      // filtered?.removeWhere((key, _) => ["qtext"].contains(key));
       return filtered;
     }, [arguments]);
 
@@ -32,14 +30,15 @@ class ForumPage extends HookConsumerWidget {
     return Scaffold(
       // bottomSheet: bottomSheetWidget.value,
       appBar: AppBar(
-        title: Text(
-          asyncFetch.hasError
-              ? 'Error: ${asyncFetch.error}'
-              : asyncFetch.hasData
-              ? (results['question_text'] != null
-                    ? '${results['question_text']}'
-                    : "qa_forum".tr())
-              : 'searching'.tr(),
+        title: Tooltip(
+          message: results['question_text'] ?? "qa_forum".tr(),
+          child: Text(
+            asyncFetch.hasError
+                ? 'Error: ${asyncFetch.error}'
+                : asyncFetch.hasData
+                ? results['question_text'] ?? "qa_forum".tr()
+                : 'searching'.tr(),
+          ),
         ),
         centerTitle: false,
         actionsPadding: const EdgeInsets.symmetric(horizontal: 8),
