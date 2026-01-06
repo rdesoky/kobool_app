@@ -38,7 +38,7 @@ class UserAttrButton extends HookWidget {
     final isMale = gender == "0";
     final genderColor = isMale ? Colors.blue : Colors.pink;
     final genderIcon = isMale ? Icons.male : Icons.female;
-    final genderPic = isMale ? Icons.person : Icons.person_2;
+    final genderPic = isMale ? Icons.person : Icons.person_3;
     final id = props[UserAttr.id]!.toString();
     // final pic = props[UserAttr.pic]?.toString() ?? "0";
     final child = switch (attr) {
@@ -76,20 +76,26 @@ class UserAttrButton extends HookWidget {
       _ => null,
     };
     final onPressed = switch (attr) {
-      UserAttr.pic => () {
-        Navigator.pushNamed(
-          context,
-          Routes.user,
-          arguments: {...pageArgs, "id": id},
-        );
-      },
-      UserAttr.loginName => () {
-        Navigator.pushNamed(
-          context,
-          Routes.user,
-          arguments: {...pageArgs, "id": id},
-        );
-      },
+      UserAttr.pic =>
+        pageArgs.containsKey('id')
+            ? null
+            : () {
+                Navigator.pushNamed(
+                  context,
+                  Routes.user,
+                  arguments: {...pageArgs, "id": id},
+                );
+              },
+      UserAttr.loginName =>
+        pageArgs.containsKey('id')
+            ? null
+            : () {
+                Navigator.pushNamed(
+                  context,
+                  Routes.user,
+                  arguments: {...pageArgs, "id": id},
+                );
+              },
       UserAttr.gender =>
         pageArgs.containsKey('g')
             ? null

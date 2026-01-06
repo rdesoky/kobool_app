@@ -36,13 +36,15 @@ class UserListItem extends HookWidget {
               // height: double.infinity,
               // constraints: BoxConstraints(minHeight: 120),
               child: ListTile(
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    Routes.user,
-                    arguments: {...pageArgs, "id": props['id']},
-                  );
-                },
+                onTap: pageArgs.containsKey('id')
+                    ? null
+                    : () {
+                        Navigator.pushNamed(
+                          context,
+                          Routes.user,
+                          arguments: {...pageArgs, "id": props['id']},
+                        );
+                      },
                 isThreeLine: true,
                 minTileHeight: 120,
                 leading: UserAttrButton(attr: UserAttr.pic, props: props),

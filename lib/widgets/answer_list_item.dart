@@ -33,21 +33,23 @@ class AnswerListItem extends HookWidget {
           // height: double.infinity,
           // constraints: BoxConstraints(minHeight: 120),
           child: ListTile(
-            onTap: () {
-              if (pageArgs['qid'] == null) {
-                Navigator.pushNamed(
-                  context,
-                  Routes.forum,
-                  arguments: {...pageArgs, "qid": questionId},
-                );
-              } else {
-                Navigator.pushNamed(
-                  context,
-                  Routes.user,
-                  arguments: {...pageArgs, "id": userId},
-                );
-              }
-            },
+            onTap: pageArgs['qid'] != null
+                ? null
+                : () {
+                    Navigator.pushNamed(
+                      context,
+                      Routes.forum,
+                      arguments: {...pageArgs, "qid": questionId},
+                    );
+
+                    // else {
+                    //   Navigator.pushNamed(
+                    //     context,
+                    //     Routes.user,
+                    //     arguments: {...pageArgs, "id": userId},
+                    //   );
+                    // }
+                  },
             isThreeLine: true,
             minTileHeight: 120,
             // leading: UserAttrButton(attr: UserAttr.pic, props: props),
