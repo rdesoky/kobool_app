@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/consts/routes.dart';
 import 'package:kobool/providers/router_provider.dart';
 import 'package:kobool/providers/user_session_provider.dart';
+import 'package:kobool/widgets/settings.dart';
 
 class AppDrawer extends ConsumerWidget {
   final bool showHeader;
@@ -64,7 +65,11 @@ class AppDrawer extends ConsumerWidget {
             onTap: routerState.name == Routes.settings
                 ? null
                 : () {
-                    navigatorKey.currentState?.pushNamed(Routes.settings);
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) => Settings(),
+                    );
+                    // navigatorKey.currentState?.pushNamed(Routes.settings);
                     Scaffold.of(context).closeDrawer();
                   },
           ),
