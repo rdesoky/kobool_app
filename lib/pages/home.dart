@@ -41,7 +41,7 @@ class HomePage extends ConsumerWidget {
                               Navigator.pushNamed(
                                 context,
                                 Routes.results,
-                                arguments: {"ls": "vtr"},
+                                arguments: {"ls": "vtr", "ob": "rv"},
                               );
                             },
                           ),
@@ -52,7 +52,7 @@ class HomePage extends ConsumerWidget {
                               Navigator.pushNamed(
                                 context,
                                 Routes.results,
-                                arguments: {"ls": "vtd"},
+                                arguments: {"ls": "vtd", "ob": "rv"},
                               );
                             },
                           ),
@@ -64,7 +64,7 @@ class HomePage extends ConsumerWidget {
                               Navigator.pushNamed(
                                 context,
                                 Routes.results,
-                                arguments: {"ls": "wls"},
+                                arguments: {"ls": "wls", "ob": "ra"},
                               );
                             },
                           ),

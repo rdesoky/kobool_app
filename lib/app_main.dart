@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/app_route_observer.dart';
@@ -8,10 +7,10 @@ import 'package:kobool/consts/routes.dart';
 import 'package:kobool/providers/locale_provider.dart';
 import 'package:kobool/providers/main_app_bar_provider.dart';
 import 'package:kobool/providers/theme_mode_provider.dart';
+import 'package:kobool/providers/user_session_provider.dart';
 import 'package:kobool/route_generator.dart';
 import 'package:kobool/widgets/app_drawer.dart';
 import 'package:kobool/widgets/kb_app_bar.dart';
-import 'package:kobool/providers/user_session_provider.dart';
 
 class AppMain extends ConsumerWidget {
   const AppMain({super.key});

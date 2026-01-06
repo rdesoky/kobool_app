@@ -14,11 +14,11 @@ class API {
   // from Python FastAPI server
   static String get query => "$fastApiOrigin/query.pl";
   static String get searchAnswers => "$fastApiOrigin/qa/search_answers.pl";
+  static String get questionList => "$fastApiOrigin/qa/question_list.pl";
+  static String get login => "$fastApiOrigin/login.pl";
 
   // from Plack HTTP::SERVER::PSGI
-  static String get questionList => "$apiOrigin/qa/question_list.pl";
   static String get user => "$apiOrigin/member.pl";
-  static String get login => "$apiOrigin/login.pl";
   static String get logout => "$apiOrigin/logout.pl";
   static String get pic => "$apiOrigin/kpic.pl";
 }

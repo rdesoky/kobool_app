@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kobool/providers/shared_preferences_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:xml/xml.dart';
 
 class UserSession {
   //TODO: set expiry time for each value
@@ -24,7 +24,7 @@ class UserSession {
   final bool? inactiveByHk;
 
   bool isLoggedIn() {
-    return sessionId != null && sessionId!.isNotEmpty;
+    return id != null;
   }
 
   UserSession({
@@ -62,49 +62,33 @@ class UserSession {
     );
   }
 
-  factory UserSession.fromXml(XmlElement element) {
-    final sessionId = element.getAttribute('sid');
-    final id = element.getAttribute("id");
-    final loginId = element.getAttribute("login_id");
-    final gender = element.getAttribute('gender');
-    final activated = element.getAttribute("activated");
-    final lastLogin = element.getAttribute("last_login");
-    final loginCount = element.getAttribute("login_count");
-    final sinceLastLogin = element.getAttribute("since_last_login");
-    final questions = element.getAttribute("questions");
-    final visitors = element.getAttribute("visitors");
-    final blackList = element.getAttribute("black_list");
-    final inactiveByHk = element.getAttribute("inactive_by_hk");
+  factory UserSession.fromResponse(Response response) {
+    final sessionId = response.headers.value('sid');
+    final id = response.data['id'];
+    final loginId = response.data['login_id'];
+    final gender = response.data['gender'];
+    final activated = response.data['activated'];
+    final lastLogin = response.data['last_login'];
+    final loginCount = response.data['login_count'];
+    final sinceLastLogin = response.data['since_last_login'];
+    final questions = response.data['questions'];
+    final visitors = response.data['visitors'];
+    final blackList = response.data['black_list'];
+    final inactiveByHk = response.data['inactive_by_hk'];
 
     final json = jsonEncode({
-      'id': id,
+      'id': id?.toString(),
       'login_id': loginId,
       'session_id': sessionId,
-      'gender': gender != null && gender.isNotEmpty ? int.parse(gender) : null,
-      'last_login': lastLogin != null && lastLogin.isNotEmpty
-          ? lastLogin
-          : null,
-      'login_count': loginCount != null && loginCount.isNotEmpty
-          ? int.parse(loginCount)
-          : null,
-      'questions': questions != null && questions.isNotEmpty
-          ? int.parse(questions)
-          : null,
-      'visitors': visitors != null && visitors.isNotEmpty
-          ? int.parse(visitors)
-          : null,
-      'activated': activated != null && activated.isNotEmpty
-          ? activated == "1"
-          : null,
-      'black_list': blackList != null && blackList.isNotEmpty
-          ? blackList == "1"
-          : null,
-      'since_last_login': sinceLastLogin != null && sinceLastLogin.isNotEmpty
-          ? int.parse(sinceLastLogin)
-          : null,
-      'inactive_by_hk': inactiveByHk != null && inactiveByHk.isNotEmpty
-          ? inactiveByHk == "1"
-          : null,
+      'gender': gender,
+      'last_login': lastLogin,
+      'login_count': loginCount,
+      'questions': questions,
+      'visitors': visitors,
+      'activated': activated == 1,
+      'black_list': blackList == 1,
+      'since_last_login': sinceLastLogin,
+      'inactive_by_hk': inactiveByHk == 1,
     });
 
     return UserSession.fromJson(json);

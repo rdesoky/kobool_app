@@ -8,7 +8,6 @@ import 'package:kobool/consts/routes.dart';
 import 'package:kobool/providers/dio_provider.dart';
 import 'package:kobool/providers/user_session_provider.dart';
 import 'package:kobool/utils/validators.dart';
-import 'package:xml/xml.dart';
 
 class LoginPage extends HookConsumerWidget {
   const LoginPage({super.key});
@@ -44,12 +43,10 @@ class LoginPage extends HookConsumerWidget {
             .then((response) {
               isLoading.value = false;
               if (response.statusCode == 200) {
-                final document = XmlDocument.parse(response.data);
-                final infoNode = document.lastElementChild;
-                final error = infoNode?.getAttribute('error') ?? "";
-                final sessionId = infoNode?.getAttribute('sid') ?? "";
+                final error = response.data['error'] ?? "";
+                final sessionId = response.headers.value('sid') ?? "";
                 if (error.isEmpty && sessionId.isNotEmpty) {
-                  final userSession = UserSession.fromXml(infoNode!);
+                  final userSession = UserSession.fromResponse(response);
                   ref
                       .read(userSessionProvider.notifier)
                       .setUserSession(userSession);

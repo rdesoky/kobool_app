@@ -40,7 +40,7 @@ dependencies:
   shared_preferences: ^2.5.4
   easy_localization: ^3.0.8
   email_validator: ^3.0.0
-  xml: ^6.6.1
+  # xml: ^6.6.1
   dio: ^5.9.0
   dio_cookie_manager: ^3.3.0
   cookie_jar: ^4.0.8
