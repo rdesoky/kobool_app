@@ -17,8 +17,10 @@ class API {
   static String get questionList => "$fastApiOrigin/qa/question_list.pl";
   static String get login => "$fastApiOrigin/login.pl";
   static String get user => "$fastApiOrigin/mem_view.pl";
+  static String get grouping => "$fastApiOrigin/grouping.pl";
 
   // from Plack HTTP::SERVER::PSGI
+  // static String get grouping => "$apiOrigin/grouping.pl";
   static String get logout => "$apiOrigin/logout.pl";
   static String get pic => "$apiOrigin/kpic.pl";
 }

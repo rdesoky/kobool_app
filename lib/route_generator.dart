@@ -34,7 +34,10 @@ class RouteGenerator {
           settings,
         );
       case Routes.drill:
-        return _buildRoute(DrillPage(), settings);
+        return _buildRoute(
+          DrillPage(arguments: settings.arguments as Map<String, dynamic>?),
+          settings,
+        );
       case Routes.chat:
         return _buildRoute(const ChatPage(), settings);
       case Routes.settings:

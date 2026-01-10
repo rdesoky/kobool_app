@@ -166,7 +166,7 @@ class UserAttrButton extends HookWidget {
 
     return child != null
         ? Tooltip(
-            message: "More information",
+            message: onPressed != null ? "Press to add this filter" : "",
             waitDuration: Duration(milliseconds: 500), // Delay before showing
             child: ElevatedButton(
               onPressed: onPressed,

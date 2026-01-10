@@ -130,6 +130,7 @@ class HomePage extends ConsumerWidget {
                         ),
                       ...[
                         ("search".tr(), Icons.search, Routes.search),
+                        ("drill".tr(), Icons.person_search, Routes.drill),
                         ("forum".tr(), Icons.forum, Routes.forum),
                         ("contact".tr(), Icons.contact_mail, Routes.contact),
                         ("settings".tr(), Icons.settings, Routes.settings),

@@ -41,14 +41,6 @@ class AnswerListItem extends HookWidget {
                       Routes.forum,
                       arguments: {...pageArgs, "qid": questionId},
                     );
-
-                    // else {
-                    //   Navigator.pushNamed(
-                    //     context,
-                    //     Routes.user,
-                    //     arguments: {...pageArgs, "id": userId},
-                    //   );
-                    // }
                   },
             isThreeLine: true,
             minTileHeight: 120,
