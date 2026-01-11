@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/consts/api.dart';
 import 'package:kobool/hooks/use_fetch_pages.dart';
+import 'package:kobool/widgets/filters_buttons.dart';
 import 'package:kobool/widgets/user_list.dart';
 
 class ResultsPage extends HookConsumerWidget {
@@ -27,6 +28,7 @@ class ResultsPage extends HookConsumerWidget {
               : 'found_total'.tr(args: [results["total"].toString()]),
         ),
         centerTitle: false,
+        actions: [FiltersButtons()],
       ),
       body: Center(
         child: Column(
