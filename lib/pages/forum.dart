@@ -6,7 +6,7 @@ import 'package:kobool/consts/api.dart';
 import 'package:kobool/hooks/use_fetch_pages.dart';
 import 'package:kobool/modals/question_list.dart';
 import 'package:kobool/widgets/answers_list.dart';
-import 'package:kobool/widgets/filters_buttons.dart';
+import 'package:kobool/widgets/page_filters.dart';
 
 class ForumPage extends HookConsumerWidget {
   const ForumPage({super.key, this.arguments});
@@ -44,7 +44,7 @@ class ForumPage extends HookConsumerWidget {
         centerTitle: false,
         actionsPadding: const EdgeInsets.symmetric(horizontal: 8),
         actions: [
-          FiltersButtons(),
+          PageFilters(),
           IconButton(
             icon: const Icon(Icons.find_in_page_outlined),
             onPressed: () {

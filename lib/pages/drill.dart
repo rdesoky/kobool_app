@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/consts/api.dart';
 import 'package:kobool/consts/routes.dart';
 import 'package:kobool/providers/dio_provider.dart';
-import 'package:kobool/widgets/filters_buttons.dart';
+import 'package:kobool/widgets/page_filters.dart';
 import 'package:kobool/widgets/home_button.dart';
 import 'package:kobool/widgets/summary_list.dart';
 
@@ -51,12 +51,14 @@ class DrillPage extends HookConsumerWidget {
       appBar: AppBar(
         title: Text(
           results.connectionState == ConnectionState.waiting
-              ? 'searching'.tr()
+              ? 'grouping'.tr()
               : results.hasError
               ? 'Error: ${results.error}'
+              : pageArgs.containsKey("sum")
+              ? results.data?.data["summary_by"]
               : "Drill",
         ),
-        actions: [FiltersButtons()],
+        actions: [PageFilters()],
         centerTitle: false,
       ),
 

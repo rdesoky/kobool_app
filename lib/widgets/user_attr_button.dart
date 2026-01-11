@@ -8,13 +8,30 @@ class UserAttr {
   static const id = "id";
   static const loginName = "login_id";
   static const pic = "main_pic";
-  static const gender = "gender";
-  static const age = "age";
-  static const maritalStatus = "marital_status";
-  static const country = "country";
-  static const origin = "origin_country";
-  static const state = "state";
-  static const children = "children";
+
+  static const gender = "gender"; // g
+  static const age = "age"; // ag
+  static const maritalStatus = "marital_status"; // ms
+  static const children = "children"; // ch
+  static const country = "country"; // c
+  static const state = "state"; // st
+  static const city = "city"; // ci
+  static const origin = "origin_country"; // o
+  static const height = "height"; // ht
+  static const weight = "weight"; // wt
+  static const job = "job"; // jb
+  static const income = "income"; // nc
+  static const language = "language"; //la
+  static const race = "race"; // rc
+  static const education = "education"; // ed
+  static const smoke = "smoke"; // sm
+  static const religion = "religion"; // re
+  static const disability = "disability"; // ds
+  static const dress = "dress"; // dt
+  static const shape = "shape"; // sh
+  static const face = "face"; // fc
+  static const district = "district"; //dst
+  static const polygamy = "polygamy"; // po
 }
 
 class UserAttrButton extends HookWidget {

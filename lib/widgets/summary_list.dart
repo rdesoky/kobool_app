@@ -17,6 +17,7 @@ class SummaryList extends StatelessWidget {
       itemBuilder: (context, index) {
         final entry = summary["child_list"][index];
         return ListTile(
+          dense: true,
           onTap: () {
             final args = {...pageArgs};
             args[summary["summary_by"]] = entry["group_name"]; // add filter
