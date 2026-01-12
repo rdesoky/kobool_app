@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:kobool/consts/routes.dart';
+import 'package:kobool/utils/user_attr.dart';
 import 'package:kobool/widgets/user_attr_button.dart';
 
 class UserListItem extends HookWidget {
@@ -42,12 +43,15 @@ class UserListItem extends HookWidget {
                         Navigator.pushNamed(
                           context,
                           Routes.user,
-                          arguments: {...pageArgs, "id": props['id']},
+                          arguments: {
+                            ...pageArgs,
+                            "id": props[UserAttribute.id],
+                          },
                         );
                       },
                 isThreeLine: true,
                 minTileHeight: 120,
-                leading: UserAttrButton(attr: UserAttr.pic, props: props),
+                leading: UserAttrButton(attr: UserAttribute.pic, props: props),
                 title: Padding(
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: Row(
@@ -76,14 +80,23 @@ class UserListItem extends HookWidget {
                       spacing: 4,
                       runSpacing: 4,
                       children: [
-                        UserAttrButton(attr: UserAttr.gender, props: props),
-                        UserAttrButton(attr: UserAttr.age, props: props),
                         UserAttrButton(
-                          attr: UserAttr.maritalStatus,
+                          attr: UserAttribute.gender,
                           props: props,
                         ),
-                        UserAttrButton(attr: UserAttr.country, props: props),
-                        UserAttrButton(attr: UserAttr.origin, props: props),
+                        UserAttrButton(attr: UserAttribute.age, props: props),
+                        UserAttrButton(
+                          attr: UserAttribute.maritalStatus,
+                          props: props,
+                        ),
+                        UserAttrButton(
+                          attr: UserAttribute.country,
+                          props: props,
+                        ),
+                        UserAttrButton(
+                          attr: UserAttribute.origin,
+                          props: props,
+                        ),
                       ],
                     ),
                     Text(

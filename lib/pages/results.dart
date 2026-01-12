@@ -28,12 +28,12 @@ class ResultsPage extends HookConsumerWidget {
               : 'found_total'.tr(args: [results["total"].toString()]),
         ),
         centerTitle: false,
-        actions: [PageFilters()],
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            PageFilters(),
             Expanded(
               child: UserList(
                 asyncFetch: asyncFetch,

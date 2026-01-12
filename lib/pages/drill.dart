@@ -5,6 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/consts/api.dart';
 import 'package:kobool/consts/routes.dart';
 import 'package:kobool/providers/dio_provider.dart';
+import 'package:kobool/utils/user_attr.dart';
+import 'package:kobool/widgets/drill_buttons.dart';
 import 'package:kobool/widgets/page_filters.dart';
 import 'package:kobool/widgets/home_button.dart';
 import 'package:kobool/widgets/summary_list.dart';
@@ -23,7 +25,7 @@ class DrillPage extends HookConsumerWidget {
           final spreadArgs = ["ag", "wt", "ht"].contains(pageArgs["sum"])
               ? {"spr": 5}
               : {};
-          return Future.delayed(const Duration(seconds: 1), () {
+          return Future.delayed(const Duration(seconds: 0), () {
             return ref
                 .read(dioProvider)
                 .get(
@@ -35,17 +37,6 @@ class DrillPage extends HookConsumerWidget {
         return Future.value(null);
       }, [pageArgs]),
     );
-    final filters = useMemoized(() {
-      return [
-        ("gender", Icons.male, "g"),
-        ("age", Icons.hourglass_bottom, "ag"),
-        ("marital_status", Icons.family_restroom, "ms"),
-        ("country", Icons.map, "c"),
-        ("origin", Icons.map, "o"),
-        ("race", Icons.map, "rc"),
-        ("religion", Icons.mosque, "re"),
-      ].where((filter) => !(pageArgs.containsKey(filter.$3))).toList();
-    }, [pageArgs]);
 
     return Scaffold(
       appBar: AppBar(
@@ -58,64 +49,26 @@ class DrillPage extends HookConsumerWidget {
               ? results.data?.data["summary_by"]
               : "Drill",
         ),
-        actions: [PageFilters()],
         centerTitle: false,
       ),
 
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraints.maxHeight),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: SizedBox(
-                    width: 600,
-                    child: Column(
-                      spacing: 16,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        if (pageArgs.containsKey("sum"))
-                          if (results.connectionState == ConnectionState.done)
-                            SummaryList(summary: results.data?.data ?? {})
-                          else if (results.connectionState ==
-                              ConnectionState.waiting)
-                            CircularProgressIndicator()
-                          else
-                            Text("Error: ${results.error}")
-                        else
-                          Wrap(
-                            spacing: 16,
-                            runSpacing: 16,
-                            children: [
-                              for (var filter in filters)
-                                HomeButton(
-                                  label: filter.$1.tr(),
-                                  icon: filter.$2,
-                                  onPressed: pageArgs["sum"] != filter.$3
-                                      ? () {
-                                          Navigator.pushNamed(
-                                            context,
-                                            Routes.drill,
-                                            arguments: {
-                                              ...pageArgs,
-                                              "sum": filter.$3,
-                                            },
-                                          );
-                                        }
-                                      : null,
-                                ),
-                            ],
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
+      body: Column(
+        spacing: 16,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          PageFilters(),
+          Expanded(
+            child: pageArgs.containsKey("sum")
+                ? results.connectionState == ConnectionState.done
+                      ? SummaryList(summary: results.data?.data ?? {})
+                      : CircularProgressIndicator()
+                : results.connectionState == ConnectionState.waiting
+                ? CircularProgressIndicator()
+                : results.hasError
+                ? Text("Error: ${results.error}")
+                : DrillButtons(),
+          ),
+        ],
       ),
     );
   }

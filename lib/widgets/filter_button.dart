@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:kobool/consts/routes.dart';
+import 'package:kobool/utils/user_attr.dart';
 
 class FilterButton extends HookWidget {
   const FilterButton({super.key, required this.filterKey});
@@ -25,7 +26,7 @@ class FilterButton extends HookWidget {
         args["sum"] = filterKey;
         Navigator.pushNamed(context, Routes.drill, arguments: args);
       },
-      child: Text(filterKey),
+      child: Text(pageArgs[filterKey].toString()),
     );
   }
 }

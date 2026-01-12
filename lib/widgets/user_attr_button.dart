@@ -4,36 +4,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:kobool/consts/routes.dart';
 import 'package:kobool/utils/user_attr.dart';
 
-class UserAttr {
-  static const id = "id";
-  static const loginName = "login_id";
-  static const pic = "main_pic";
-
-  static const gender = "gender"; // g
-  static const age = "age"; // ag
-  static const maritalStatus = "marital_status"; // ms
-  static const children = "children"; // ch
-  static const country = "country"; // c
-  static const state = "state"; // st
-  static const city = "city"; // ci
-  static const origin = "origin_country"; // o
-  static const height = "height"; // ht
-  static const weight = "weight"; // wt
-  static const job = "job"; // jb
-  static const income = "income"; // nc
-  static const language = "language"; //la
-  static const race = "race"; // rc
-  static const education = "education"; // ed
-  static const smoke = "smoke"; // sm
-  static const religion = "religion"; // re
-  static const disability = "disability"; // ds
-  static const dress = "dress"; // dt
-  static const shape = "shape"; // sh
-  static const face = "face"; // fc
-  static const district = "district"; //dst
-  static const polygamy = "polygamy"; // po
-}
-
 class UserAttrButton extends HookWidget {
   final String attr;
   final Map<String, dynamic> props;
@@ -51,16 +21,16 @@ class UserAttrButton extends HookWidget {
         (ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?) ??
         {};
     final colorScheme = Theme.of(context).colorScheme;
-    final gender = props[UserAttr.gender].toString();
+    final gender = props[UserAttribute.gender].toString();
     final isMale = gender == "0";
     final genderColor = isMale ? Colors.blue : Colors.pink;
     final genderIcon = isMale ? Icons.male : Icons.female;
     final genderPic = isMale ? Icons.person : Icons.person_3;
-    final id = props[UserAttr.id]!.toString();
+    final id = props[UserAttribute.id]!.toString();
     // final pic = props[UserAttr.pic]?.toString() ?? "0";
     final child = switch (attr) {
-      UserAttr.loginName => Text(
-        props[UserAttr.loginName].toString(),
+      UserAttribute.loginName => Text(
+        props[UserAttribute.loginName].toString(),
         overflow: TextOverflow.ellipsis,
       ),
       // UserAttr.pic => Image.network(
@@ -69,31 +39,31 @@ class UserAttrButton extends HookWidget {
       //       .toString(),
       //   width: picSize,
       // ),
-      UserAttr.pic => Icon(genderPic, color: genderColor, size: picSize),
-      UserAttr.gender => Icon(genderIcon, color: genderColor),
-      UserAttr.age =>
-        props[UserAttr.age] != null
-            ? Text("age_value".tr(args: [props[UserAttr.age].toString()]))
+      UserAttribute.pic => Icon(genderPic, color: genderColor, size: picSize),
+      UserAttribute.gender => Icon(genderIcon, color: genderColor),
+      UserAttribute.age =>
+        props[UserAttribute.age] != null
+            ? Text("age_value".tr(args: [props[UserAttribute.age].toString()]))
             : null,
-      UserAttr.maritalStatus => maritalStatus(
+      UserAttribute.maritalStatus => maritalStatus(
         context,
-        props[UserAttr.maritalStatus],
+        props[UserAttribute.maritalStatus],
       ),
-      UserAttr.country =>
-        props[UserAttr.country] != null
-            ? Text("countries.${props[UserAttr.country]}".tr())
+      UserAttribute.country =>
+        props[UserAttribute.country] != null
+            ? Text("countries.${props[UserAttribute.country]}".tr())
             : null,
-      UserAttr.origin =>
-        props[UserAttr.origin] != null &&
-                props[UserAttr.origin] != props[UserAttr.country]
+      UserAttribute.origin =>
+        props[UserAttribute.origin] != null &&
+                props[UserAttribute.origin] != props[UserAttribute.country]
             ? Text(
-                "${"nationality".tr()}: ${"countries.${props[UserAttr.origin]}".tr()}",
+                "${"nationality".tr()}: ${"countries.${props[UserAttribute.origin]}".tr()}",
               )
             : null,
       _ => null,
     };
     final onPressed = switch (attr) {
-      UserAttr.pic =>
+      UserAttribute.pic =>
         pageArgs.containsKey('id')
             ? null
             : () {
@@ -103,7 +73,7 @@ class UserAttrButton extends HookWidget {
                   arguments: {...pageArgs, "id": id},
                 );
               },
-      UserAttr.loginName =>
+      UserAttribute.loginName =>
         pageArgs.containsKey('id')
             ? null
             : () {
@@ -113,17 +83,17 @@ class UserAttrButton extends HookWidget {
                   arguments: {...pageArgs, "id": id},
                 );
               },
-      UserAttr.gender =>
+      UserAttribute.gender =>
         pageArgs.containsKey('g')
             ? null
             : () {
                 Navigator.pushNamed(
                   context,
                   Routes.results,
-                  arguments: {...pageArgs, 'g': props[UserAttr.gender]},
+                  arguments: {...pageArgs, 'g': props[UserAttribute.gender]},
                 );
               },
-      UserAttr.age =>
+      UserAttribute.age =>
         pageArgs.containsKey('ag')
             ? null
             : () {
@@ -137,47 +107,50 @@ class UserAttrButton extends HookWidget {
                   },
                 );
               },
-      UserAttr.maritalStatus =>
+      UserAttribute.maritalStatus =>
         pageArgs.containsKey('ms')
             ? null
             : () {
                 Navigator.pushNamed(
                   context,
                   Routes.results,
-                  arguments: {...pageArgs, 'ms': props[UserAttr.maritalStatus]},
+                  arguments: {
+                    ...pageArgs,
+                    'ms': props[UserAttribute.maritalStatus],
+                  },
                 );
               },
-      UserAttr.country =>
+      UserAttribute.country =>
         pageArgs.containsKey('c')
             ? null
             : () {
                 Navigator.pushNamed(
                   context,
                   Routes.results,
-                  arguments: {...pageArgs, 'c': props[UserAttr.country]},
+                  arguments: {...pageArgs, 'c': props[UserAttribute.country]},
                 );
               },
-      UserAttr.origin =>
+      UserAttribute.origin =>
         pageArgs.containsKey('o')
             ? null
             : () {
                 Navigator.pushNamed(
                   context,
                   Routes.results,
-                  arguments: {...pageArgs, 'o': props[UserAttr.origin]},
+                  arguments: {...pageArgs, 'o': props[UserAttribute.origin]},
                 );
               },
       _ => () {},
     };
 
     final double elevation = switch (attr) {
-      UserAttr.pic => 0,
-      UserAttr.loginName => 0,
+      UserAttribute.pic => 0,
+      UserAttribute.loginName => 0,
       _ => 1,
     };
     final backgroundColor = switch (attr) {
-      UserAttr.pic => colorScheme.surfaceContainerLow,
-      UserAttr.loginName => colorScheme.surfaceContainerLow,
+      UserAttribute.pic => colorScheme.surfaceContainerLow,
+      UserAttribute.loginName => colorScheme.surfaceContainerLow,
       _ => colorScheme.surface,
     };
 

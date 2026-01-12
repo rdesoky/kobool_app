@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:kobool/consts/routes.dart';
+import 'package:kobool/utils/user_attr.dart';
 import 'package:kobool/widgets/user_attr_button.dart';
 
 class AnswerListItem extends HookWidget {
@@ -51,18 +52,25 @@ class AnswerListItem extends HookWidget {
                 spacing: 4,
                 runSpacing: 4,
                 children: [
-                  UserAttrButton(attr: UserAttr.pic, props: props, picSize: 16),
+                  UserAttrButton(
+                    attr: UserAttribute.pic,
+                    props: props,
+                    picSize: 16,
+                  ),
                   SizedBox(
                     width: 120,
                     child: UserAttrButton(
-                      attr: UserAttr.loginName,
+                      attr: UserAttribute.loginName,
                       props: props,
                     ),
                   ),
-                  UserAttrButton(attr: UserAttr.gender, props: props),
-                  UserAttrButton(attr: UserAttr.age, props: props),
-                  UserAttrButton(attr: UserAttr.maritalStatus, props: props),
-                  UserAttrButton(attr: UserAttr.country, props: props),
+                  UserAttrButton(attr: UserAttribute.gender, props: props),
+                  UserAttrButton(attr: UserAttribute.age, props: props),
+                  UserAttrButton(
+                    attr: UserAttribute.maritalStatus,
+                    props: props,
+                  ),
+                  UserAttrButton(attr: UserAttribute.country, props: props),
                 ],
               ),
             ),
