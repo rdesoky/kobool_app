@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:kobool/providers/countries_provider.dart';
 
 Widget? maritalStatus(BuildContext context, dynamic status) {
   switch (status.toString()) {
@@ -94,15 +96,16 @@ class FilterInfo {
   final String attr;
   final String title;
   final IconData icon;
-  final Function(BuildContext context) options;
+  final Map<dynamic, dynamic> Function(WidgetRef ref)? options;
   FilterInfo({
     required this.attr,
     required this.title,
     required this.icon,
-    required this.options,
+    this.options,
   });
-  String mapValue(BuildContext context, dynamic value) {
-    return options(context)[value] ?? value.toString();
+  String mapValue(WidgetRef ref, dynamic value) {
+    final String val = options!(ref)[value.toString()] ?? value.toString();
+    return val.tr();
   }
 }
 
@@ -111,64 +114,66 @@ final Map<String, FilterInfo> gFilters = {
     attr: UserAttribute.gender,
     title: "gender",
     icon: Icons.male,
-    options: (context) {
-      return {0: "male".tr(), 1: "female".tr()};
+    options: (ref) {
+      return {"0": "male".tr(), "1": "female".tr()};
     },
   ),
   SearchFilter.age: FilterInfo(
     attr: UserAttribute.age,
     title: "age",
     icon: Icons.hourglass_bottom,
-    options: (context) => {
-      1: "18-24",
-      2: "25-29",
-      3: "30-34",
-      4: "35-39",
-      5: "40-44",
-      6: "45-49",
-      7: "50-54",
-      8: "55-59",
-      9: "60-64",
-      10: "65-69",
-      11: "70-74",
-      12: "75-79",
-      13: "80-84",
-      14: "85-89",
-      15: "90-94",
-      16: "95-99",
-      17: "100+",
+    options: (ref) {
+      return {
+        "1": "18-24",
+        "2": "25-29",
+        "3": "30-34",
+        "4": "35-39",
+        "5": "40-44",
+        "6": "45-49",
+        "7": "50-54",
+        "8": "55-59",
+        "9": "60-64",
+        "10": "65-69",
+        "11": "70-74",
+        "12": "75-79",
+        "13": "80-84",
+        "14": "85-89",
+        "15": "90-94",
+        "16": "95-99",
+        "17": "100+",
+      };
     },
   ),
   SearchFilter.height: FilterInfo(
     attr: "height",
     title: "height",
     icon: Icons.height,
-    options: (context) => {},
+    options: (ref) => {},
   ),
   SearchFilter.weight: FilterInfo(
     attr: "weight",
     title: "weight",
     icon: Icons.scale,
-    options: (context) => {},
+    options: (ref) => {},
   ),
   SearchFilter.smoke: FilterInfo(
     attr: "smoke",
     title: "smoke",
     icon: Icons.smoke_free,
-    options: (context) => {},
+    options: (ref) => {},
   ),
   SearchFilter.maritalStatus: FilterInfo(
     attr: UserAttribute.maritalStatus,
     title: "marital_status",
     icon: Icons.family_restroom,
-    options: (context) {
+    options: (ref) {
       return {
-        1: "single".tr(),
-        2: "married".tr(),
-        3: "divorced".tr(),
-        4: "widowed".tr(),
-        5: "separated".tr(),
-        6: "engaged".tr(),
+        "1": "single",
+        "2": "divorced",
+        "3": "widow",
+        "4": "separated",
+        "5": "married",
+        "6": "engaged",
       };
     },
   ),
@@ -176,62 +181,86 @@ final Map<String, FilterInfo> gFilters = {
     attr: UserAttribute.country,
     title: "country",
     icon: Icons.map,
-    options: (context) {
-      return {};
+    options: (ref) {
+      final countries = ref.read(countriesProvider.notifier).countries;
+      return countries;
     },
   ),
   SearchFilter.origin: FilterInfo(
     attr: UserAttribute.origin,
     title: "origin",
     icon: Icons.map,
-    options: (context) => {},
+    options: (ref) {
+      final countries = ref.read(countriesProvider.notifier).countries;
+      return countries;
+    },
   ),
   SearchFilter.race: FilterInfo(
     attr: UserAttribute.race,
     title: "race",
     icon: Icons.map,
-    options: (context) => {},
+    options: (ref) => {},
   ),
   SearchFilter.religion: FilterInfo(
     attr: UserAttribute.religion,
     title: "religion",
     icon: Icons.mosque,
-    options: (context) => {},
+    options: (ref) {
+      return {
+        "1": "muslim".tr(),
+        "2": "christian".tr(),
+        "3": "hindu".tr(),
+        "4": "buddhist".tr(),
+        "5": "other".tr(),
+      };
+    },
   ),
   SearchFilter.disability: FilterInfo(
     attr: UserAttribute.disability,
     title: "disability",
     icon: Icons.mosque,
-    options: (context) => {},
+    options: (ref) {
+      return {"1": "yes".tr(), "2": "no".tr()};
+    },
   ),
   SearchFilter.dress: FilterInfo(
     attr: UserAttribute.dress,
     title: "dress",
     icon: Icons.mosque,
-    options: (context) => {},
+    options: (ref) {
+      return {"1": "yes".tr(), "2": "no".tr()};
+    },
   ),
   SearchFilter.shape: FilterInfo(
     attr: UserAttribute.shape,
     title: "shape",
     icon: Icons.mosque,
-    options: (context) => {},
+    options: (ref) {
+      return {"1": "yes".tr(), "2": "no".tr()};
+    },
   ),
   SearchFilter.face: FilterInfo(
     attr: UserAttribute.face,
     title: "face",
     icon: Icons.face_2,
-    options: (context) => {},
+    options: (ref) {
+      return {"1": "yes".tr(), "2": "no".tr()};
+    },
   ),
   SearchFilter.district: FilterInfo(
     attr: UserAttribute.district,
     title: "district",
     icon: Icons.mosque,
-    options: (context) => {},
+    options: (ref) {
+      return {"1": "yes".tr(), "2": "no".tr()};
+    },
   ),
   SearchFilter.polygamy: FilterInfo(
     attr: UserAttribute.polygamy,
     title: "polygamy",
     icon: Icons.mosque,
-    options: (context) => {},
+    options: (ref) {
+      return {"1": "yes".tr(), "2": "no".tr()};
+    },
   ),
 };

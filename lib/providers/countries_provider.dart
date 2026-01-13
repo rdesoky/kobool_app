@@ -20,6 +20,8 @@ class CountriesNotifier extends Notifier<Map<String, String>> {
     });
     return {};
   }
+
+  Map<String, String> get countries => state;
 }
 
 final countriesProvider =

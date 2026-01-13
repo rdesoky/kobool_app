@@ -16,7 +16,7 @@ class DrillButtons extends HookWidget {
 
     final filters = useMemoized(() {
       return gFilters.entries
-          .where((filter) => !(pageArgs.containsKey(filter.value.attr)))
+          .where((filter) => !(pageArgs.containsKey(filter.key)))
           .toList();
     }, [pageArgs]);
 

@@ -5,10 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/consts/api.dart';
 import 'package:kobool/consts/routes.dart';
 import 'package:kobool/providers/dio_provider.dart';
-import 'package:kobool/utils/user_attr.dart';
 import 'package:kobool/widgets/drill_buttons.dart';
 import 'package:kobool/widgets/page_filters.dart';
-import 'package:kobool/widgets/home_button.dart';
 import 'package:kobool/widgets/summary_list.dart';
 
 class DrillPage extends HookConsumerWidget {
@@ -56,7 +54,33 @@ class DrillPage extends HookConsumerWidget {
         spacing: 16,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          PageFilters(),
+          PageFilters(
+            trailing: [
+              ActionChip(
+                label: const Icon(Icons.search, size: 20),
+                onPressed: () {
+                  pageArgs.remove("sum");
+                  Navigator.pushNamed(
+                    context,
+                    Routes.results,
+                    arguments: pageArgs,
+                  );
+                },
+              ),
+              if (pageArgs.containsKey("sum"))
+                ActionChip(
+                  label: const Icon(Icons.add, size: 20),
+                  onPressed: () {
+                    pageArgs.remove("sum");
+                    Navigator.pushNamed(
+                      context,
+                      Routes.drill,
+                      arguments: pageArgs,
+                    );
+                  },
+                ),
+            ],
+          ),
           Expanded(
             child: pageArgs.containsKey("sum")
                 ? results.connectionState == ConnectionState.done

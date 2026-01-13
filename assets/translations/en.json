@@ -1,4 +1,6 @@
 {
+	"male": "husband",
+	"female": "wife",
 	"filter": "Filter",
 	"app_name": "Kobool",
 	"home": "Home",

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/consts/routes.dart';
 import 'package:kobool/utils/user_attr.dart';
 
-class SummaryList extends StatelessWidget {
+class SummaryList extends ConsumerWidget {
   const SummaryList({super.key, required this.summary});
 
   final Map<String, dynamic> summary;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final pageArgs =
         (ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?) ??
         {};
@@ -40,7 +41,7 @@ class SummaryList extends StatelessWidget {
                   Navigator.pushNamed(context, Routes.drill, arguments: args);
                 },
                 leading: Icon(Icons.add_outlined),
-                title: Text(filter!.mapValue(context, entry["group_name"])),
+                title: Text(filter!.mapValue(ref, entry["group_name"])),
                 trailing: SizedBox(
                   width: 120,
                   height: 40,

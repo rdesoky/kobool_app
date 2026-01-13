@@ -4,7 +4,13 @@ import 'package:kobool/utils/user_attr.dart';
 import 'package:kobool/widgets/filter_button.dart';
 
 class PageFilters extends HookWidget {
-  const PageFilters({super.key});
+  final List<Widget> leading;
+  final List<Widget> trailing;
+  const PageFilters({
+    super.key,
+    this.leading = const [],
+    this.trailing = const [],
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +28,12 @@ class PageFilters extends HookWidget {
             spacing: 8,
             runSpacing: 8,
             children: [
+              ...leading,
               for (var filter in gFilters.entries.where(
                 (entry) => pageArgs.containsKey(entry.key),
               ))
                 FilterButton(filterKey: filter.key),
+              ...trailing,
             ],
           ),
         ),

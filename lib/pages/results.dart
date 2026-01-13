@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/consts/api.dart';
+import 'package:kobool/consts/routes.dart';
 import 'package:kobool/hooks/use_fetch_pages.dart';
 import 'package:kobool/widgets/page_filters.dart';
 import 'package:kobool/widgets/user_list.dart';
@@ -33,7 +34,20 @@ class ResultsPage extends HookConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            PageFilters(),
+            PageFilters(
+              trailing: [
+                ActionChip(
+                  label: const Icon(Icons.add, size: 20),
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      Routes.drill,
+                      arguments: arguments,
+                    );
+                  },
+                ),
+              ],
+            ),
             Expanded(
               child: UserList(
                 asyncFetch: asyncFetch,
