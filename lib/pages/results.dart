@@ -36,8 +36,8 @@ class ResultsPage extends HookConsumerWidget {
           children: [
             PageFilters(
               trailing: [
-                ActionChip(
-                  label: const Icon(Icons.add, size: 20),
+                IconButton(
+                  icon: const Icon(Icons.person_search, size: 20),
                   onPressed: () {
                     Navigator.pushNamed(
                       context,

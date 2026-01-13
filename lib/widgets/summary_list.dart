@@ -40,7 +40,7 @@ class SummaryList extends ConsumerWidget {
                   args.remove("sum"); // remove summary
                   Navigator.pushNamed(context, Routes.drill, arguments: args);
                 },
-                leading: Icon(Icons.add_outlined),
+                leading: Icon(Icons.person_search),
                 title: Text(filter!.mapValue(ref, entry["group_name"])),
                 trailing: SizedBox(
                   width: 120,
@@ -62,7 +62,13 @@ class SummaryList extends ConsumerWidget {
                         arguments: args,
                       );
                     },
-                    child: Text(entry["members_count"].toString()),
+                    child: Row(
+                      children: [
+                        Icon(Icons.people),
+                        SizedBox(width: 8),
+                        Text(entry["members_count"].toString()),
+                      ],
+                    ),
                   ),
                 ),
               );

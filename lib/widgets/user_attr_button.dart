@@ -158,23 +158,23 @@ class UserAttrButton extends HookWidget {
         ? Tooltip(
             message: onPressed != null ? "Press to add this filter" : "",
             waitDuration: Duration(milliseconds: 500), // Delay before showing
-            child: ElevatedButton(
+            child: ActionChip(
               onPressed: onPressed,
 
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(24, 38),
-                backgroundColor: backgroundColor,
-                elevation: elevation,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(2.0),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 6.0,
-                  vertical: 4.0,
-                ),
-                alignment: AlignmentDirectional.centerStart,
-              ),
-              child: child,
+              // style: ElevatedButton.styleFrom(
+              //   minimumSize: const Size(24, 38),
+              //   backgroundColor: backgroundColor,
+              //   elevation: elevation,
+              //   shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.circular(2.0),
+              //   ),
+              //   padding: const EdgeInsets.symmetric(
+              //     horizontal: 6.0,
+              //     vertical: 4.0,
+              //   ),
+              //   alignment: AlignmentDirectional.centerStart,
+              // ),
+              label: child,
             ),
           )
         : const SizedBox.shrink();

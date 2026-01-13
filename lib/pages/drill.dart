@@ -55,9 +55,9 @@ class DrillPage extends HookConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           PageFilters(
-            trailing: [
-              ActionChip(
-                label: const Icon(Icons.search, size: 20),
+            leading: [
+              IconButton(
+                icon: const Icon(Icons.people, size: 20),
                 onPressed: () {
                   pageArgs.remove("sum");
                   Navigator.pushNamed(
@@ -67,9 +67,11 @@ class DrillPage extends HookConsumerWidget {
                   );
                 },
               ),
+            ],
+            trailing: [
               if (pageArgs.containsKey("sum"))
-                ActionChip(
-                  label: const Icon(Icons.add, size: 20),
+                IconButton(
+                  icon: const Icon(Icons.person_search, size: 20),
                   onPressed: () {
                     pageArgs.remove("sum");
                     Navigator.pushNamed(
