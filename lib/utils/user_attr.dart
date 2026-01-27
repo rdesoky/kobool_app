@@ -177,10 +177,19 @@ final Map<String, FilterInfo> gFilters = {
       };
     },
   ),
+  SearchFilter.children: FilterInfo(
+    attr: UserAttribute.children,
+    title: "children",
+    icon: Icons.child_care,
+    options: (ref) {
+      return {"1": "yes".tr(), "2": "no".tr()};
+    },
+  ),
+
   SearchFilter.country: FilterInfo(
     attr: UserAttribute.country,
     title: "country",
-    icon: Icons.map,
+    icon: Icons.public,
     options: (ref) {
       final countries = ref.read(countriesProvider.notifier).countries;
       return countries;
@@ -195,10 +204,16 @@ final Map<String, FilterInfo> gFilters = {
       return countries;
     },
   ),
+  SearchFilter.language: FilterInfo(
+    attr: UserAttribute.language,
+    title: "language",
+    icon: Icons.language,
+    options: (ref) => {},
+  ),
   SearchFilter.race: FilterInfo(
     attr: UserAttribute.race,
     title: "race",
-    icon: Icons.map,
+    icon: Icons.face_5,
     options: (ref) => {},
   ),
   SearchFilter.religion: FilterInfo(
@@ -218,7 +233,7 @@ final Map<String, FilterInfo> gFilters = {
   SearchFilter.disability: FilterInfo(
     attr: UserAttribute.disability,
     title: "disability",
-    icon: Icons.mosque,
+    icon: Icons.accessible,
     options: (ref) {
       return {"1": "yes".tr(), "2": "no".tr()};
     },
@@ -226,7 +241,7 @@ final Map<String, FilterInfo> gFilters = {
   SearchFilter.dress: FilterInfo(
     attr: UserAttribute.dress,
     title: "dress",
-    icon: Icons.mosque,
+    icon: Icons.woman,
     options: (ref) {
       return {"1": "yes".tr(), "2": "no".tr()};
     },
@@ -234,7 +249,7 @@ final Map<String, FilterInfo> gFilters = {
   SearchFilter.shape: FilterInfo(
     attr: UserAttribute.shape,
     title: "shape",
-    icon: Icons.mosque,
+    icon: Icons.accessibility,
     options: (ref) {
       return {"1": "yes".tr(), "2": "no".tr()};
     },
@@ -250,7 +265,7 @@ final Map<String, FilterInfo> gFilters = {
   SearchFilter.district: FilterInfo(
     attr: UserAttribute.district,
     title: "district",
-    icon: Icons.mosque,
+    icon: Icons.apartment,
     options: (ref) {
       return {"1": "yes".tr(), "2": "no".tr()};
     },
@@ -258,7 +273,7 @@ final Map<String, FilterInfo> gFilters = {
   SearchFilter.polygamy: FilterInfo(
     attr: UserAttribute.polygamy,
     title: "polygamy",
-    icon: Icons.mosque,
+    icon: Icons.groups_3,
     options: (ref) {
       return {"1": "yes".tr(), "2": "no".tr()};
     },

@@ -44,7 +44,7 @@ class ForumPage extends HookConsumerWidget {
         centerTitle: false,
         actionsPadding: const EdgeInsets.symmetric(horizontal: 8),
         actions: [
-          PageFilters(),
+          // PageFilters(),
           IconButton(
             icon: const Icon(Icons.find_in_page_outlined),
             onPressed: () {
