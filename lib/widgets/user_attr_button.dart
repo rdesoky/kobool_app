@@ -84,17 +84,7 @@ class UserAttrButton extends HookWidget {
                 );
               },
       UserAttribute.gender =>
-        pageArgs.containsKey('g')
-            ? null
-            : () {
-                Navigator.pushNamed(
-                  context,
-                  Routes.results,
-                  arguments: {...pageArgs, 'g': props[UserAttribute.gender]},
-                );
-              },
-      UserAttribute.age =>
-        pageArgs.containsKey('ag')
+        pageArgs.containsKey(SearchFilter.gender)
             ? null
             : () {
                 Navigator.pushNamed(
@@ -102,13 +92,26 @@ class UserAttrButton extends HookWidget {
                   Routes.results,
                   arguments: {
                     ...pageArgs,
-                    'ag':
+                    SearchFilter.gender: props[UserAttribute.gender],
+                  },
+                );
+              },
+      UserAttribute.age =>
+        pageArgs.containsKey(SearchFilter.age)
+            ? null
+            : () {
+                Navigator.pushNamed(
+                  context,
+                  Routes.results,
+                  arguments: {
+                    ...pageArgs,
+                    SearchFilter.age:
                         "${int.parse(props["birth_year"].toString()) - 2}-${int.parse(props["birth_year"].toString()) + 2}",
                   },
                 );
               },
       UserAttribute.maritalStatus =>
-        pageArgs.containsKey('ms')
+        pageArgs.containsKey(SearchFilter.maritalStatus)
             ? null
             : () {
                 Navigator.pushNamed(
@@ -116,28 +119,35 @@ class UserAttrButton extends HookWidget {
                   Routes.results,
                   arguments: {
                     ...pageArgs,
-                    'ms': props[UserAttribute.maritalStatus],
+                    SearchFilter.maritalStatus:
+                        props[UserAttribute.maritalStatus],
                   },
                 );
               },
       UserAttribute.country =>
-        pageArgs.containsKey('c')
+        pageArgs.containsKey(SearchFilter.country)
             ? null
             : () {
                 Navigator.pushNamed(
                   context,
                   Routes.results,
-                  arguments: {...pageArgs, 'c': props[UserAttribute.country]},
+                  arguments: {
+                    ...pageArgs,
+                    SearchFilter.country: props[UserAttribute.country],
+                  },
                 );
               },
       UserAttribute.origin =>
-        pageArgs.containsKey('o')
+        pageArgs.containsKey(SearchFilter.origin)
             ? null
             : () {
                 Navigator.pushNamed(
                   context,
                   Routes.results,
-                  arguments: {...pageArgs, 'o': props[UserAttribute.origin]},
+                  arguments: {
+                    ...pageArgs,
+                    SearchFilter.origin: props[UserAttribute.origin],
+                  },
                 );
               },
       _ => () {},

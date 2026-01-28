@@ -38,6 +38,7 @@ class ResultsPage extends HookConsumerWidget {
               trailing: [
                 IconButton(
                   icon: const Icon(Icons.person_search, size: 20),
+                  constraints: const BoxConstraints(maxHeight: 35),
                   onPressed: () {
                     Navigator.pushNamed(
                       context,

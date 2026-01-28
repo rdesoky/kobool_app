@@ -107,6 +107,10 @@ class FilterInfo {
     final String val = options!(ref)[value.toString()] ?? value.toString();
     return val.tr();
   }
+
+  static FilterInfo fromFilter(String filter) {
+    return gFilters[filter]!;
+  }
 }
 
 final Map<String, FilterInfo> gFilters = {
@@ -160,7 +164,12 @@ final Map<String, FilterInfo> gFilters = {
     attr: "smoke",
     title: "smoke",
     icon: Icons.smoke_free,
-    options: (ref) => {},
+    options: (ref) => {
+      "1": "no and it bothers me".tr(),
+      "2": "no but it doesn't bother me".tr(),
+      "3": "occasionally".tr(),
+      "4": "frequently".tr(),
+    },
   ),
   SearchFilter.maritalStatus: FilterInfo(
     attr: UserAttribute.maritalStatus,
@@ -182,7 +191,11 @@ final Map<String, FilterInfo> gFilters = {
     title: "children",
     icon: Icons.child_care,
     options: (ref) {
-      return {"1": "yes".tr(), "2": "no".tr()};
+      return {
+        "1": "no children".tr(),
+        "2": "children not living with me".tr(),
+        "3": "children living with me".tr(),
+      };
     },
   ),
 
@@ -208,7 +221,14 @@ final Map<String, FilterInfo> gFilters = {
     attr: UserAttribute.language,
     title: "language",
     icon: Icons.language,
-    options: (ref) => {},
+    options: (ref) {
+      return {
+        "1": "arabic".tr(),
+        "7": "english".tr(),
+        "8": "french".tr(),
+        "19": "other".tr(),
+      };
+    },
   ),
   SearchFilter.race: FilterInfo(
     attr: UserAttribute.race,
@@ -259,7 +279,13 @@ final Map<String, FilterInfo> gFilters = {
     title: "face",
     icon: Icons.face_2,
     options: (ref) {
-      return {"1": "yes".tr(), "2": "no".tr()};
+      return {
+        "1": "very attractive".tr(),
+        "2": "attractive".tr(),
+        "3": "average attraction".tr(),
+        "4": "accepted".tr(),
+        "5": "not attractive".tr(),
+      };
     },
   ),
   SearchFilter.district: FilterInfo(

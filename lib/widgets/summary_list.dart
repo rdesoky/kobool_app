@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:kobool/consts/query_params.dart';
 import 'package:kobool/consts/routes.dart';
 import 'package:kobool/utils/user_attr.dart';
 
@@ -41,7 +42,9 @@ class SummaryList extends ConsumerWidget {
                   Navigator.pushNamed(context, Routes.drill, arguments: args);
                 },
                 leading: Icon(Icons.person_search),
-                title: Text(filter!.mapValue(ref, entry["group_name"])),
+                title: filter != null
+                    ? Text(filter.mapValue(ref, entry["group_name"]))
+                    : null,
                 trailing: SizedBox(
                   width: 120,
                   height: 40,
@@ -55,7 +58,7 @@ class SummaryList extends ConsumerWidget {
                       final args = {...pageArgs};
                       args[summary["summary_by"]] =
                           entry["group_name"]; // add filter
-                      args.remove("sum"); // remove summary
+                      args.remove(QParams.summary); // remove summary
                       Navigator.pushNamed(
                         context,
                         Routes.results,

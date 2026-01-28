@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:kobool/consts/query_params.dart';
 import 'package:kobool/consts/routes.dart';
 import 'package:kobool/utils/user_attr.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -30,7 +31,7 @@ class FilterButton extends HookConsumerWidget {
       onPressed: () {
         final args = {...pageArgs};
         args.remove(filterKey);
-        args["sum"] = filterKey;
+        args[QParams.summary] = filterKey;
         Navigator.pushNamed(context, Routes.drill, arguments: args);
       },
     );

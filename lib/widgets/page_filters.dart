@@ -21,7 +21,7 @@ class PageFilters extends HookWidget {
 
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(6.0),
         child: SizedBox(
           width: 600,
           child: Wrap(
