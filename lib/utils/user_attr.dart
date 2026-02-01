@@ -27,6 +27,7 @@ String ageRangeToQueryParam(String ageRange) {
 }
 
 class SearchFilter {
+  static const id = "id";
   static const gender = "g"; // g
   static const age = "ag"; // ag
   static const maritalStatus = "ms"; // ms

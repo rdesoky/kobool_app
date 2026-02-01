@@ -24,20 +24,11 @@ class RouteGenerator {
       case Routes.search:
         return _buildRoute(const SearchPage(), settings);
       case Routes.results:
-        return _buildRoute(
-          ResultsPage(arguments: settings.arguments as Map<String, dynamic>?),
-          settings,
-        );
+        return _buildRoute(const ResultsPage(), settings);
       case Routes.forum:
-        return _buildRoute(
-          ForumPage(arguments: settings.arguments as Map<String, dynamic>?),
-          settings,
-        );
+        return _buildRoute(const ForumPage(), settings);
       case Routes.drill:
-        return _buildRoute(
-          DrillPage(arguments: settings.arguments as Map<String, dynamic>?),
-          settings,
-        );
+        return _buildRoute(const DrillPage(), settings);
       case Routes.chat:
         return _buildRoute(const ChatPage(), settings);
       case Routes.settings:

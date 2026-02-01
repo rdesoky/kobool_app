@@ -11,17 +11,14 @@ import 'package:kobool/widgets/answers_list.dart';
 import 'package:kobool/widgets/page_filters.dart';
 
 class ForumPage extends HookConsumerWidget {
-  const ForumPage({super.key, this.arguments});
-  final Map<String, dynamic>? arguments;
+  const ForumPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Map<String, dynamic>? fetchParams = useMemoized(() {
-      final filtered = arguments != null
-          ? Map<String, dynamic>.from(arguments!)
-          : null;
-      return filtered;
-    }, [arguments]);
+    final pageArgs = context.args;
+    final fetchParams = useMemoized(() => Map<String, dynamic>.from(pageArgs), [
+      pageArgs,
+    ]);
 
     final (asyncFetch, results, onLoadMore) = useFetchPages(
       ref,
@@ -62,7 +59,7 @@ class ForumPage extends HookConsumerWidget {
                     Navigator.pushNamed(
                       context,
                       Routes.drill,
-                      arguments: arguments,
+                      arguments: pageArgs,
                     );
                   },
                 ),
@@ -73,7 +70,7 @@ class ForumPage extends HookConsumerWidget {
                     Navigator.pushNamed(
                       context,
                       Routes.results,
-                      arguments: arguments,
+                      arguments: pageArgs,
                     );
                   },
                 ),

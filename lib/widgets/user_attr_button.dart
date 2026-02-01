@@ -25,6 +25,19 @@ class UserAttrButton extends StatelessWidget {
     final genderPic = isMale ? Icons.person : Icons.person_3;
     final id = props[UserAttribute.id]!.toString();
     // final pic = props[UserAttr.pic]?.toString() ?? "0";
+
+    void navigateToFilter(key, value) {
+      final newArgs = Map<String, dynamic>.from(pageArgs)
+        ..remove(SearchFilter.id)
+        ..addAll({key: value});
+
+      Navigator.pushNamed(
+        context,
+        key == SearchFilter.id ? Routes.user : context.resultsRoute,
+        arguments: newArgs,
+      );
+    }
+
     final child = switch (attr) {
       UserAttribute.loginName => Text(
         props[UserAttribute.loginName].toString(),
@@ -61,90 +74,60 @@ class UserAttrButton extends StatelessWidget {
     };
     final onPressed = switch (attr) {
       UserAttribute.pic =>
-        pageArgs.containsKey('id')
+        pageArgs.containsKey(SearchFilter.id)
             ? null
             : () {
-                Navigator.pushNamed(
-                  context,
-                  Routes.user,
-                  arguments: {...pageArgs, "id": id},
-                );
+                navigateToFilter(SearchFilter.id, id);
               },
       UserAttribute.loginName =>
-        pageArgs.containsKey('id')
+        pageArgs.containsKey(SearchFilter.id)
             ? null
             : () {
-                Navigator.pushNamed(
-                  context,
-                  Routes.user,
-                  arguments: {...pageArgs, "id": id},
-                );
+                navigateToFilter(SearchFilter.id, id);
               },
       UserAttribute.gender =>
         pageArgs.containsKey(SearchFilter.gender)
             ? null
             : () {
-                Navigator.pushNamed(
-                  context,
-                  context.resultsRoute,
-                  arguments: {
-                    ...pageArgs,
-                    SearchFilter.gender: props[UserAttribute.gender],
-                  },
+                navigateToFilter(
+                  SearchFilter.gender,
+                  props[UserAttribute.gender],
                 );
               },
       UserAttribute.age =>
         pageArgs.containsKey(SearchFilter.age)
             ? null
             : () {
-                Navigator.pushNamed(
-                  context,
-                  context.resultsRoute,
-                  arguments: {
-                    ...pageArgs,
-                    SearchFilter.age:
-                        "${int.parse(props["birth_year"].toString()) - 2}-${int.parse(props["birth_year"].toString()) + 2}",
-                  },
+                navigateToFilter(
+                  SearchFilter.age,
+                  "${int.parse(props["birth_year"].toString()) - 2}-${int.parse(props["birth_year"].toString()) + 2}",
                 );
               },
       UserAttribute.maritalStatus =>
         pageArgs.containsKey(SearchFilter.maritalStatus)
             ? null
             : () {
-                Navigator.pushNamed(
-                  context,
-                  context.resultsRoute,
-                  arguments: {
-                    ...pageArgs,
-                    SearchFilter.maritalStatus:
-                        props[UserAttribute.maritalStatus],
-                  },
+                navigateToFilter(
+                  SearchFilter.maritalStatus,
+                  props[UserAttribute.maritalStatus],
                 );
               },
       UserAttribute.country =>
         pageArgs.containsKey(SearchFilter.country)
             ? null
             : () {
-                Navigator.pushNamed(
-                  context,
-                  context.resultsRoute,
-                  arguments: {
-                    ...pageArgs,
-                    SearchFilter.country: props[UserAttribute.country],
-                  },
+                navigateToFilter(
+                  SearchFilter.country,
+                  props[UserAttribute.country],
                 );
               },
       UserAttribute.origin =>
         pageArgs.containsKey(SearchFilter.origin)
             ? null
             : () {
-                Navigator.pushNamed(
-                  context,
-                  context.resultsRoute,
-                  arguments: {
-                    ...pageArgs,
-                    SearchFilter.origin: props[UserAttribute.origin],
-                  },
+                navigateToFilter(
+                  SearchFilter.origin,
+                  props[UserAttribute.origin],
                 );
               },
       _ => () {},

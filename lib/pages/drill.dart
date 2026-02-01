@@ -13,8 +13,7 @@ import 'package:kobool/widgets/page_filters.dart';
 import 'package:kobool/widgets/summary_list.dart';
 
 class DrillPage extends HookConsumerWidget {
-  const DrillPage({super.key, this.arguments});
-  final Map<String, dynamic>? arguments;
+  const DrillPage({super.key});
 
   @override
   Widget build(BuildContext context, ref) {
@@ -103,7 +102,7 @@ class DrillPage extends HookConsumerWidget {
                   Navigator.pushNamed(
                     context,
                     Routes.forum,
-                    arguments: {...arguments!, "total": totalMembers},
+                    arguments: {...pageArgs, "total": totalMembers},
                   );
                 },
               ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kobool/consts/query_params.dart';
-import 'package:kobool/consts/routes.dart';
+import 'package:kobool/utils/context_extenstion.dart';
 import 'package:kobool/utils/user_attr.dart';
+import 'package:kobool/widgets/summary_list_item.dart';
 
 class SummaryList extends ConsumerWidget {
   const SummaryList({super.key, required this.summary});
@@ -11,11 +11,8 @@ class SummaryList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pageArgs =
-        (ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?) ??
-        {};
+    final pageArgs = context.args;
 
-    final colorScheme = Theme.of(context).colorScheme;
     final filter = FilterInfo.fromFilter(pageArgs["sum"]);
 
     return SingleChildScrollView(
@@ -27,55 +24,12 @@ class SummaryList extends ConsumerWidget {
             itemCount: summary["child_list"].length,
             itemBuilder: (context, index) {
               final entry = summary["child_list"][index];
-              return ListTile(
-                tileColor: index.isEven
-                    ? colorScheme.surfaceContainerHigh
-                    : colorScheme.surfaceContainer,
-
-                contentPadding: EdgeInsetsDirectional.only(start: 16),
-                dense: true,
-                onTap: () {
-                  final args = {...pageArgs};
-                  args[summary["summary_by"]] =
-                      entry["group_name"]; // add filter
-                  args.remove("sum"); // remove summary
-                  Navigator.pushNamed(
-                    context,
-                    Routes.drill,
-                    arguments: {...args, "total": entry["members_count"]},
-                  );
-                },
-                leading: Icon(Icons.person_search),
-                title: Text(filter.mapValue(ref, entry["group_name"])),
-                trailing: SizedBox(
-                  width: 120,
-                  height: 40,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(0),
-                      ),
-                    ),
-                    onPressed: () {
-                      final args = {...pageArgs};
-                      args[summary["summary_by"]] =
-                          entry["group_name"]; // add filter
-                      args.remove(QParams.summary); // remove summary
-                      Navigator.pushNamed(
-                        context,
-                        Routes.results,
-                        arguments: args,
-                      );
-                    },
-                    child: Row(
-                      children: [
-                        Icon(Icons.people),
-                        SizedBox(width: 8),
-                        Text(entry["members_count"].toString()),
-                      ],
-                    ),
-                  ),
-                ),
+              return SummaryListItem(
+                entry: entry,
+                index: index,
+                filter: filter,
+                pageArgs: pageArgs,
+                summary: summary,
               );
             },
             separatorBuilder: (context, index) => const Divider(height: 0),

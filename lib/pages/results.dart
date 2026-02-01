@@ -4,19 +4,20 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/consts/api.dart';
 import 'package:kobool/consts/routes.dart';
 import 'package:kobool/hooks/use_fetch_pages.dart';
+import 'package:kobool/utils/context_extenstion.dart';
 import 'package:kobool/widgets/page_filters.dart';
 import 'package:kobool/widgets/user_list.dart';
 
 class ResultsPage extends HookConsumerWidget {
-  const ResultsPage({super.key, this.arguments});
-  final Map<String, dynamic>? arguments;
+  const ResultsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final pageArgs = context.args;
     final (asyncFetch, results, onLoadMore) = useFetchPages(
       ref,
       url: API.query,
-      params: arguments,
+      params: pageArgs,
     );
 
     return Scaffold(
@@ -43,10 +44,7 @@ class ResultsPage extends HookConsumerWidget {
                     Navigator.pushNamed(
                       context,
                       Routes.drill,
-                      arguments: {
-                        if (arguments != null) ...arguments!,
-                        "total": results["total"],
-                      },
+                      arguments: {...pageArgs, "total": results["total"]},
                     );
                   },
                 ),
@@ -57,10 +55,7 @@ class ResultsPage extends HookConsumerWidget {
                     Navigator.pushNamed(
                       context,
                       Routes.forum,
-                      arguments: {
-                        if (arguments != null) ...arguments!,
-                        "total": results["total"],
-                      },
+                      arguments: {...pageArgs, "total": results["total"]},
                     );
                   },
                 ),
