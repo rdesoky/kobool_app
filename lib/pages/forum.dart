@@ -43,52 +43,43 @@ class ForumPage extends HookConsumerWidget {
         centerTitle: false,
         actionsPadding: const EdgeInsets.symmetric(horizontal: 8),
         actions: [
-          // PageFilters(),
+          IconButton(
+            icon: const Icon(Icons.find_in_page_outlined),
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                constraints: const BoxConstraints(
+                  maxWidth: 640,
+                  minHeight: 400,
+                  maxHeight: 600,
+                ),
+                builder: (context) => QuestionList(),
+                isScrollControlled: true,
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.person_search, size: 20),
+            constraints: const BoxConstraints(maxHeight: 35),
+            onPressed: () {
+              Navigator.pushNamed(context, Routes.drill, arguments: pageArgs);
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.people, size: 20),
+            constraints: const BoxConstraints(maxHeight: 35),
+            onPressed: () {
+              Navigator.pushNamed(context, Routes.results, arguments: pageArgs);
+            },
+          ),
         ],
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            PageFilters(
-              trailing: [
-                IconButton(
-                  icon: const Icon(Icons.person_search, size: 20),
-                  constraints: const BoxConstraints(maxHeight: 35),
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      Routes.drill,
-                      arguments: pageArgs,
-                    );
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.people, size: 20),
-                  constraints: const BoxConstraints(maxHeight: 35),
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      Routes.results,
-                      arguments: pageArgs,
-                    );
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.find_in_page_outlined),
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      constraints: const BoxConstraints(
-                        maxWidth: 640,
-                        minHeight: 400,
-                        maxHeight: 600,
-                      ),
-                      builder: (context) => QuestionList(),
-                      isScrollControlled: true,
-                    );
-                  },
-                ),
+            PageFilters(trailing: [
+                
               ],
             ),
             Expanded(

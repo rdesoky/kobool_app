@@ -59,55 +59,50 @@ class DrillPage extends HookConsumerWidget {
               : "drill".tr(),
         ),
         centerTitle: false,
+        actionsPadding: const EdgeInsets.symmetric(horizontal: 8),
+
+        actions: [
+          if (pageArgs.containsKey(QParams.summary))
+            IconButton(
+              icon: const Icon(Icons.person_search, size: 20),
+              constraints: const BoxConstraints(maxHeight: 35),
+              onPressed: () {
+                pageArgs.remove(QParams.summary);
+                Navigator.pushNamed(context, Routes.drill, arguments: pageArgs);
+              },
+            ),
+          IconButton(
+            icon: const Icon(Icons.forum, size: 20),
+            constraints: const BoxConstraints(maxHeight: 35),
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                Routes.forum,
+                arguments: {...pageArgs, "total": totalMembers},
+              );
+            },
+          ),
+          if (totalMembers > 0)
+            InputChip(
+              label: Text(totalMembers.toString()),
+              avatar: const Icon(Icons.people, size: 20),
+              onPressed: () {
+                pageArgs.remove(QParams.summary);
+                Navigator.pushNamed(
+                  context,
+                  Routes.results,
+                  arguments: pageArgs,
+                );
+              },
+            ),
+        ],
       ),
 
       body: Column(
-        spacing: 16,
+        // spacing: 16,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          PageFilters(
-            leading: [
-              if (totalMembers > 0)
-                InputChip(
-                  label: Text(totalMembers.toString()),
-                  avatar: const Icon(Icons.people, size: 20),
-                  onPressed: () {
-                    pageArgs.remove(QParams.summary);
-                    Navigator.pushNamed(
-                      context,
-                      Routes.results,
-                      arguments: pageArgs,
-                    );
-                  },
-                ),
-            ],
-            trailing: [
-              if (pageArgs.containsKey(QParams.summary))
-                IconButton(
-                  icon: const Icon(Icons.person_search, size: 20),
-                  constraints: const BoxConstraints(maxHeight: 35),
-                  onPressed: () {
-                    pageArgs.remove(QParams.summary);
-                    Navigator.pushNamed(
-                      context,
-                      Routes.drill,
-                      arguments: pageArgs,
-                    );
-                  },
-                ),
-              IconButton(
-                icon: const Icon(Icons.forum, size: 20),
-                constraints: const BoxConstraints(maxHeight: 35),
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    Routes.forum,
-                    arguments: {...pageArgs, "total": totalMembers},
-                  );
-                },
-              ),
-            ],
-          ),
+          PageFilters(leading: [], trailing: []),
           Expanded(
             child: pageArgs.containsKey(QParams.summary)
                 ? results.connectionState == ConnectionState.done

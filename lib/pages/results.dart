@@ -30,35 +30,38 @@ class ResultsPage extends HookConsumerWidget {
               : 'found_total'.tr(args: [results["total"].toString()]),
         ),
         centerTitle: false,
+        actionsPadding: const EdgeInsets.symmetric(horizontal: 8),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person_search, size: 20),
+            constraints: const BoxConstraints(maxHeight: 35),
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                Routes.drill,
+                arguments: {...pageArgs, "total": results["total"]},
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.forum, size: 20),
+            constraints: const BoxConstraints(maxHeight: 35),
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                Routes.forum,
+                arguments: {...pageArgs, "total": results["total"]},
+              );
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            PageFilters(
-              trailing: [
-                IconButton(
-                  icon: const Icon(Icons.person_search, size: 20),
-                  constraints: const BoxConstraints(maxHeight: 35),
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      Routes.drill,
-                      arguments: {...pageArgs, "total": results["total"]},
-                    );
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.forum, size: 20),
-                  constraints: const BoxConstraints(maxHeight: 35),
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      Routes.forum,
-                      arguments: {...pageArgs, "total": results["total"]},
-                    );
-                  },
-                ),
+            PageFilters(trailing: [
+                
               ],
             ),
             Expanded(

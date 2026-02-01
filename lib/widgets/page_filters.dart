@@ -25,6 +25,7 @@ class PageFilters extends HookWidget {
           child: Wrap(
             spacing: 8,
             runSpacing: 8,
+            alignment: WrapAlignment.center,
             children: [
               ...leading,
               for (var filter in gFilters.entries.where(
