@@ -66,9 +66,7 @@ class UserAttrButton extends StatelessWidget {
             : () {
                 Navigator.pushNamed(
                   context,
-                  context.routeName == Routes.forum
-                      ? Routes.forum
-                      : Routes.user,
+                  Routes.user,
                   arguments: {...pageArgs, "id": id},
                 );
               },
@@ -78,9 +76,7 @@ class UserAttrButton extends StatelessWidget {
             : () {
                 Navigator.pushNamed(
                   context,
-                  context.routeName == Routes.forum
-                      ? Routes.forum
-                      : Routes.user,
+                  Routes.user,
                   arguments: {...pageArgs, "id": id},
                 );
               },

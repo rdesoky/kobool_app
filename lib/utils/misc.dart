@@ -16,7 +16,7 @@ Widget routeIcon(String routeName) {
     case Routes.forum:
       return const Icon(Icons.forum);
     case Routes.drill:
-      return const Icon(Icons.question_mark);
+      return const Icon(Icons.person_search);
     case Routes.chat:
       return const Icon(Icons.chat);
     case Routes.user:

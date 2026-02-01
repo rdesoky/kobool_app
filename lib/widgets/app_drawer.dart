@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/consts/routes.dart';
 import 'package:kobool/providers/router_provider.dart';
 import 'package:kobool/providers/user_session_provider.dart';
+import 'package:kobool/utils/context_extenstion.dart';
 import 'package:kobool/widgets/settings.dart';
 
 class AppDrawer extends ConsumerWidget {
@@ -17,9 +18,22 @@ class AppDrawer extends ConsumerWidget {
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final colorScheme = context.colorScheme;
     final routerState = ref.watch(routerProvider);
     final isLoggedIn = ref.watch(userSessionProvider).isLoggedIn();
+
+    void navigateTo(String route) {
+      if (routerState.name == route) {
+        return; //same route
+      }
+      navigatorKey.currentState?.popUntil(
+        (route) => route.isFirst,
+      ); // go to home
+      if (route != Routes.home) {
+        navigatorKey.currentState?.pushNamed(route); // push new route
+      }
+      Scaffold.of(context).closeDrawer();
+    }
 
     return Drawer(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
@@ -53,8 +67,7 @@ class AppDrawer extends ConsumerWidget {
               onTap: routerState.name == item.$2
                   ? null
                   : () {
-                      navigatorKey.currentState?.pushNamed(item.$2);
-                      Scaffold.of(context).closeDrawer();
+                      navigateTo(item.$2);
                     },
             ),
           ),

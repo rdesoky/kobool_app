@@ -96,6 +96,17 @@ class DrillPage extends HookConsumerWidget {
                     );
                   },
                 ),
+              IconButton(
+                icon: const Icon(Icons.forum, size: 20),
+                constraints: const BoxConstraints(maxHeight: 35),
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    Routes.forum,
+                    arguments: {...arguments!, "total": totalMembers},
+                  );
+                },
+              ),
             ],
           ),
           Expanded(

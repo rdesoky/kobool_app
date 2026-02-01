@@ -265,6 +265,20 @@ final Map<String, FilterInfo> gFilters = {
       "19": "other_language".tr(),
     },
   ),
+  SearchFilter.education: FilterInfo(
+    attr: UserAttribute.education,
+    title: "education",
+    icon: Icons.school,
+    options: (ref) => {
+      "1": "high_school".tr(),
+      "2": "undergraduate".tr(),
+      "3": "bachelors_degree".tr(),
+      "4": "diploma".tr(),
+      "5": "masters_degree".tr(),
+      "6": "phd".tr(),
+      "100": "other_education".tr(),
+    },
+  ),
   SearchFilter.race: FilterInfo(
     attr: UserAttribute.race,
     title: "race",
@@ -284,10 +298,11 @@ final Map<String, FilterInfo> gFilters = {
     icon: Icons.mosque,
     options: (ref) => {
       "1": "muslim".tr(),
-      "2": "christian".tr(),
-      "3": "hindu".tr(),
-      "4": "buddhist".tr(),
-      "5": "other".tr(),
+      "11": "christian".tr(),
+      "21": "jew".tr(),
+      "31": "hindu".tr(),
+      "32": "buddhist".tr(),
+      "100": "other".tr(),
     },
   ),
   SearchFilter.disability: FilterInfo(

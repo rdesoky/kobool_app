@@ -12,7 +12,7 @@ class KbAppBar extends ConsumerWidget implements PreferredSizeWidget {
   Widget build(BuildContext context, ref) {
     String routeName = ref.watch(routerProvider).name;
     final language = ref.watch(localeProvider);
-    final isWideView = MediaQuery.of(context).size.width > 600;
+    final isWideView = MediaQuery.of(context).size.width > 700;
     final colorScheme = Theme.of(context).colorScheme;
 
     return AppBar(

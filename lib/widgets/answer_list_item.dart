@@ -53,10 +53,10 @@ class AnswerListItem extends HookWidget {
                   UserAttrButton(
                     attr: UserAttribute.pic,
                     props: props,
-                    picSize: 16,
+                    picSize: 20,
                   ),
                   SizedBox(
-                    width: 120,
+                    // width: 120,
                     child: UserAttrButton(
                       attr: UserAttribute.loginName,
                       props: props,

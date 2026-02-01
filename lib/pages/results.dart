@@ -43,7 +43,24 @@ class ResultsPage extends HookConsumerWidget {
                     Navigator.pushNamed(
                       context,
                       Routes.drill,
-                      arguments: {...arguments!, "total": results["total"]},
+                      arguments: {
+                        if (arguments != null) ...arguments!,
+                        "total": results["total"],
+                      },
+                    );
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.forum, size: 20),
+                  constraints: const BoxConstraints(maxHeight: 35),
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      Routes.forum,
+                      arguments: {
+                        if (arguments != null) ...arguments!,
+                        "total": results["total"],
+                      },
                     );
                   },
                 ),

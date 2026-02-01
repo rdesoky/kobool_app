@@ -47,21 +47,6 @@ class ForumPage extends HookConsumerWidget {
         actionsPadding: const EdgeInsets.symmetric(horizontal: 8),
         actions: [
           // PageFilters(),
-          IconButton(
-            icon: const Icon(Icons.find_in_page_outlined),
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                constraints: const BoxConstraints(
-                  maxWidth: 640,
-                  minHeight: 400,
-                  maxHeight: 600,
-                ),
-                builder: (context) => QuestionList(),
-                isScrollControlled: true,
-              );
-            },
-          ),
         ],
       ),
       body: Center(
@@ -89,6 +74,21 @@ class ForumPage extends HookConsumerWidget {
                       context,
                       Routes.results,
                       arguments: arguments,
+                    );
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.find_in_page_outlined),
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      constraints: const BoxConstraints(
+                        maxWidth: 640,
+                        minHeight: 400,
+                        maxHeight: 600,
+                      ),
+                      builder: (context) => QuestionList(),
+                      isScrollControlled: true,
                     );
                   },
                 ),
