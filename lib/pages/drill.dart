@@ -6,6 +6,7 @@ import 'package:kobool/consts/api.dart';
 import 'package:kobool/consts/query_params.dart';
 import 'package:kobool/consts/routes.dart';
 import 'package:kobool/providers/dio_provider.dart';
+import 'package:kobool/utils/context_extenstion.dart';
 import 'package:kobool/utils/user_attr.dart';
 import 'package:kobool/widgets/drill_buttons.dart';
 import 'package:kobool/widgets/page_filters.dart';
@@ -17,8 +18,7 @@ class DrillPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final emptyArgs = useState<Map<String, dynamic>>({});
-    final pageArgs = arguments ?? emptyArgs.value;
+    final pageArgs = context.args;
     final results = useFuture(
       useMemoized(() {
         if (pageArgs.containsKey(QParams.summary)) {
@@ -43,6 +43,11 @@ class DrillPage extends HookConsumerWidget {
       }, [pageArgs]),
     );
 
+    final totalMembers =
+        results.data?.data["total_members"] ??
+        context.args[QParams.totalMembers] ??
+        0;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -62,7 +67,21 @@ class DrillPage extends HookConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           PageFilters(
-            leading: [],
+            leading: [
+              if (totalMembers > 0)
+                InputChip(
+                  label: Text(totalMembers.toString()),
+                  avatar: const Icon(Icons.people, size: 20),
+                  onPressed: () {
+                    pageArgs.remove(QParams.summary);
+                    Navigator.pushNamed(
+                      context,
+                      Routes.results,
+                      arguments: pageArgs,
+                    );
+                  },
+                ),
+            ],
             trailing: [
               if (pageArgs.containsKey(QParams.summary))
                 IconButton(
@@ -77,18 +96,6 @@ class DrillPage extends HookConsumerWidget {
                     );
                   },
                 ),
-              IconButton(
-                icon: const Icon(Icons.people, size: 20),
-                constraints: const BoxConstraints(maxHeight: 35),
-                onPressed: () {
-                  pageArgs.remove(QParams.summary);
-                  Navigator.pushNamed(
-                    context,
-                    Routes.results,
-                    arguments: pageArgs,
-                  );
-                },
-              ),
             ],
           ),
           Expanded(

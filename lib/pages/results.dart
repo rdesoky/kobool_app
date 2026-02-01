@@ -43,7 +43,7 @@ class ResultsPage extends HookConsumerWidget {
                     Navigator.pushNamed(
                       context,
                       Routes.drill,
-                      arguments: arguments,
+                      arguments: {...arguments!, "total": results["total"]},
                     );
                   },
                 ),

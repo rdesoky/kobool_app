@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/consts/query_params.dart';
 import 'package:kobool/consts/routes.dart';
+import 'package:kobool/utils/context_extenstion.dart';
 import 'package:kobool/utils/user_attr.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class FilterButton extends HookConsumerWidget {
   const FilterButton({super.key, required this.filterKey});
@@ -11,14 +11,11 @@ class FilterButton extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final emptyArgs = useState<Map<String, dynamic>>({});
-    final pageArgs =
-        (ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?) ??
-        emptyArgs.value;
-    final filterInfo = gFilters[filterKey];
+    final pageArgs = context.args;
+    final filterInfo = FilterInfo.fromFilter(filterKey);
 
     return InputChip(
-      label: Text(filterInfo?.mapValue(ref, pageArgs[filterKey]) ?? ""),
+      label: Text(filterInfo.mapValue(ref, pageArgs[filterKey])),
       onDeleted: () {
         final args = {...pageArgs};
         args.remove(filterKey);

@@ -16,7 +16,7 @@ class SummaryList extends ConsumerWidget {
         {};
 
     final colorScheme = Theme.of(context).colorScheme;
-    final filter = gFilters[pageArgs["sum"]];
+    final filter = FilterInfo.fromFilter(pageArgs["sum"]);
 
     return SingleChildScrollView(
       child: Center(
@@ -39,12 +39,14 @@ class SummaryList extends ConsumerWidget {
                   args[summary["summary_by"]] =
                       entry["group_name"]; // add filter
                   args.remove("sum"); // remove summary
-                  Navigator.pushNamed(context, Routes.drill, arguments: args);
+                  Navigator.pushNamed(
+                    context,
+                    Routes.drill,
+                    arguments: {...args, "total": entry["members_count"]},
+                  );
                 },
                 leading: Icon(Icons.person_search),
-                title: filter != null
-                    ? Text(filter.mapValue(ref, entry["group_name"]))
-                    : null,
+                title: Text(filter.mapValue(ref, entry["group_name"])),
                 trailing: SizedBox(
                   width: 120,
                   height: 40,

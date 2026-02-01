@@ -40,6 +40,7 @@ class AppDrawer extends ConsumerWidget {
             (Icons.home, Routes.home, 'home'),
             if (!isLoggedIn) (Icons.login, Routes.login, 'login'),
             (Icons.search, Routes.search, 'search'),
+            (Icons.person_search, Routes.drill, 'drill'),
             (Icons.people, Routes.results, 'members'),
             (Icons.forum, Routes.forum, 'forum'),
             (Icons.contact_mail, Routes.contact, 'contact'),

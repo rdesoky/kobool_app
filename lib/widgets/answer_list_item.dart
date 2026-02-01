@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:kobool/consts/routes.dart';
+import 'package:kobool/utils/context_extenstion.dart';
 import 'package:kobool/utils/user_attr.dart';
 import 'package:kobool/widgets/user_attr_button.dart';
 
@@ -11,12 +12,9 @@ class AnswerListItem extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final emptyArgs = useState<Map<String, dynamic>>({});
-    final pageArgs =
-        (ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?) ??
-        emptyArgs.value;
+    final pageArgs = context.args;
 
-    final userId = props['member_id'] ?? props['id'];
+    // final userId = props['member_id'] ?? props['id'];
     final questionId = props['question_text_id'];
     final questionText = props['question_text'];
     final answerText = props['answer_text'];

@@ -59,7 +59,7 @@ class _AppScaffold extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     useInitApp(ref);
 
-    final isWideView = MediaQuery.of(context).size.width > 600;
+    final isWideView = MediaQuery.of(context).size.width > 700;
 
     return Scaffold(
       appBar: ref.watch(mainAppBarProvider) ? KbAppBar() : null,
@@ -90,7 +90,7 @@ class AppNavigator extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     _appRouteObserver ??= AppRouteObserver(ref); //initialize observer only once
-    final isWideView = MediaQuery.of(context).size.width > 600;
+    final isWideView = MediaQuery.of(context).size.width > 700;
     final navigatorWidget = Navigator(
       key: navigatorKey,
       initialRoute: Routes.home,

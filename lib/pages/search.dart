@@ -216,7 +216,9 @@ class SearchPage extends HookConsumerWidget {
                     ...List.generate(6, (i) => (i + 1).toString()).map(
                       (val) => DropdownMenuItem(
                         value: val,
-                        child: renderMaritalStatus(context, val),
+                        child:
+                            renderMaterialStatus(context, val) ??
+                            Text("unknown".tr()),
                       ),
                     ),
                   ],

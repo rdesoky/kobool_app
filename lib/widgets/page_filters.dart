@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:kobool/utils/context_extenstion.dart';
 import 'package:kobool/utils/user_attr.dart';
 import 'package:kobool/widgets/filter_button.dart';
 
@@ -14,16 +15,13 @@ class PageFilters extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final emptyArgs = useState<Map<String, dynamic>>({});
-    final pageArgs =
-        (ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?) ??
-        emptyArgs.value;
+    final pageArgs = context.args;
 
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(6.0),
         child: SizedBox(
-          width: 600,
+          width: 800,
           child: Wrap(
             spacing: 8,
             runSpacing: 8,

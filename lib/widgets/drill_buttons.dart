@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:kobool/consts/routes.dart';
+import 'package:kobool/utils/context_extenstion.dart';
 import 'package:kobool/utils/user_attr.dart';
 import 'package:kobool/widgets/home_button.dart';
 
@@ -9,10 +10,7 @@ class DrillButtons extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final emptyArgs = useState<Map<String, dynamic>>({});
-    final pageArgs =
-        (ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?) ??
-        emptyArgs.value;
+    final pageArgs = context.args;
 
     final filters = useMemoized(() {
       return gFilters.entries

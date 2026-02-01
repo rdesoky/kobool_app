@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kobool/consts/api.dart';
+import 'package:kobool/consts/routes.dart';
 import 'package:kobool/hooks/use_fetch_pages.dart';
 import 'package:kobool/modals/question_list.dart';
+import 'package:kobool/utils/context_extenstion.dart';
 import 'package:kobool/widgets/answers_list.dart';
+import 'package:kobool/widgets/page_filters.dart';
 
 class ForumPage extends HookConsumerWidget {
   const ForumPage({super.key, this.arguments});
@@ -65,6 +68,32 @@ class ForumPage extends HookConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            PageFilters(
+              trailing: [
+                IconButton(
+                  icon: const Icon(Icons.person_search, size: 20),
+                  constraints: const BoxConstraints(maxHeight: 35),
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      Routes.drill,
+                      arguments: arguments,
+                    );
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.people, size: 20),
+                  constraints: const BoxConstraints(maxHeight: 35),
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      Routes.results,
+                      arguments: arguments,
+                    );
+                  },
+                ),
+              ],
+            ),
             Expanded(
               child: AnswersList(
                 asyncFetch: asyncFetch,

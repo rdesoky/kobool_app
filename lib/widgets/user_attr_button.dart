@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:kobool/consts/routes.dart';
+import 'package:kobool/utils/context_extenstion.dart';
 import 'package:kobool/utils/user_attr.dart';
 
-class UserAttrButton extends HookWidget {
+class UserAttrButton extends StatelessWidget {
   final String attr;
   final Map<String, dynamic> props;
   final double picSize;
@@ -17,10 +17,7 @@ class UserAttrButton extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pageArgs =
-        (ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?) ??
-        {};
-    final colorScheme = Theme.of(context).colorScheme;
+    final pageArgs = context.args;
     final gender = props[UserAttribute.gender].toString();
     final isMale = gender == "0";
     final genderColor = isMale ? Colors.blue : Colors.pink;
@@ -40,12 +37,12 @@ class UserAttrButton extends HookWidget {
       //   width: picSize,
       // ),
       UserAttribute.pic => Icon(genderPic, color: genderColor, size: picSize),
-      UserAttribute.gender => Icon(genderIcon, color: genderColor),
+      UserAttribute.gender => Icon(genderIcon, color: genderColor, size: 20),
       UserAttribute.age =>
         props[UserAttribute.age] != null
             ? Text("age_value".tr(args: [props[UserAttribute.age].toString()]))
             : null,
-      UserAttribute.maritalStatus => maritalStatus(
+      UserAttribute.maritalStatus => renderMaterialStatus(
         context,
         props[UserAttribute.maritalStatus],
       ),
@@ -69,7 +66,9 @@ class UserAttrButton extends HookWidget {
             : () {
                 Navigator.pushNamed(
                   context,
-                  Routes.user,
+                  context.routeName == Routes.forum
+                      ? Routes.forum
+                      : Routes.user,
                   arguments: {...pageArgs, "id": id},
                 );
               },
@@ -79,7 +78,9 @@ class UserAttrButton extends HookWidget {
             : () {
                 Navigator.pushNamed(
                   context,
-                  Routes.user,
+                  context.routeName == Routes.forum
+                      ? Routes.forum
+                      : Routes.user,
                   arguments: {...pageArgs, "id": id},
                 );
               },
@@ -89,7 +90,7 @@ class UserAttrButton extends HookWidget {
             : () {
                 Navigator.pushNamed(
                   context,
-                  Routes.results,
+                  context.resultsRoute,
                   arguments: {
                     ...pageArgs,
                     SearchFilter.gender: props[UserAttribute.gender],
@@ -102,7 +103,7 @@ class UserAttrButton extends HookWidget {
             : () {
                 Navigator.pushNamed(
                   context,
-                  Routes.results,
+                  context.resultsRoute,
                   arguments: {
                     ...pageArgs,
                     SearchFilter.age:
@@ -116,7 +117,7 @@ class UserAttrButton extends HookWidget {
             : () {
                 Navigator.pushNamed(
                   context,
-                  Routes.results,
+                  context.resultsRoute,
                   arguments: {
                     ...pageArgs,
                     SearchFilter.maritalStatus:
@@ -130,7 +131,7 @@ class UserAttrButton extends HookWidget {
             : () {
                 Navigator.pushNamed(
                   context,
-                  Routes.results,
+                  context.resultsRoute,
                   arguments: {
                     ...pageArgs,
                     SearchFilter.country: props[UserAttribute.country],
@@ -143,7 +144,7 @@ class UserAttrButton extends HookWidget {
             : () {
                 Navigator.pushNamed(
                   context,
-                  Routes.results,
+                  context.resultsRoute,
                   arguments: {
                     ...pageArgs,
                     SearchFilter.origin: props[UserAttribute.origin],
@@ -153,16 +154,16 @@ class UserAttrButton extends HookWidget {
       _ => () {},
     };
 
-    final double elevation = switch (attr) {
-      UserAttribute.pic => 0,
-      UserAttribute.loginName => 0,
-      _ => 1,
-    };
-    final backgroundColor = switch (attr) {
-      UserAttribute.pic => colorScheme.surfaceContainerLow,
-      UserAttribute.loginName => colorScheme.surfaceContainerLow,
-      _ => colorScheme.surface,
-    };
+    // final double elevation = switch (attr) {
+    //   UserAttribute.pic => 0,
+    //   UserAttribute.loginName => 0,
+    //   _ => 1,
+    // };
+    // final backgroundColor = switch (attr) {
+    //   UserAttribute.pic => colorScheme.surfaceContainerLow,
+    //   UserAttribute.loginName => colorScheme.surfaceContainerLow,
+    //   _ => colorScheme.surface,
+    // };
 
     return child != null
         ? Tooltip(
