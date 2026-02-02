@@ -13,10 +13,10 @@ class UserListItem extends HookWidget {
     final pageArgs =
         (ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?) ??
         {};
-    final login = props['login_id'] ?? '';
-    final title = props['ad_title'] ?? '';
-    final selfDesc = props['self_desc'] ?? '';
-    final mateDesc = props['mate_desc'] ?? '';
+    final login = props[UserAttribute.loginName] ?? '';
+    final pageTitle = props[UserAttribute.pageTitle] ?? '';
+    final selfDesc = props[UserAttribute.selfDesc] ?? '';
+    final mateDesc = props[UserAttribute.mateDesc] ?? '';
 
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -64,7 +64,7 @@ class UserListItem extends HookWidget {
                       ),
                       Expanded(
                         child: Text(
-                          title.toString().replaceAll("|u|", ""),
+                          pageTitle.toString().replaceAll("|u|", ""),
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(color: colorScheme.tertiary),
                         ),

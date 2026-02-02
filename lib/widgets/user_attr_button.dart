@@ -52,7 +52,7 @@ class UserAttrButton extends StatelessWidget {
       UserAttribute.pic => Icon(genderPic, color: genderColor, size: picSize),
       UserAttribute.gender => Icon(genderIcon, color: genderColor, size: 20),
       UserAttribute.age =>
-        props[UserAttribute.age] != null
+        props[UserAttribute.age] != null && props[UserAttribute.age] > 0
             ? Text("age_value".tr(args: [props[UserAttribute.age].toString()]))
             : null,
       UserAttribute.maritalStatus => renderMaterialStatus(

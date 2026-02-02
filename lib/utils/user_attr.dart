@@ -57,6 +57,9 @@ class UserAttribute {
   static const id = "id";
   static const loginName = "login_id";
   static const pic = "main_pic";
+  static const pageTitle = "ad_title";
+  static const selfDesc = "self_desc";
+  static const mateDesc = "mate_desc";
 
   static const gender = "gender";
   static const age = "age";

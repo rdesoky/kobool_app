@@ -67,8 +67,8 @@ class DrillPage extends HookConsumerWidget {
               icon: const Icon(Icons.person_search, size: 20),
               constraints: const BoxConstraints(maxHeight: 35),
               onPressed: () {
-                pageArgs.remove(QParams.summary);
-                Navigator.pushNamed(context, Routes.drill, arguments: pageArgs);
+                // back to drill page
+                Navigator.pop(context);
               },
             ),
           IconButton(
